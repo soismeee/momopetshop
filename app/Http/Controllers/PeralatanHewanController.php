@@ -118,7 +118,59 @@ class PeralatanHewanController extends Controller
 
     public function update(Request $request, $id)
     {
-        //
+        $validate = Validator::make($request->all(), [
+            'nama_barang' => 'required',
+            'kph_id' => 'required',
+            'harga_barang' => 'required',
+            'stok_barang' => 'required',
+            'keterangan_barang' => 'required',
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json([
+                'status' => 401,
+                'errors' => 'Data tidak berhasil diambil',
+            ]);
+        } else {
+            $update_db = Barang::find($id);
+
+
+            if( $request->hasFile('gambar_barang') == null &&
+            $update_db->nama_barang == $request->nama_barang &&
+            $update_db->kb_id == $request->kph_id &&
+            $update_db->stok_barang == $request->stok_barang &&
+            $update_db->keterangan_barang == $request->keterangan_barang)
+            {
+                return response()->json([
+                    'status' => 201,
+                    'message' => 'Tidak ada data yang diubah',
+                ]);
+            }
+
+            if ($update_db) {
+                if ($request->hasFile('gambar_barang')) {
+                    $request->file('gambar_barang')->move('Gambar_upload/barang/', $request->file('gambar_barang')->getClientOriginalName());
+                    $update_db->gambar_barang = $request->file('gambar_barang')->getClientOriginalName();
+                }
+
+                $update_db->nama_barang = $request->nama_barang;
+                $update_db->kb_id = $request->kph_id;
+                $update_db->stok_barang = $request->stok_barang;
+                $update_db->harga_barang = preg_replace('/[^0-9]/', '', $request->harga_barang);
+                $update_db->keterangan_barang = $request->keterangan_barang;
+                $update_db->update();
+
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Data berhasil diubah',
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'Data tidak bisa di ubah',
+                ]);
+            }
+        }
     }
 
     /**

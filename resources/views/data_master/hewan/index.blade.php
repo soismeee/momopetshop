@@ -20,6 +20,7 @@
                                 <form id="form-hewan" enctype="multipart/form-data">
                                     @csrf
                                     <input type="hidden" id="id" name="id">
+                                    <input type="hidden" id="form" value="tambah">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="mb-3">
@@ -88,7 +89,7 @@
                                     </div>
                                     <div>
                                         <button type="submit" id="add-data" class="btn btn-primary w-md">Simpan Data</button>
-                                        <button type="button" id="update-data" style="display: none" class="btn btn-warning w-md">Ubah Data</button>
+                                        {{-- <button type="button" id="update-data" style="display: none" class="btn btn-warning w-md">Ubah Data</button> --}}
                                     </div>
                                 </form>
                             </div>
@@ -238,6 +239,8 @@
             // fungsi mengubah tombol simpan
             function tombolSimpan() {
                 $('#add-data').removeClass('disabled');
+                $('#add-data').removeClass('btn-warning');
+                $('#add-data').addClass('btn-primary');
                 $('#add-data').html('Simpan Data');
             }
 
@@ -265,8 +268,16 @@
                 e.preventDefault();
                 $('#add-data').addClass('disabled');
                 $('#add-data').html(`<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Loading...`);
+                let form = $('#form').val();
+                let url = '';
+                if (form == 'ubah') {
+                    let id = $('#id').val();
+                    url = "{{ url('dh_update') }}/"+id
+                } else {
+                    url = "{{ route('dh.index') }}"
+                }
                 $.ajax({
-                    url: "{{ route('dh.index') }}",
+                    url: url,
                     method: "POST",
                     data: new FormData(this),
                     dataType:'JSON',
@@ -291,8 +302,9 @@
             $(document).on('click', '#edit-data', function(e) {
                 e.preventDefault();
                 let id = $(this).data('id');
-                $('#update-data').show();
-                $('#add-data').hide();
+                $('#add-data').text('Ubah data');
+                $('#add-data').removeClass('btn btn-primary');
+                $('#add-data').addClass('btn btn-warning');
                 $.ajax({
                     type: "GET",
                     url: "{{ route('dh.index') }}/" + id,
@@ -310,41 +322,11 @@
                             $('#jumlah_hewan').val(response.data.jumlah_hewan);
                             $('#keterangan_hewan').val(response.data.keterangan_hewan);
                             harga_hewan.value = convertRupiah(response.data.harga_hewan, "Rp. ");
-                            $('.label-gambar').html('Ubah gambar (biarkan kosong jika tidak ingin mengganti gambar)')
+                            $('.label-gambar').html('Ubah gambar (biarkan kosong jika tidak ingin mengganti gambar)');
+                            $('#form').val('ubah');
                         }
                     }
                 });
-            });
-
-            $(document).on('click', '#update-data', function(e) {
-                e.preventDefault();
-                $('#update-data').addClass('disabled');
-                $('#update-data').html(`<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Loading...`);
-                let id = $('#id').val();
-
-                let formData = new FormData($("#form-hewan")[0]);
-                console.log(formData);
-                // $.ajax({
-                //     type: "PUT",
-                //     url: "{{ route('dh.index') }}/" + id,
-                //     data: formData,
-                //     dataType: 'json',
-                //     success: function(response) {
-                //         if (response.status == 404) {
-                //             sweetAlert('warning', response.message);
-                //             tombolUbah();
-                //         } else if (response.status == 201){
-                //             sweetAlert('info', response.message);
-                //             tombolUbah();
-                //         } else {
-                //             $('#update-data').hide();
-                //             $('#add-data').show();
-                //             sweetAlert('success', response.message);
-                //             reloadReset();
-                //             tombolUbah();
-                //         }
-                //     }
-                // });
             });
 
             $(document).on('click', '.hapusdata', function(e) {

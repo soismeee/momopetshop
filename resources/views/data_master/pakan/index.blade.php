@@ -17,8 +17,10 @@
                                 <h4 class="card-title mb-0">Form input pakan</h4>
                             </div>
                             <div class="card-body">
-                                <form id="form-peralatan-hewan" enctype="multipart/form-data">
+                                <form id="form-pakan" enctype="multipart/form-data">
                                     @csrf
+                                    <input type="hidden" id="id" name="id">
+                                    <input type="hidden" id="form" value="tambah">
                                     <div class="mb-3">
                                         <label for="formrow-firstname-input" class="form-label">Nama barang</label>
                                         <input type="text" class="form-control" placeholder="Masukan nama barang" name="nama_barang" id="nama_barang">
@@ -208,6 +210,8 @@
             // fungsi mengubah tombol simpan
             function tombolSimpan() {
                 $('#add-data').removeClass('disabled');
+                $('#add-data').removeClass('btn-warning');
+                $('#add-data').addClass('btn-primary');
                 $('#add-data').html('Simpan Data');
             }
 
@@ -220,7 +224,7 @@
             // fungsi reload table dan reset form input
             function reloadReset(){
                 table.ajax.reload();
-                document.getElementById("form-peralatan-hewan").reset()
+                document.getElementById("form-pakan").reset()
             }
 
             // template sweetalert
@@ -231,12 +235,20 @@
                 });
             }
 
-            $('#form-peralatan-hewan').on('submit', function(e){
+            $('#form-pakan').on('submit', function(e){
                 e.preventDefault();
                 $('#add-data').addClass('disabled');
                 $('#add-data').html(`<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Loading...`);
+                let form = $('#form').val();
+                let url = '';
+                if (form == 'ubah') {
+                    let id = $('#id').val();
+                    url = "{{ url('dp_update') }}/"+id
+                } else {
+                    url = "{{ route('dp.index') }}"
+                }
                 $.ajax({
-                    url: "{{ route('dp.index') }}",
+                    url: url,
                     method: "POST",
                     data: new FormData(this),
                     dataType:'JSON',
@@ -252,6 +264,35 @@
                             sweetAlert('success', response.message);
                             reloadReset();
                             tombolSimpan();
+                        }
+                    }
+                });
+            });
+
+            $(document).on('click', '#edit-data', function(e) {
+                e.preventDefault();
+                var id = $(this).data('id');
+                $('#add-data').text('Ubah data');
+                $('#add-data').removeClass('btn-primary');
+                $('#add-data').addClass('btn-warning');
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('dp.index') }}/" + id,
+                    success: function(response) {
+                        if (response.status == 401) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: response.message,
+                            });
+                        } else {
+                            $('.input').removeClass('is-invalid');
+                            $('#id').val(response.data.id);
+                            $('#nama_barang').val(response.data.nama_barang);
+                            $('#kp_id').val(response.data.kb_id);
+                            harga_barang.value = convertRupiah(response.data.harga_barang, "Rp. ");
+                            $('#stok_barang').val(response.data.stok_barang);
+                            $('#keterangan_barang').val(response.data.keterangan_barang);
+                            $('#form').val('ubah');
                         }
                     }
                 });
@@ -286,7 +327,6 @@
                                 table.ajax.reload();
                             }
                         });
-
                     }
                 })
             });

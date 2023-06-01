@@ -70,12 +70,12 @@
                     
                 <li class="menu-title" data-key="t-applications">Master</li>
 
-                <li>
+                {{-- <li>
                     <a href="{{ route('dc') }}">
                         <i class="bx bx-user-voice icon nav-icon"></i>
                         <span class="menu-item" data-key="t-customers">Data Pelanggan</span>
                     </a>
-                </li>
+                </li> --}}
 
                 <li>
                     <a href="{{ route('dh.index') }}">

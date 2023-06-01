@@ -23,6 +23,7 @@
                                 <form id="form-peralatan-hewan" enctype="multipart/form-data">
                                     @csrf
                                     <input type="hidden" id="id" name="id">
+                                    <input type="hidden" id="form" value="tambah">
                                     <div class="mb-3">
                                         <label for="formrow-firstname-input" class="form-label">Nama barang</label>
                                         <input type="text" class="form-control" placeholder="Masukan nama barang" name="nama_barang" id="nama_barang">
@@ -233,6 +234,8 @@
             // fungsi mengubah tombol simpan
             function tombolSimpan() {
                 $('#add-data').removeClass('disabled');
+                $('#add-data').removeClass('btn-warning');
+                $('#add-data').addClass('btn-primary');
                 $('#add-data').html('Simpan Data');
             }
 
@@ -260,8 +263,16 @@
                 e.preventDefault();
                 $('#add-data').addClass('disabled');
                 $('#add-data').html(`<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Loading...`);
+                let form = $('#form').val();
+                let url = '';
+                if (form == 'ubah') {
+                    let id = $('#id').val();
+                    url = "{{ url('dph_update') }}/"+id
+                } else {
+                    url = "{{ route('dph.index') }}"
+                }
                 $.ajax({
-                    url: "{{ route('dph.index') }}",
+                    url: url,
                     method: "POST",
                     data: new FormData(this),
                     dataType:'JSON',
@@ -285,9 +296,9 @@
             $(document).on('click', '#edit-data', function(e) {
                 e.preventDefault();
                 var id = $(this).data('id');
-                console.log(id);
-                $('#update-data').show();
-                $('#add-data').hide();
+                $('#add-data').text('Ubah data');
+                $('#add-data').removeClass('btn-primary');
+                $('#add-data').addClass('btn-warning');
                 $.ajax({
                     type: "GET",
                     url: "{{ route('dph.index') }}/" + id,
@@ -300,47 +311,12 @@
                         } else {
                             $('.input').removeClass('is-invalid');
                             $('#id').val(response.data.id);
-                            $('#nama_kp').val(response.data.nama_kp);
-                        }
-                    }
-                });
-            });
-
-            $(document).on('click', '#update-data', function(e) {
-                e.preventDefault();
-                $('#update-data').addClass('disabled');
-                $('#update-data').html(
-                    `<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Loading...`
-                );
-                var data = {
-                    'nama_kp': $('#nama_kp').val(),
-                    '_token': '{{ csrf_token() }}'
-                };
-                var id = $('#id').val();
-                $.ajax({
-                    type: "PUT",
-                    url: "{{ route('dph.index') }}/" + id,
-                    data: data,
-                    dataType: 'json',
-                    success: function(response) {
-                        if (response.status == 404) {
-                            Swal.fire({
-                                icon: 'warning',
-                                title: response.message,
-                            });
-                            $('#update-data').removeClass('disabled');
-                            $('#update-data').html('Ubah Data');
-                        } else {
-                            Swal.fire({
-                                icon: 'success',
-                                title: response.message,
-                            });
-                            table.ajax.reload();
-                            $('#nama_kp').val(null);
-                            $('#update-data').hide();
-                            $('#add-data').show();
-                            $('#update-data').removeClass('disabled');
-                            $('#update-data').html('Ubah Data');
+                            $('#nama_barang').val(response.data.nama_barang);
+                            $('#kph_id').val(response.data.kb_id);
+                            harga_barang.value = convertRupiah(response.data.harga_barang, "Rp. ");
+                            $('#stok_barang').val(response.data.stok_barang);
+                            $('#keterangan_barang').val(response.data.keterangan_barang);
+                            $('#form').val('ubah');
                         }
                     }
                 });

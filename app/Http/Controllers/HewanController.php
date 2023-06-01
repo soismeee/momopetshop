@@ -122,7 +122,8 @@ class HewanController extends Controller
         } else {
             $update_dh = Hewan::find($id);
 
-            if($update_dh->nama_hewan == $request->nama_hewan &&
+            if($request->hasFile('gambar_hewan') == null &&
+            $update_dh->nama_hewan == $request->nama_hewan &&
             $update_dh->jkel == $request->jkel &&
             $update_dh->tgl_lahir == $request->tgl_lahir &&
             $update_dh->tinggi_hewan == $request->tinggi_hewan &&

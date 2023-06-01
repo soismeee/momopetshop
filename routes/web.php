@@ -70,16 +70,19 @@ route::post('/save', [HomeController::class, 'store'])->name('save')->middleware
 // data hewan
 route::resource('/dh', HewanController::class)->middleware('auth');
 route::post('/json_dh', [HewanController::class, 'json'])->middleware('auth');
+route::post('dh_update/{id}', [HewanController::class, 'update'])->middleware('auth');
 
 // peralatan hewan
 route::resource('/dph', PeralatanHewanController::class)->middleware('auth');
 route::post('/json_dph', [PeralatanHewanController::class, 'json'])->middleware('auth');
+route::post('dph_update/{id}', [PeralatanHewanController::class, 'update'])->middleware('auth');
 route::post('/upload', [PeralatanHewanController::class, 'upload'])->middleware('auth');
 route::delete('/deleteupload', [PeralatanHewanController::class, 'destroyUpload'])->middleware('auth');
 
 // pakan
 route::resource('/dp', PakanController::class)->middleware('auth');
 route::post('/json_dp', [PakanController::class, 'json'])->middleware('auth');
+route::post('dp_update/{id}', [PakanController::class, 'update'])->middleware('auth');
 
 // treatment
 route::resource('/dt', TreatmentController::class)->middleware('auth');
