@@ -102,3 +102,9 @@ route::get('/json_ol/{id}', [InvoiceController::class, 'list_detailorder'])->nam
 route::post('/json_do', [InvoiceController::class, 'json_orders'])->name('json_do')->middleware('auth');
 route::post('/proses/{id}', [InvoiceController::class, 'proses'])->name('proses')->middleware('auth');
 route::get('/print/{id}', [InvoiceController::class, 'print'])->name('print')->middleware('auth');
+
+// route laporan
+route::get('/lo', [InvoiceController::class, 'laporan_order'])->name('lo')->middleware('auth');
+route::get('/lt', [InvoiceController::class, 'laporan_treatment'])->name('lt')->middleware('auth');
+
+route::get('/clo', [InvoiceController::class, 'print_laporan'])->name('clo')->middleware('auth');

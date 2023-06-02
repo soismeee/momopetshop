@@ -113,4 +113,20 @@ class InvoiceController extends Controller
         ]);
     }
 
+
+    public function laporan_order(){
+        return view('laporan.laporan_barang', [
+            'title' => 'Laporan Penjualan barang',
+        ]);
+    }
+
+    public function print_laporan(){
+        $transaksi = Transaksi::with('user')->get();
+        $total = $transaksi->sum('total_harga');
+        return view('laporan.print_laporan', [
+            'title' => 'Laporan Penjualan Penjualan',
+            'orders' => $transaksi,
+            'total_penjualan' => $total
+        ]);
+    }
 }

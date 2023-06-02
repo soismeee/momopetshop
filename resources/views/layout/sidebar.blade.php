@@ -131,8 +131,8 @@
                         <span class="menu-item" data-key="t-utility">laporan</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="#" data-key="t-error-404">Laporan Penjualan</a></li>
-                        <li><a href="#" data-key="t-error-500">Laporan Treatment</a></li>
+                        <li><a href="{{ route('lo') }}" data-key="t-error-404">Laporan Penjualan</a></li>
+                        <li><a href="{{ route('lt') }}" data-key="t-error-500">Laporan Treatment</a></li>
                     </ul>
                 </li>
                 @endif
