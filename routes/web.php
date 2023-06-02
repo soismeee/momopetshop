@@ -41,6 +41,9 @@ route::get('/cph', [HomeController::class, 'in_peralatan'])->name('cph')->middle
 route::get('/cp', [HomeController::class, 'in_pakan'])->name('cp')->middleware('auth');
 route::get('/ct', [HomeController::class, 'in_treatment'])->name('ct')->middleware('auth');
 
+route::post('/save', [HomeController::class, 'store'])->name('save')->middleware('auth');
+route::get('/json_k', [HomeController::class, 'json_keranjang'])->name('json_k')->middleware('auth');
+route::delete('/di/{id}', [HomeController::class, 'destroy_item'])->name('di')->middleware('auth');
 
 // ROUTE DATA PENGGUNA //
 route::resource('usr', UserController::class)->middleware('auth');
@@ -57,16 +60,18 @@ route::resource('/dkp', KategoriPakanController::class)->middleware('auth');
 route::post('/json_dkp', [KategoriPakanController::class, 'json'])->middleware('auth');
 
 
-// ROUTE DATA MASTER //
-// route customers
+// ROUTE CUSTOMER
 route::get('/dc', [UserController::class, 'customer'])->name('dc')->middleware('auth');
 route::post('/json_cus', [UserController::class, 'json_customer'])->name('json_cus')->middleware('auth');
 route::put('/udc/{id}', [UserController::class, 'update_customer'])->name('udc')->middleware('auth');
 route::get('/cb/{id}', [HomeController::class, 'checkout_barang'])->name('cb')->middleware('auth');
 route::get('/che/{id}', [HomeController::class, 'checkout_hewan'])->name('che')->middleware('auth');
+route::get('/dtc/{id}', [HomeController::class, 'detail_transaksi'])->name('dtc')->middleware('auth');
+route::get('/json_co/{id}', [HomeController::class, 'json_detailorder'])->name('json_co')->middleware('auth');
+route::delete('/cdt/{id}', [HomeController::class, 'destroy_order'])->name('cdt')->middleware('auth');
 
-route::post('/save', [HomeController::class, 'store'])->name('save')->middleware('auth');
 
+// ROUTE DATA MASTER //
 // data hewan
 route::resource('/dh', HewanController::class)->middleware('auth');
 route::post('/json_dh', [HewanController::class, 'json'])->middleware('auth');
@@ -91,6 +96,9 @@ route::post('/json_dt', [TreatmentController::class, 'json'])->middleware('auth'
 // ROUTE MANAJEMEN ADMIN DAN KARYAWAN //
 // route invoice
 route::get('/do', [InvoiceController::class, 'orders'])->name('do')->middleware('auth');
-route::post('/json_do', [InvoiceController::class, 'json_orders'])->name('json_do')->middleware('auth');
-
 route::get('/dit', [InvoiceController::class, 'treatment'])->name('dit')->middleware('auth');
+route::get('/dio/{id}', [InvoiceController::class, 'show'])->name('dio')->middleware('auth');
+route::get('/json_ol/{id}', [InvoiceController::class, 'list_detailorder'])->name('json_ol')->middleware('auth');
+route::post('/json_do', [InvoiceController::class, 'json_orders'])->name('json_do')->middleware('auth');
+route::post('/proses/{id}', [InvoiceController::class, 'proses'])->name('proses')->middleware('auth');
+route::get('/print/{id}', [InvoiceController::class, 'print'])->name('print')->middleware('auth');

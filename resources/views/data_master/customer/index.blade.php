@@ -36,7 +36,7 @@
             <!-- container-fluid -->
         </div>
         <!-- End Page-content -->
-    @endsection
+@endsection
 
     @push('js')
     <!-- BEGIN PAGE LEVEL SCRIPTS -->

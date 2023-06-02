@@ -26,10 +26,19 @@ class AuthController extends Controller
             'username' => 'required',
             'password' => 'required'
         ]);
-
+        
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/home');
+            if (auth()->user()->status == 0) {
+                Auth::logout();
+
+                request()->session()->invalidate();
+                request()->session()->regenerateToken();
+                return redirect('/login')->with('loginError', 'Maaf, user anda tidak aktif');
+            }else{
+                return redirect()->intended('/home');
+            }
+            
         }
         return back()->with('loginError', 'Login gagal!!!');
     }

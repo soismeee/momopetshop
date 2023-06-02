@@ -59,7 +59,7 @@ class HomeController extends Controller
     // ######################################################################################
     // FUNCTIONS SUDAH LOGIN
     public function home(){
-        $keranjang_customer = Keranjang::where('user_id', auth()->user()->id)->count();
+        $keranjang_customer = Keranjang::where('user_id', auth()->user()->id)->where('status', 0)->count();
         $transkasi_customer = Transaksi::where('user_id', auth()->user()->id)->count();
         if(auth()->user()->role == 3){
             return view('home.index_customer',[
@@ -181,17 +181,67 @@ class HomeController extends Controller
                 'gambar' => $request->gambar[$key],
                 'keterangan' => $request->keterangan[$key],
             ]);
+
+            Keranjang::where('id', $request->id[$key])->update(['status' => 1]);
         }
 
         return redirect('co');
     }
 
     public function keranjang(){
+        $keranjang = Keranjang::where('user_id', auth()->user()->id)->where('status', 0)->get();
+        $jumlah = $keranjang->sum('jumlah');
+        $harga = $keranjang->sum('harga');
         return view('home.keranjang', [
             'title' => 'Keranjang',
-            'keranjang' => Keranjang::where('user_id', auth()->user()->id)->get(),
-            'total_jumlah' => 0,
-            'total_harga' => 0,
+            'keranjang' => Keranjang::where('user_id', auth()->user()->id)->where('status', 0)->count(),
+            'jumlah' => $jumlah,
+            'harga' => $harga,
+        ]);
+    }
+
+    public function json_keranjang(){
+        $keranjang = Keranjang::where('user_id', auth()->user()->id)->where('status', 0)->get();
+        if($keranjang->count() > 0){
+            $no = 1;
+            $total_jumlah = 0;
+            $total_harga = 0;
+            foreach($keranjang as $k){
+                $data[] = [
+                    'no' => $no,
+                    'id' => $k['id'],
+                    'kategori' => $k['kategori'],
+                    'nama' => $k['nama'],
+                    'jumlah' => $k['jumlah'],
+                    'harga' => $k['harga'],
+                    'folder' => $k['folder'],
+                    'gambar' => $k['gambar'],
+                    'keterangan' => $k['keterangan'],
+                ];
+                $total_jumlah += $k['jumlah'];
+                $total_harga += $k['harga'];
+                $no ++;
+            }
+            return response()->json([
+                'status' => 200,
+                'data' => $data,
+                'total_harga' => $total_harga,
+                'total_jumlah' => $total_jumlah,
+                
+            ]);
+        }else{
+            return response()->json([
+                'status' => 401,
+                'errors' => 'Tidak ada barang di keranjang'
+            ]);
+        }
+    }
+
+    public function destroy_item($id){
+        Keranjang::destroy($id);
+        return response()->json([
+            'status' => 200,
+            'message' => 'Data di keranjang berhasil di hapus',
         ]);
     }
 
@@ -225,6 +275,52 @@ class HomeController extends Controller
             'recordsTotal' => $recordsTotal,
             'recordsFiltered' => $recordsFiltered,
             'data' => $data
+        ]);
+    }
+
+    public function detail_transaksi($id){
+        return view('home.detail_transaksi', [
+            'title' => 'Detail Transaksi',
+            'detailorder' => Transaksi::find($id)
+        ]);
+    }
+
+    public function json_detailorder($id){
+        $keranjang = DetailTransaksi::where('trans_id', $id)->get();
+        if($keranjang->count() > 0){
+            $no = 1;
+            foreach($keranjang as $k){
+                $data[] = [
+                    'no' => $no,
+                    'id' => $k['id'],
+                    'kategori' => $k['kategori'],
+                    'nama' => $k['nama'],
+                    'jumlah' => $k['jumlah'],
+                    'harga' => $k['harga'],
+                    'folder' => $k['folder'],
+                    'gambar' => $k['gambar'],
+                    'keterangan' => $k['keterangan'],
+                ];
+                $no ++;
+            }
+            return response()->json([
+                'status' => 200,
+                'data' => $data
+                
+            ]);
+        }else{
+            return response()->json([
+                'status' => 401,
+                'errors' => 'Tidak ada barang di keranjang'
+            ]);
+        }
+    }
+
+    public function destroy_order($id){
+        Transaksi::destroy($id);
+        return response()->json([
+            'status' => 200,
+            'message' => 'Data order berhasil di hapus',
         ]);
     }
 }

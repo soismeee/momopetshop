@@ -1,4 +1,8 @@
 @extends('layout.main')
+@push('css')
+    <!-- Sweet Alert-->
+    <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+@endpush
 
 @section('container')
 <div class="page-content">
@@ -8,11 +12,14 @@
             <div class="col-xl-8">
                 <form action="{{ route('save') }}" method="post">
                     @csrf
+                    <input type="hidden" name="total_jumlah" id="total_jumlah">
+                    <input type="hidden" name="total_harga" id="total_harga">
+                    <input type="hidden" name="total_bayar" id="total_bayar">
                     <div class="card">
                         <div class="card-body">
 
                             <div class="table-responsive">
-                                <table class="table align-middle mb-0 table-nowrap mb-0">
+                                <table class="table align-middle mb-0 table-nowrap mb-0 table-keranjang">
 
                                     <thead class="table-light">
                                         <tr>
@@ -25,44 +32,13 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @if ($keranjang->count())
-                                        
-                                            @foreach ($keranjang as $item)
-                                                <tr>
-                                                    <td>{{ $loop->iteration }}</td>
-                                                    <td>
-                                                        <div>
-                                                            <h5 class="text-truncate font-size-16"><a href="ecommerce-product-detail.html" class="text-dark">{{ $item->nama }}</a></h5>
-                                                        
-                                                            <p class="mb-0 mt-1">Kategori <span class="fw-medium">{{ $item->kategori }}</span></p>
-                                                        </div>
-                                                    </td>
-                                                    <td><img src="/Gambar_upload/{{ $item->folder }}/{{ $item->gambar }}" alt="" class="avatar-lg rounded p-1"></td>
-                                                    <td>{{ $item->kategori }}</td>
-                                                    <td>{{ number_format($item->harga,0,',','.') }}</td>
-                                                    <td>
-                                                        <a href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="" class="px-2 text-danger" data-bs-original-title="Delete" aria-label="Delete"><i class="bx bx-trash-alt font-size-18"></i></a>
-                                                        <input type="hidden" name="kategori[]" id="kategori" value="{{ $item->kategori }}">
-                                                        <input type="hidden" name="nama[]" id="nama" value="{{ $item->nama }}">
-                                                        <input type="hidden" name="jumlah[]" id="jumlah" value="{{ $item->jumlah }}">
-                                                        <input type="hidden" name="harga[]" id="harga" value="{{ $item->harga }}">
-                                                        <input type="hidden" name="gambar[]" id="gambar" value="{{ $item->gambar }}">
-                                                        <input type="hidden" name="folder[]" id="folder" value="{{ $item->folder }}">
-                                                        <input type="hidden" name="keterangan[]" id="keterangan" value="{{ $item->keterangan }}">
-                                                    </td>
-                                                </tr>
-                                                <?php $total_jumlah += $item->jumlah ?>
-                                                <?php $total_harga += $item->harga ?>
-                                                @endforeach
-                                                <input type="hidden" name="total_jumlah" id="total_jumlah" value="{{ $total_jumlah }}">
-                                                <input type="hidden" name="total_harga" id="total_harga" value="{{ $total_harga }}">
-                                                <input type="hidden" name="total_bayar" id="total_bayar" value="{{ $total_harga }}">
-                                        
-                                        @else
-                                            <tr>
-                                                <td colspan="7" class="text-center"><strong>Tidak ada barang yang dimasukan ke keranjang</strong></td>
-                                            </tr>
-                                        @endif
+                                        <tr>
+                                            <td colspan="6" class="text-center" id="loading">
+                                                <div class="spinner-border" role="status">
+                                                    <span class="visually-hidden">Loading...</span>
+                                                </div>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -78,8 +54,13 @@
                         </div> <!-- end col -->
                         <div class="col-sm-6">
                             <div class="text-sm-end mt-2 mt-sm-0">
-                                <button type="submit" class="btn btn-success">
-                                    <i class="mdi mdi-cart-outline me-1"></i> Checkout </button>
+                                @if ($keranjang == 0)
+                                    <button class="btn btn-dark" disabled>Tidak ada barang</button>
+                                @else
+                                <button type="submit" class="btn btn-success disabled" id="tombol">
+                                    <i class="mdi mdi-cart-outline me-1"></i> Checkout
+                                </button>
+                                @endif
                             </div>
                         </div> <!-- end col -->
                     </div> <!-- end row-->
@@ -90,33 +71,29 @@
                 <div class="mt-5 mt-lg-0">
                     <div class="card">
                         <div class="card-header bg-transparent border-bottom py-3 px-4">
-                            <h5 class="font-size-16 mb-0">Rekapan data <span class="float-end">{{ date('d-m-Y') }}</span></h5>
+                            <h5 class="font-size-16 mb-0">Rekapan data <span class="float-end">{{ date('d/m/Y') }}</span></h5>
                         </div>
                         <div class="card-body p-4 pt-2">
-
-                            <div class="table-responsive">
-                                <table class="table mb-0">
-                                    <tbody>
-                                        <tr>
-                                            <td>Nama customer :</td>
-                                            <td class="text-end">{{ auth()->user()->name }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Jumlah barang :</td>
-                                            <td class="text-end">{{ $total_jumlah }}</td>
-                                        </tr>
-                                        <tr class="bg-light">
-                                            <th>Total bayar:</th>
-                                            <td class="text-end">
-                                                <span class="fw-bold">
-                                                    Rp. {{ number_format($total_harga,0,',','.') }}
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    Nama customer
+                                </div>
+                                <div class="col-md-7">
+                                    : {{ Auth::user()->name }}
+                                </div>
+                                <div class="col-md-5">
+                                    Jumlah Barang
+                                </div>
+                                <div class="col-md-7">
+                                    : {{ $jumlah }}
+                                </div>
+                                <div class="col-md-5">
+                                    Total harga
+                                </div>
+                                <div class="col-md-7">
+                                    : Rp. {{ number_format($harga,0,',','.') }}
+                                </div>
                             </div>
-                            <!-- end table-responsive -->
                         </div>
                     </div>
                 </div>
@@ -128,3 +105,108 @@
 </div>
 <!-- End Page-content -->
 @endsection
+
+@push('js')
+    <script src="/assets/js/jquery-3.5.1.js"></script>
+    <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+
+    <script>
+        const rupiah = (number) => {
+            return new Intl.NumberFormat("id-ID", {
+            style: "decimal",
+            currency: "IDR"
+            }).format(number);
+        }
+
+        $(document).ready(function () {
+            tabel()
+        });
+
+        function tabel(){
+            $.ajax({
+                type: "GET",
+                url: "{{ url('json_k') }}",
+                success: function (response){
+                    $('#loading').hide()
+                    if(response.status == 401) {
+                        let datakosong =
+                        `<tr class="text-center">
+                            <td colspan="6">`+response.errors+`</td>
+                        </tr>`
+                        $('table tbody').append(datakosong);
+                    }else{
+                        var data = response.data
+                        let record = '';
+                        data.forEach((params) => {
+                            let body = `
+                            <tr>
+                                <td>`+params.no+`</td>
+                                <td>
+                                    <div>
+                                        <h5 class="text-truncate font-size-16">`+params.nama+`</h5>
+                                        <p class="mb-0 mt-1">Kategori <span class="fw-medium">`+params.kategori+`</span></p>
+                                    </div>
+                                </td>
+                                <td><img src="/Gambar_upload/`+params.folder+`/`+params.gambar+`" alt="" class="avatar-lg rounded p-1"></td>
+                                <td>`+params.kategori+`</td>
+                                <td>`+rupiah(params.harga)+`</td>
+                                <td>
+                                    <a href="javascript:void(0);" class="px-2 text-danger hapusdata" data-id="`+params.id+`" aria-label="Delete"><i class="bx bx-trash-alt font-size-18"></i></a>
+                                    <input type="hidden" name="id[]" id="id" value="`+params.id+`">
+                                    <input type="hidden" name="kategori[]" id="kategori" value="`+params.kategori+`">
+                                    <input type="hidden" name="nama[]" id="nama" value="`+params.nama+`">
+                                    <input type="hidden" name="jumlah[]" id="jumlah" value="`+params.jumlah+`">
+                                    <input type="hidden" name="harga[]" id="harga" value="`+params.harga+`">
+                                    <input type="hidden" name="gambar[]" id="gambar" value="`+params.gambar+`">
+                                    <input type="hidden" name="folder[]" id="folder" value="`+params.folder+`">
+                                    <input type="hidden" name="keterangan[]" id="keterangan" value="`+params.keterangan+`">
+                                </td>
+                            </tr>
+                            `
+                            record += body
+                        })
+                        $('table tbody').append(record);
+                        $('#total_jumlah').val(response.total_jumlah);
+                        $('#total_harga').val(response.total_harga);
+                        $('#total_bayar').val(response.total_harga);
+                        $('#tombol').removeClass('disabled');
+                    }
+                }
+            });
+        }
+
+        $(document).on('click', '.hapusdata', function(e) {
+            let id = $(this).data('id');
+            Swal.fire({
+                title: 'Apakah anda yakin?',
+                text: "Anda akan menghapus data ini!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "DELETE",
+                        url: "{{ url('di') }}/" + id,
+                        data: {'_token': '{{ csrf_token() }}'},
+                        dataType: 'json',
+                        success: function(response) {
+                            Swal.fire(
+                                'Deleted!',
+                                response.message,
+                                'success'
+                            )
+                            $('table tbody').empty();
+                            $('table tfoot').empty();
+                            tabel();
+                        }
+                    });
+
+                }
+            })
+        });
+    </script>
+@endpush

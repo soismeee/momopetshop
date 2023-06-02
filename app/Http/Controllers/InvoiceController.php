@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DetailTransaksi;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
 
@@ -16,7 +17,7 @@ class InvoiceController extends Controller
     public function json_orders(){
         $columns = ['id','user_id','total_jumlah', 'total_harga', 'tgl_transaksi', 'total_bayar'];
         $orderBy = $columns[request()->input("order.0.column")];
-        $data = Transaksi::select('*')->with('user');
+        $data = Transaksi::select('*')->with('user')->orderBy('created_at', 'desc');
 
         if(request()->input("search.value")){
             $data = $data->where(function($query){
@@ -41,9 +42,75 @@ class InvoiceController extends Controller
         ]);
     }
 
+    public function show($id){
+        return view('invoice.show',[
+            'title' => 'Detail invoice',
+            'order' => Transaksi::find($id)
+        ]);
+    }
+
+    public function list_detailorder($id){
+        $detail = DetailTransaksi::where('trans_id', $id)->get();
+        if($detail->count() > 0){
+            $no = 1;
+            foreach ($detail as $key) {
+                $data[] = [
+                    'no' => $no,
+                    'id' => $key->id,
+                    'nama' => $key->nama,
+                    'kategori' => $key->kategori,
+                    'jumlah' => $key->jumlah,
+                    'harga' => $key->harga,
+                    'folder' => $key->folder,
+                    'gambar' => $key->gambar,
+                    'keterangan' => $key->keterangan,
+                    
+                ];
+            $no ++;
+            }
+            return response()->json([
+                'status' => 200,
+                'data' => $data
+            ]);
+        }else{
+            return response()->json([
+                'status' => 401,
+                'errors' => 'Data tidak ditemukan'
+            ]);
+        }
+    }
+
+    public function proses(Request $request, $id){
+        if ($request->total_bayar == null) {
+            $bayar = $request->total_harga;
+        } else {
+            $bayar = $request->total_bayar;
+        }
+        
+        $data = [
+            'status' => 1,
+            'total_bayar' => $bayar,
+        ];
+
+        Transaksi::where('id', $id)->update($data);
+        return response()->json([
+            'status' => 200,
+            'message' => 'Transaksi berhasil'
+        ]);
+    }
+
+    public function print($id){
+        return view('invoice.print', [
+            'title' => 'Struk',
+            'transaksi' => Transaksi::find($id),
+            'detail' => DetailTransaksi::where('trans_id', $id)->get()
+        ]);
+    }
+
     public function treatment(){
         return view('invoice.treatment', [
             'title' => 'Data treatment',
         ]);
     }
+
 }

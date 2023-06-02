@@ -19,11 +19,12 @@
                             <table id="data-kategori" class="table mb-0">
                                 <thead class="table-light">
                                     <tr>
-                                        <th width="10%">No</th>
+                                        <th width="5%">No</th>
                                         <th width="30%">ID Pembelian</th>
-                                        <th width="20%">Jumlah</th>
+                                        <th width="10%">Jumlah</th>
                                         <th width="20%">Total</th>
-                                        <th width="10%">Tanggal</th>
+                                        <th width="15%">Tanggal</th>
+                                        <th width="10%">Status</th>
                                         <th width="10%">#</th>
                                     </tr>
                                 </thead>
@@ -101,9 +102,20 @@
                     "targets": "_all",
                     "defaultContent": "-",
                     "render": function(data, type, row, meta){
+                        if (row.status == 1) {
+                            return '<span class="badge badge-pill badge-soft-success font-size-12">Selesai</span>';
+                        } else {
+                            return '<span class="badge badge-pill badge-soft-danger font-size-12">Proses</span>';
+                        }
+                    }
+                },
+                {
+                    "targets": "_all",
+                    "defaultContent": "-",
+                    "render": function(data, type, row, meta){
                     return `
                     <div class="btn-group">
-                        <a href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" id="edit-data" data-id="`+row.id+`" class="px-2 text-primary"><i class="bx bx-pencil font-size-18"></i></a>
+                        <a href="/dtc/`+row.id+`" title="Edit" data-id="" class="px-2 text-primary"><i class="bx bx-show-alt font-size-18"></i></a>
                         <a href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" class="px-2 text-danger hapusdata" data-id="`+row.id+`"><i class="bx bx-trash-alt font-size-18"></i></a>
                     </div>
                     `
@@ -117,18 +129,6 @@
             style: "decimal",
             currency: "IDR"
             }).format(number);
-        }
-
-        // fungsi mengubah tombol simpan
-        function tombolSimpan() {
-            $('#add-data').removeClass('disabled');
-            $('#add-data').html('Simpan Data');
-        }
-
-        // fungsi untuk mengubah tombol ubah
-        function tombolUbah(){
-            $('#update-data').removeClass('disabled');
-            $('#update-data').html('Ubah Data');
         }
 
         // fungsi reload table dan reset form input
@@ -145,53 +145,39 @@
             });
         }
 
-        $(document).on('click', '#edit-data', function(e) {
-            e.preventDefault();
+        $(document).on('click', '.hapusdata', function(e) {
             let id = $(this).data('id');
-            $('#update-data').show();
-            $('#add-data').hide();
-            $.ajax({
-                type: "GET",
-                url: "{{ route('dkp.index') }}/" + id,
-                success: function(response) {
-                    if (response.status == 401) {
-                        sweetAlert('error', response.message);
-                    } else {
-                        $('.input').removeClass('is-invalid');
-                        $('#id').val(response.data.id);
-                        $('#nama_kategori').val(response.data.nama_kategori);
-                        $('#keterangan_kategori').val(response.data.keterangan_kategori);
-                    }
+            Swal.fire({
+                title: 'Apakah anda yakin?',
+                text: "Anda akan menghapus data ini!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "DELETE",
+                        url: "{{ url('/cdt') }}/" + id,
+                        data: {
+                            '_token': '{{ csrf_token() }}'
+                        },
+                        dataType: 'json',
+                        success: function(response) {
+                            Swal.fire(
+                                'Deleted!',
+                                response.message,
+                                'success'
+                            )
+                            table.ajax.reload();
+                        }
+                    });
+
                 }
-            });
+            })
         });
 
-        $(document).on('click', '#update-data', function(e) {
-            e.preventDefault();
-            $('#update-data').addClass('disabled');
-            $('#update-data').html(`<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Loading...`);
-            let id = $('#id').val();
-            $.ajax({
-                type: "PUT",
-                url: "{{ route('dkp.index') }}/" + id,
-                data: $("#form-kategori").serialize(),
-                dataType: 'json',
-                success: function(response) {
-                    if (response.status == 404) {
-                        sweetAlert('warning', response.message);
-                        tombolUbah();
-                    } else if (response.status == 201){
-                        sweetAlert('info', response.message);
-                        tombolUbah();
-                    } else {
-                        $('#update-data').hide();
-                        $('#add-data').show();
-                        sweetAlert('success', response.message);
-                        reloadReset();
-                        tombolUbah();
-                    }
-                }
-            });
-        });
     </script>
 @endpush

@@ -23,15 +23,15 @@
                                         <th width="15%">ID Pembelian</th>
                                         <th width="15%">Nama customer</th>
                                         <th width="10%">Tanggal</th>
-                                        <th width="20%">Jumlah</th>
+                                        <th width="10%">Jumlah</th>
                                         <th width="20%">Total</th>
+                                        <th width="10%">Status</th>
                                         <th width="10%">#</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
                             </table>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -109,12 +109,30 @@
                     "targets": "_all",
                     "defaultContent": "-",
                     "render": function(data, type, row, meta){
-                    return `
-                    <div class="btn-group">
-                        <a href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" id="edit-data" data-id="`+row.id+`" class="px-2 text-primary"><i class="bx bx-pencil font-size-18"></i></a>
-                        <a href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" class="px-2 text-danger hapusdata" data-id="`+row.id+`"><i class="bx bx-trash-alt font-size-18"></i></a>
-                    </div>
-                    `
+                        if (row.status == 1) {
+                            return '<span class="badge badge-pill badge-soft-success font-size-12">Selesai</span>';
+                        } else {
+                            return '<span class="badge badge-pill badge-soft-danger font-size-12">Proses</span>';
+                        }
+                    }
+                },
+                {
+                    "targets": "_all",
+                    "defaultContent": "-",
+                    "render": function(data, type, row, meta){
+                        if (row.status == 1) {
+                            return `
+                            <div class="btn-group">
+                                <a href="{{ url('/print') }}/`+row.id+`" target="_blank" class="btn btn-sm btn-success">Cetak</a>
+                            </div>
+                            `                        
+                        } else {
+                            return `
+                            <div class="btn-group">
+                                <a href="{{ url('dio') }}/`+row.id+`" class="btn btn-sm btn-primary">Detail</a>
+                            </div>
+                            `                        
+                        }
                     }
                 },
             ]
