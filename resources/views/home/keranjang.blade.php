@@ -5,105 +5,104 @@
 @endpush
 
 @section('container')
-<div class="page-content">
-    <div class="container-fluid">
+    <div class="page-content">
+        <div class="container-fluid">
 
-        <div class="row">
-            <div class="col-xl-8">
-                <form action="{{ route('save') }}" method="post">
-                    @csrf
-                    <input type="hidden" name="total_jumlah" id="total_jumlah">
-                    <input type="hidden" name="total_harga" id="total_harga">
-                    <input type="hidden" name="total_bayar" id="total_bayar">
-                    <div class="card">
-                        <div class="card-body">
+            <div class="row">
+                <div class="col-xl-8">
+                    <form action="{{ route('save') }}" method="post">
+                        @csrf
+                        <input type="hidden" name="total_jumlah" id="total_jumlah">
+                        <input type="hidden" name="total_harga" id="total_harga">
+                        <input type="hidden" name="total_bayar" id="total_bayar">
+                        <div class="card">
+                            <div class="card-body">
 
-                            <div class="table-responsive">
-                                <table class="table align-middle mb-0 table-nowrap mb-0 table-keranjang">
+                                <div class="table-responsive">
+                                    <table class="table align-middle mb-0 table-nowrap mb-0 table-keranjang">
 
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Nama</th>
-                                            <th>Gambar</th>
-                                            <th>Kategori</th>
-                                            <th style="width: 120px;">harga</th>
-                                            <th>#</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td colspan="6" class="text-center" id="loading">
-                                                <div class="spinner-border" role="status">
-                                                    <span class="visually-hidden">Loading...</span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Nama</th>
+                                                <th>Gambar</th>
+                                                <th>Kategori</th>
+                                                <th style="width: 120px;">harga</th>
+                                                <th>#</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="6" class="text-center" id="loading">
+                                                    <div class="spinner-border" role="status">
+                                                        <span class="visually-hidden">Loading...</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                        
                         </div>
-                    </div>
-                    <!-- end card -->
+                        <!-- end card -->
 
-                    <div class="row my-4">
-                        <div class="col-sm-6">
-                            <a href="/home" class="btn btn-link text-muted">
-                                <i class="mdi mdi-arrow-left me-1"></i> Kembali ke dashboard </a>
-                        </div> <!-- end col -->
-                        <div class="col-sm-6">
-                            <div class="text-sm-end mt-2 mt-sm-0">
-                                @if ($keranjang == 0)
-                                    <button class="btn btn-dark" disabled>Tidak ada barang</button>
-                                @else
-                                <button type="submit" class="btn btn-success disabled" id="tombol">
-                                    <i class="mdi mdi-cart-outline me-1"></i> Checkout
-                                </button>
-                                @endif
+                        <div class="row my-4">
+                            <div class="col-sm-6">
+                                <a href="/home" class="btn btn-link text-muted">
+                                    <i class="mdi mdi-arrow-left me-1"></i> Kembali ke dashboard </a>
+                            </div> <!-- end col -->
+                            <div class="col-sm-6">
+                                <div class="text-sm-end mt-2 mt-sm-0">
+                                    @if ($keranjang == 0)
+                                        <button class="btn btn-dark" disabled>Tidak ada barang</button>
+                                    @else
+                                    <button type="submit" class="btn btn-success disabled" id="tombol">
+                                        <i class="mdi mdi-cart-outline me-1"></i> Checkout
+                                    </button>
+                                    @endif
+                                </div>
+                            </div> <!-- end col -->
+                        </div> <!-- end row-->
+                    </form>
+                </div>
+
+                <div class="col-xl-4">
+                    <div class="mt-5 mt-lg-0">
+                        <div class="card">
+                            <div class="card-header bg-transparent border-bottom py-3 px-4">
+                                <h5 class="font-size-16 mb-0">Rekapan data <span class="float-end">{{ date('d/m/Y') }}</span></h5>
                             </div>
-                        </div> <!-- end col -->
-                    </div> <!-- end row-->
-                </form>
-            </div>
-
-            <div class="col-xl-4">
-                <div class="mt-5 mt-lg-0">
-                    <div class="card">
-                        <div class="card-header bg-transparent border-bottom py-3 px-4">
-                            <h5 class="font-size-16 mb-0">Rekapan data <span class="float-end">{{ date('d/m/Y') }}</span></h5>
-                        </div>
-                        <div class="card-body p-4 pt-2">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    Nama customer
-                                </div>
-                                <div class="col-md-7">
-                                    : {{ Auth::user()->name }}
-                                </div>
-                                <div class="col-md-5">
-                                    Jumlah Barang
-                                </div>
-                                <div class="col-md-7">
-                                    : {{ $jumlah }}
-                                </div>
-                                <div class="col-md-5">
-                                    Total harga
-                                </div>
-                                <div class="col-md-7">
-                                    : Rp. {{ number_format($harga,0,',','.') }}
+                            <div class="card-body p-4 pt-2">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        Nama customer
+                                    </div>
+                                    <div class="col-md-7">
+                                        : {{ Auth::user()->name }}
+                                    </div>
+                                    <div class="col-md-5">
+                                        Jumlah Barang
+                                    </div>
+                                    <div class="col-md-7">
+                                        : {{ $jumlah }}
+                                    </div>
+                                    <div class="col-md-5">
+                                        Total harga
+                                    </div>
+                                    <div class="col-md-7">
+                                        : Rp. {{ number_format($harga,0,',','.') }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            
         </div>
-        
+        <!-- container-fluid -->
     </div>
-    <!-- container-fluid -->
-</div>
-<!-- End Page-content -->
+    <!-- End Page-content -->
 @endsection
 
 @push('js')

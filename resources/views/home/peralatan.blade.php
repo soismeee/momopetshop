@@ -66,11 +66,9 @@
                                             @else
                                                 <h4 class="text-center mt-3">Data tidak ditemukan</h4>
                                             @endif
-
                                         </div>
                                         <!-- end row -->
                                     </div>
-
                                 </div>
 
                             {{-- <div class="row mt-4">
@@ -120,7 +118,4 @@
 
 @push('js')
     <script src="/assets/js/jquery-3.5.1.js"></script>
-    <script>
-
-    </script>
 @endpush

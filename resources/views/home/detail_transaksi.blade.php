@@ -1,21 +1,19 @@
 @extends('layout.main')
+
 @push('css')
     <!-- Sweet Alert-->
     <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
 @endpush
 
 @section('container')
-<div class="page-content">
-    <div class="container-fluid">
-
-        <div class="row">
-            <div class="col-xl-10">
+    <div class="page-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-10">
                     <div class="card">
                         <div class="card-body">
-
                             <div class="table-responsive">
                                 <table class="table align-middle mb-0 table-nowrap mb-0 table-keranjang">
-
                                     <thead class="table-light">
                                         <tr>
                                             <th>No</th>
@@ -36,17 +34,14 @@
                                     </tbody>
                                 </table>
                             </div>
-                        
                         </div>
                     </div>
-                    <!-- end card -->
+                </div>
             </div>
         </div>
-        
+        <!-- container-fluid -->
     </div>
-    <!-- container-fluid -->
-</div>
-<!-- End Page-content -->
+    <!-- End Page-content -->
 @endsection
 
 @push('js')
@@ -102,6 +97,5 @@
                 }
             });
         }
-
     </script>
 @endpush
