@@ -38,9 +38,10 @@
             <!-- container-fluid -->
         </div>
         <!-- End Page-content -->
-    @endsection
+    </div>
+@endsection
 
-    @push('js')
+@push('js')
     <!-- BEGIN PAGE LEVEL SCRIPTS -->
     <script src="/assets/js/jquery-3.5.1.js"></script>
     <script src="/assets/js/jquery.dataTables.min.js"></script>
@@ -219,6 +220,5 @@
                 }
             });
         });
-
     </script>
 @endpush

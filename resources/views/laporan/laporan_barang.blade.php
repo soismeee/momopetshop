@@ -45,92 +45,93 @@
             <!-- container-fluid -->
         </div>
         <!-- End Page-content -->
-    @endsection
-    @push('js')
-        <script src="/assets/js/jquery-3.5.1.js"></script>
-        <script src="/assets/js/jquery.dataTables.min.js"></script>
-        <script src="/assets/js/dataTables.bootstrap5.min.js"></script>
-        <!-- Sweet Alerts js -->
-        <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
-        <script>
-            // load data table
-            const table = $('#data-peralatan-hewan').DataTable({
-                "lengthMenu": [
-                    [5, 10, 25, 50, 100, -1],
-                    [5, 10, 25, 50, 100, 'All']
-                ],
-                "pageLength": 10,
-                processing: true,
-                serverSide: true,
-                responseive: true,
-                ajax: {
-                    url: "{{ url('json_do') }}",
-                    type: "POST",
-                    data: function(d) {
-                        d._token = "{{ csrf_token() }}"
-                    }
-                },
-                columns: [{
-                        "targets": "_all",
-                        "defaultContent": "-",
-                        "render": function(data, type, row, meta) {
-                            return meta.row + meta.settings._iDisplayStart + 1;
-                        }
-                    },
-                    {
-                        "targets": "_all",
-                        "defaultContent": "-",
-                        "render": function(data, type, row, meta) {
-                            return row.id
-                        }
-                    },
-                    {
-                        "targets": "_all",
-                        "defaultContent": "-",
-                        "render": function(data, type, row, meta) {
-                            return row.user.name
-                        }
-                    },
-                    {
-                        "targets": "_all",
-                        "defaultContent": "-",
-                        "render": function(data, type, row, meta) {
-                            return row.total_jumlah
-                        }
-                    },
-                    {
-                        "targets": "_all",
-                        "defaultContent": "-",
-                        "render": function(data, type, row, meta) {
-                            return "Rp. " + rupiah(row.total_harga)
-                        }
-                    },
-                    {
-                        "targets": "_all",
-                        "defaultContent": "-",
-                        "render": function(data, type, row, meta) {
-                            return row.tgl_transaksi
-                        }
-                    },
-                    {
+    </div>
+@endsection
+@push('js')
+    <script src="/assets/js/jquery-3.5.1.js"></script>
+    <script src="/assets/js/jquery.dataTables.min.js"></script>
+    <script src="/assets/js/dataTables.bootstrap5.min.js"></script>
+    <!-- Sweet Alerts js -->
+    <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+    <script>
+        // load data table
+        const table = $('#data-peralatan-hewan').DataTable({
+            "lengthMenu": [
+                [5, 10, 25, 50, 100, -1],
+                [5, 10, 25, 50, 100, 'All']
+            ],
+            "pageLength": 10,
+            processing: true,
+            serverSide: true,
+            responseive: true,
+            ajax: {
+                url: "{{ url('json_do') }}",
+                type: "POST",
+                data: function(d) {
+                    d._token = "{{ csrf_token() }}"
+                }
+            },
+            columns: [{
                     "targets": "_all",
                     "defaultContent": "-",
-                    "render": function(data, type, row, meta){
-                        if (row.status == 1) {
-                            return '<span class="badge badge-pill badge-soft-success font-size-12">Selesai</span>';
-                        } else {
-                            return '<span class="badge badge-pill badge-soft-danger font-size-12">Proses</span>';
-                        }
+                    "render": function(data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
                     }
                 },
-                ]
-            });
+                {
+                    "targets": "_all",
+                    "defaultContent": "-",
+                    "render": function(data, type, row, meta) {
+                        return row.id
+                    }
+                },
+                {
+                    "targets": "_all",
+                    "defaultContent": "-",
+                    "render": function(data, type, row, meta) {
+                        return row.user.name
+                    }
+                },
+                {
+                    "targets": "_all",
+                    "defaultContent": "-",
+                    "render": function(data, type, row, meta) {
+                        return row.total_jumlah
+                    }
+                },
+                {
+                    "targets": "_all",
+                    "defaultContent": "-",
+                    "render": function(data, type, row, meta) {
+                        return "Rp. " + rupiah(row.total_harga)
+                    }
+                },
+                {
+                    "targets": "_all",
+                    "defaultContent": "-",
+                    "render": function(data, type, row, meta) {
+                        return row.tgl_transaksi
+                    }
+                },
+                {
+                "targets": "_all",
+                "defaultContent": "-",
+                "render": function(data, type, row, meta){
+                    if (row.status == 1) {
+                        return '<span class="badge badge-pill badge-soft-success font-size-12">Selesai</span>';
+                    } else {
+                        return '<span class="badge badge-pill badge-soft-danger font-size-12">Proses</span>';
+                    }
+                }
+            },
+            ]
+        });
 
-            const rupiah = (number) => {
-                return new Intl.NumberFormat("id-ID", {
-                    style: "decimal",
-                    currency: "IDR"
-                }).format(number);
-            }
-        </script>
-    @endpush
+        const rupiah = (number) => {
+            return new Intl.NumberFormat("id-ID", {
+                style: "decimal",
+                currency: "IDR"
+            }).format(number);
+        }
+    </script>
+@endpush

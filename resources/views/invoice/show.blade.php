@@ -7,7 +7,6 @@
 @section('container')
 <div class="page-content">
     <div class="container-fluid">
-
         <div class="row">
             <div class="col-xl-7">
                 <div class="mt-5 mt-lg-0">
@@ -113,7 +112,6 @@
                 <!-- end card -->
             </div>
         </div>
-        
     </div>
     <!-- container-fluid -->
 </div>
@@ -135,7 +133,6 @@
         $(document).ready(function () {
             tabel()
         });
-        
 
         let uang = document.getElementById("uang");
         uang.addEventListener("keyup", function(e) {
@@ -215,7 +212,6 @@
 
         $(document).on('click', '#proses', function(e){
             let id = "{{ $order->id }}"
-            
             $.ajax({
                 type: "POST",
                 url: "{{ url('proses') }}/" + id,

@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,9 +16,7 @@
         table td{
         border: 1px solid #3c3c3c;
         padding: 3px 8px;
-
         }
-
         .tengah{
             text-align: center;
         }
