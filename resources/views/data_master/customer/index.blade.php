@@ -1,10 +1,12 @@
 @extends('layout.main')
+
 @push('css')
     <!-- Sweet Alert-->
     <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/assets/css/dataTables.bootstrap5.min.css">
 @endpush
+
 @section('container')
     <div class="page-content">
         <div class="container-fluid">
@@ -35,10 +37,10 @@
             </div>
             <!-- container-fluid -->
         </div>
-        <!-- End Page-content -->
+    </div>
 @endsection
 
-    @push('js')
+@push('js')
     <!-- BEGIN PAGE LEVEL SCRIPTS -->
     <script src="/assets/js/jquery-3.5.1.js"></script>
     <script src="/assets/js/jquery.dataTables.min.js"></script>
