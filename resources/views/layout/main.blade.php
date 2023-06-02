@@ -1,9 +1,7 @@
-
 <!doctype html>
 <html lang="en">
 
     <head>
-
         <meta charset="utf-8" />
         <title>{{ $title }}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,15 +21,12 @@
         <link href="/assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
         @stack('css')
     </head>
-
     
     <body>
-
     <!-- <body data-layout="horizontal"> -->
 
         <!-- Begin page -->
         <div id="layout-wrapper">
-
             
             <header id="page-topbar" class="isvertical-topbar">
                 <div class="navbar-header">
@@ -131,7 +126,6 @@
             </div><!-- /.modal -->
 
             @include('layout.sidebar')
-
 
             <header class="ishorizontal-topbar">
                 <div class="navbar-header">
@@ -326,7 +320,6 @@
                 </div>
             </header>
 
-
             <!-- ============================================================== -->
             <!-- Start right Content here -->
             <!-- ============================================================== -->
@@ -361,13 +354,13 @@
         <script src="/assets/libs/eva-icons/eva.min.js"></script>
 
         <!-- apexcharts -->
-        <script src="/assets/libs/apexcharts/apexcharts.min.js"></script>
+        {{-- <script src="/assets/libs/apexcharts/apexcharts.min.js"></script> --}}
 
         <!-- Vector map-->
         <script src="/assets/libs/jsvectormap/js/jsvectormap.min.js"></script>
         <script src="/assets/libs/jsvectormap/maps/world-merc.js"></script>
         
-        <script src="/assets/js/pages/dashboard.init.js"></script>
+        {{-- <script src="/assets/js/pages/dashboard.init.js"></script> --}}
 
         <script src="/assets/js/app.js"></script>
         @stack('js')

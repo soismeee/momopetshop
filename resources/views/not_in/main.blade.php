@@ -1,7 +1,5 @@
-
 <!doctype html>
 <html lang="en">
-
     <head>
 
         <meta charset="utf-8" />
@@ -23,15 +21,12 @@
         <link href="/assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
 
     </head>
-
     
     <body>
-
     <!-- <body data-layout="horizontal"> -->
 
         <!-- Begin page -->
         <div id="layout-wrapper">
-
             
             <header id="page-topbar" class="isvertical-topbar">
                 <div class="navbar-header">
@@ -79,9 +74,7 @@
                 </div>
             </header>
 
-
             @include('not_in.sidebar')
-
 
             <header class="ishorizontal-topbar">
                 <div class="navbar-header">
@@ -276,7 +269,6 @@
                 </div>
             </header>
 
-
             <!-- ============================================================== -->
             <!-- Start right Content here -->
             <!-- ============================================================== -->
@@ -288,11 +280,11 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-sm-6">
-                                <script>document.write(new Date().getFullYear())</script> © webadmin.
+                                <script>document.write(new Date().getFullYear())</script> © momopetshop.
                             </div>
                             <div class="col-sm-6">
                                 <div class="text-sm-end d-none d-sm-block">
-                                    Crafted with <i class="mdi mdi-heart text-danger"></i> by <a href="https://Themesdesign.com/" target="_blank" class="text-reset">Themesdesign</a>
+                                    Crafted with <i class="mdi mdi-heart text-danger"></i>
                                 </div>
                             </div>
                         </div>
@@ -311,13 +303,13 @@
         <script src="/assets/libs/eva-icons/eva.min.js"></script>
 
         <!-- apexcharts -->
-        <script src="/assets/libs/apexcharts/apexcharts.min.js"></script>
+        {{-- <script src="/assets/libs/apexcharts/apexcharts.min.js"></script> --}}
 
         <!-- Vector map-->
         <script src="/assets/libs/jsvectormap/js/jsvectormap.min.js"></script>
         <script src="/assets/libs/jsvectormap/maps/world-merc.js"></script>
         
-        <script src="/assets/js/pages/dashboard.init.js"></script>
+        {{-- <script src="/assets/js/pages/dashboard.init.js"></script> --}}
 
         <script src="/assets/js/app.js"></script>
         @stack('js')
