@@ -12,7 +12,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div>
-                                        <h5>Pakan</h5>
+                                        <h5>Peralatan hewan</h5>
                                     </div>
                                 </div>
 
@@ -41,10 +41,11 @@
 
                               <!-- Tab panes -->
                                 <div class="tab-content p-3 text-muted">
+                                    
                                     <div class="tab-pane active" id="popularity" role="tabpanel">
                                         <div class="row">
-                                            @if ($pakan->count())
-                                                @foreach ($pakan as $alat)
+                                            @if ($peralatan->count())
+                                                @foreach ($peralatan as $alat)
                                                     
                                                 <div class="col-xl-4 col-sm-6">
                                                     <div class="product-box rounded p-3 mt-4">
@@ -53,7 +54,7 @@
                                                         </div>
                                                         <div class="product-content pt-3">
                                                             <p class="text-muted font-size-13 mb-0">{{ $alat->kategori_barang->nama_kategori }}</p>
-                                                            <h5 class="mt-1 mb-0"><a href="#" class="text-dark font-size-16">{{ $alat->nama_barang }}</a></h5>
+                                                            <h5 class="mt-1 mb-0"><a href="{{ url('/cdph') }}/{{ $alat->id }}" class="text-dark font-size-16">{{ $alat->nama_barang }}</a></h5>
                                                             <a href="{{ url('cb')}}/{{ $alat->id }}" class="product-buy-icon bg-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Add To Cart">
                                                                 <i class="mdi mdi-cart-outline text-white font-size-16"></i>
                                                             </a>
@@ -65,7 +66,6 @@
                                             @else
                                                 <h4 class="text-center mt-3">Data tidak ditemukan</h4>
                                             @endif
-
                                         </div>
                                         <!-- end row -->
                                     </div>
@@ -110,9 +110,12 @@
                 </div>
             </div>
         </div>
-
     </div>
     <!-- container-fluid -->
 </div>
 <!-- End Page-content -->
 @endsection
+
+@push('js')
+    <script src="/assets/js/jquery-3.5.1.js"></script>
+@endpush

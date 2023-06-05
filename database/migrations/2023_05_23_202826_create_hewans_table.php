@@ -19,7 +19,7 @@ class CreateHewansTable extends Migration
             $table->string('jkel');
             $table->string('tgl_lahir');
             $table->string('berat_hewan');
-            $table->string('tinggi_hewan');
+            $table->string('tinggi_hewan')->nullable();
             $table->string('gambar_hewan');
             $table->string('jumlah_hewan');
             $table->string('harga_hewan');

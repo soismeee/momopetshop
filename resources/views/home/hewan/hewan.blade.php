@@ -10,7 +10,7 @@
                         <div class="card-body">
                             <div class="d-flex align-items-start mb-2">
                                 <div class="flex-grow-1">
-                                    <h5 class="card-title">Produk terbaru</h5>
+                                    <h5 class="card-title">Hewan terbaru</h5>
                                 </div>
                             </div>
                             @if($hewan->count())
@@ -24,26 +24,26 @@
                                 <div class="col-md-7">
                                     <span class="badge badge-soft-primary font-size-10 text-uppercase ls-05">
                                         Hewan peliharaan</span>
-                                    <h5 class="mt-2 font-size-16"><a href="" class="text-dark">{{ $hewan[0]->nama_hewan }}</a>
+                                    <h5 class="mt-2 font-size-16"><a href="{{ url('/cdh') }}/{{ $hewan[0]->id }}" class="text-dark">{{ $hewan[0]->nama_hewan }}</a>
                                     </h5>
                                     <p class="text-muted">Keterangan hewan.</p>
 
                                     <div class="row g-0 mt-3 pt-1 align-items-end">
                                         <div class="col-4">
                                             <div class="mt-1">
-                                                <h4 class="font-size-16">{{ $hewan[0]->jkel }}</h4>
                                                 <p class="text-muted mb-1">Jenis kelamin</p>
+                                                <h4 class="font-size-16">{{ $hewan[0]->jkel }}</h4>
                                             </div>
                                         </div>
                                         <div class="col-4">
                                             <div class="mt-1">
+                                                <p class="text-muted mb-1">Harga </p>
                                                 <h4 class="font-size-16">Rp. {{ number_format($hewan[0]->harga_hewan, 0,',','.') }}</h4>
-                                                <p class="text-muted mb-1">Harga Produk</p>
                                             </div>
                                         </div>
                                         <div class="col-4">
                                             <div class="mt-1">
-                                                <a href="/login" class="btn btn-primary btn-sm mb-1">Buy Now</a>
+                                                <a href="{{ url('che') }}/{{ $hewan[0]->id }}" class="btn btn-primary btn-sm mb-1">Buy Now</a>
                                             </div>
                                         </div>
                                     </div>
@@ -72,14 +72,13 @@
                                                             </div>
                                                             <div class="flex-grow-1 ms-3 overflow-hidden">
                                                                 <h5 class="mb-1 text-truncate">
-                                                                    <a href="{{ url('che') }}/{{ $item->id }}" class="font-size-15 text-dark">{{ $item->nama_hewan }}</a>
+                                                                    <a href="{{ url('cdh') }}/{{ $item->id }}" class="font-size-15 text-dark">{{ $item->nama_hewan }}</a>
                                                                 </h5>
                                                                 <p class="text-muted fw-semibold mb-0 text-truncate"> Stok {{ $item->jumlah_hewan }}</p>
                                                             </div>
                                                             <div class="flex-shrink-0 text-end ms-3">
                                                                 <h5 class="mb-1"><a href="#" class="font-size-15 text-dark">Rp. {{ number_format($item->harga_hewan, 0,',','.') }}</a></h5>
-                                                                <p class="text-muted fw-semibold mb-0">158 Terjual
-                                                                </p>
+                                                                <a href="{{ url('che') }}/{{ $item->id }}" class="btn btn-sm btn-primary">Buy Now</a>
                                                             </div>
                                                         </div>
                                                     </div>

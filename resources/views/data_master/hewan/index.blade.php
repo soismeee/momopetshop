@@ -40,7 +40,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="mb-3">
-                                                <label for="formrow-firstname-input" class="form-label">Tanggal lahir (mengetahui umur)</label>
+                                                <label for="formrow-firstname-input" class="form-label">Tanggal lahir </label>
                                                 <input type="date" class="form-control input" placeholder="Masukan tanggal lahir" name="tgl_lahir" id="tgl_lahir">
                                             </div>
                                         </div>
@@ -53,12 +53,12 @@
                                                 <input type="number" class="form-control input" placeholder="Berat Hewan" id="berat_hewan" name="berat_hewan">
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
+                                        {{-- <div class="col-md-3">
                                             <div class="mb-3">
                                                 <label for="tinggi_hewan" class="form-label">Tinggi hewan</label>
                                                 <input type="number" class="form-control input" placeholder="Tinggi Hewan" id="tinggi_hewan" name="tinggi_hewan">
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         <div class="col-md-3">
                                             <div class="mb-3">
                                                 <label for="harga" class="form-label">Harga Hewan</label>
@@ -109,9 +109,10 @@
                                         <thead class="table-light">
                                             <tr>
                                                 <th width="5%">No</th>
-                                                <th width="20%">Nama Hewan</th>
-                                                <th width="20%">Harga</th>
+                                                <th width="15%">Nama Hewan</th>
+                                                <th width="15%">Harga</th>
                                                 <th width="10%">Jumlah</th>
+                                                <th width="10%">Umur</th>
                                                 <th width="30%">Ket</th>
                                                 <th width="10%">Gambar</th>
                                                 <th width="5%">#</th>
@@ -180,6 +181,24 @@
                     "defaultContent": "-",
                     "render": function(data, type, row, meta){
                     return row.jumlah_hewan
+                    }
+                },
+                {
+                    "targets": "_all",
+                    "defaultContent": "-",
+                    "render": function(data, type, row, meta){
+                        var today = new Date();
+                        var birthday  = new Date(row.tgl_lahir)
+                        var year = 0;
+                        if (today.getMonth() < birthday.getMonth()) {
+                            year = 1;
+                        } else if ((today.getMonth() == birthday.getMonth()) && today.getDate() < birthday.getDate()) {
+                            year = 1;
+                        }
+                        var age = today.getFullYear() - birthday.getFullYear() - year;
+                
+                        if(age < 0){age = 0;}
+                        return age +" Tahun"
                     }
                 },
                 {

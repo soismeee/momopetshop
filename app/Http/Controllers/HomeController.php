@@ -8,6 +8,7 @@ use App\Models\Hewan;
 use App\Models\KategoriBarang;
 use App\Models\Keranjang;
 use App\Models\Transaksi;
+use App\Models\TransaksiTreatment;
 use App\Models\Treatment;
 use App\Models\User;
 use Illuminate\Support\Str;
@@ -87,32 +88,60 @@ class HomeController extends Controller
     }
 
     public function in_hewan(){
-        return view('home.hewan', [
+        return view('home.hewan.hewan', [
             'title' => 'Data hewan',
             'hewan' => Hewan::all()
         ]);
     }
 
+    public function detail_hewan($id){
+        return view('home.hewan.detail', [
+            'title' => 'Detail hewan',
+            'hewan' => Hewan::find($id)
+        ]);
+    }
+
     public function in_peralatan(){
-        return view('home.peralatan', [
+        return view('home.peralatan.peralatan', [
             'title' => 'Data Peralatan',
             'kategori' => KategoriBarang::where('kategori', 'alat')->get(),
             'peralatan' => Barang::with('kategori_barang')->where('kategori', 'alat')->get()
         ]);
     }
 
+    public function detail_peralatan($id){
+        return view('home.peralatan.detail', [
+            'title' => 'Detail peralatan',
+            'peralatan' => Barang::find($id)
+        ]);
+    }
+
     public function in_pakan(){
-        return view('home.pakan', [
+        return view('home.pakan.pakan', [
             'title' => 'Data pakan',
             'kategori' => KategoriBarang::where('kategori', 'pakan')->get(),
             'pakan' => Barang::with('kategori_barang')->where('kategori', 'pakan')->get()
         ]);
     }
 
+    public function detail_pakan($id){
+        return view('home.pakan.detail', [
+            'title' => 'Detail pakan',
+            'pakan' => Barang::find($id)
+        ]);
+    }
+
     public function in_treatment(){
-        return view('home.treatment', [
+        return view('home.treatment.treatment', [
             'title' => 'Data treatment',
             'treatment' => Treatment::all()
+        ]);
+    }
+
+    public function detail_treatment($id){
+        return view('home.treatment.detail', [
+            'title' => 'Detail treatment',
+            'treatment' => Treatment::find($id)
         ]);
     }
 
@@ -156,6 +185,23 @@ class HomeController extends Controller
 
     }
 
+    public function checkout_treatment($id){
+
+        $t = Treatment::find($id);
+
+        $tt = new TransaksiTreatment();
+        $tt->id = date("YmdHis").intval(microtime(true));
+        $tt->user_id = auth()->user()->id;
+        $tt->nama_treatment = $t->nama_treatment;
+        $tt->harga_treatment = $t->harga_treatment;
+        $tt->gambar_treatment = $t->gambar_treatment;
+        $tt->keterangan_treatment = $t->keterangan_treatment;
+        $tt->tgl_transaksi  = date("Y-m-d");
+        $tt->save();
+
+        return redirect('/co');
+    }
+
     public function store(Request $request){
         // dd($request);
 
@@ -192,7 +238,7 @@ class HomeController extends Controller
         $keranjang = Keranjang::where('user_id', auth()->user()->id)->where('status', 0)->get();
         $jumlah = $keranjang->sum('jumlah');
         $harga = $keranjang->sum('harga');
-        return view('home.keranjang', [
+        return view('home.keranjang.keranjang', [
             'title' => 'Keranjang',
             'keranjang' => Keranjang::where('user_id', auth()->user()->id)->where('status', 0)->count(),
             'jumlah' => $jumlah,
@@ -246,7 +292,7 @@ class HomeController extends Controller
     }
 
     public function transaksi(){
-        return view('home.transaksi',[
+        return view('home.transaksi.transaksi',[
             'title' => 'Transaksi',
         ]);
     }
@@ -279,7 +325,7 @@ class HomeController extends Controller
     }
 
     public function detail_transaksi($id){
-        return view('home.detail_transaksi', [
+        return view('home.transaksi.detail_transaksi', [
             'title' => 'Detail Transaksi',
             'detailorder' => Transaksi::find($id)
         ]);

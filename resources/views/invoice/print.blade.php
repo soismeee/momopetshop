@@ -50,7 +50,7 @@
             </tr>
             <tr>
                 <td colspan="2"><strong>Total</strong></td>
-                <td>Rp. {{ number_format($transaksi->total_bayar,0, ',','.') }}</td>
+                <td>Rp. {{ number_format($transaksi->total_harga,0, ',','.') }}</td>
             </tr>
             <tr>
                 <td colspan="3"><br></td>

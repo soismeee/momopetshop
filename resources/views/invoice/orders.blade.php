@@ -16,7 +16,7 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="data-kategori" class="table mb-0">
+                            <table id="data-orders" class="table mb-0">
                                 <thead class="table-light">
                                     <tr>
                                         <th width="10%">No</th>
@@ -50,7 +50,7 @@
     <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
     <script>
         // load data table
-        const table = $('#data-kategori').DataTable({          
+        const table = $('#data-orders').DataTable({          
             "lengthMenu": [[5, 10, 25, 50, 100, -1],[5, 10, 25, 50, 100, 'All']],
             "pageLength": 10, 
             processing: true,
@@ -146,79 +146,5 @@
             }).format(number);
         }
 
-        // fungsi mengubah tombol simpan
-        function tombolSimpan() {
-            $('#add-data').removeClass('disabled');
-            $('#add-data').html('Simpan Data');
-        }
-
-        // fungsi untuk mengubah tombol ubah
-        function tombolUbah(){
-            $('#update-data').removeClass('disabled');
-            $('#update-data').html('Ubah Data');
-        }
-
-        // fungsi reload table dan reset form input
-        function reloadReset(){
-            table.ajax.reload();
-            document.getElementById("form-kategori").reset()
-        }
-
-        // template sweetalert
-        function sweetAlert(icon, title) {
-            Swal.fire({
-                icon: icon,
-                title: title,
-            });
-        }
-
-        $(document).on('click', '#edit-data', function(e) {
-            e.preventDefault();
-            let id = $(this).data('id');
-            $('#update-data').show();
-            $('#add-data').hide();
-            $.ajax({
-                type: "GET",
-                url: "{{ route('dkp.index') }}/" + id,
-                success: function(response) {
-                    if (response.status == 401) {
-                        sweetAlert('error', response.message);
-                    } else {
-                        $('.input').removeClass('is-invalid');
-                        $('#id').val(response.data.id);
-                        $('#nama_kategori').val(response.data.nama_kategori);
-                        $('#keterangan_kategori').val(response.data.keterangan_kategori);
-                    }
-                }
-            });
-        });
-
-        $(document).on('click', '#update-data', function(e) {
-            e.preventDefault();
-            $('#update-data').addClass('disabled');
-            $('#update-data').html(`<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Loading...`);
-            let id = $('#id').val();
-            $.ajax({
-                type: "PUT",
-                url: "{{ route('dkp.index') }}/" + id,
-                data: $("#form-kategori").serialize(),
-                dataType: 'json',
-                success: function(response) {
-                    if (response.status == 404) {
-                        sweetAlert('warning', response.message);
-                        tombolUbah();
-                    } else if (response.status == 201){
-                        sweetAlert('info', response.message);
-                        tombolUbah();
-                    } else {
-                        $('#update-data').hide();
-                        $('#add-data').show();
-                        sweetAlert('success', response.message);
-                        reloadReset();
-                        tombolUbah();
-                    }
-                }
-            });
-        });
     </script>
 @endpush

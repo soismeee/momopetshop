@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\DetailTransaksi;
 use App\Models\Transaksi;
+use App\Models\TransaksiTreatment;
 use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
 {
+    // FUNCTION UNTUK TRAKSAKSI BARANG DAN HEWAN
     public function orders(){
         return view('invoice.orders', [
             'title' => 'Data Order',
@@ -107,13 +109,6 @@ class InvoiceController extends Controller
         ]);
     }
 
-    public function treatment(){
-        return view('invoice.treatment', [
-            'title' => 'Data treatment',
-        ]);
-    }
-
-
     public function laporan_order(){
         return view('laporan.laporan_barang', [
             'title' => 'Laporan Penjualan barang',
@@ -133,6 +128,42 @@ class InvoiceController extends Controller
             'title' => 'Laporan Penjualan Penjualan',
             'orders' => $transaksi,
             'total_penjualan' => $total
+        ]);
+    }
+
+    // FUNCTION UNTUK TRAKSAKSI TREATMENT
+    
+    public function treatment(){
+        return view('invoice.treatment', [
+            'title' => 'Data treatment',
+        ]);
+    }
+
+    public function json_treatment(){
+        $columns = ['id','user_id','nama_treatment'];
+        $orderBy = $columns[request()->input("order.0.column")];
+        $data = TransaksiTreatment::select('*')->with('user')->orderBy('created_at', 'desc');
+
+        if(request()->input("search.value")){
+            $data = $data->where(function($query){
+                $query->whereRaw('user_id like ? ', ['%'.request()->input("search.value").'%'])
+                ->orWhereRaw('nama_treatment like ? ', ['%'.request()->input("search.value").'%']);
+            });
+        }
+
+        $recordsFiltered = $data->get()->count();
+        if(request()->input('length') == -1){
+            $data = $data->orderBy($orderBy,request()->input("order.0.dir"))->get();
+        }else{
+            $data = $data->skip(request()->input('start'))->take(request()->input('length'))->orderBy($orderBy,request()->input("order.0.dir"))->get();
+        }
+        $recordsTotal = $data->count();
+
+        return response()->json([
+            'draw' => request()->input('draw'),
+            'recordsTotal' => $recordsTotal,
+            'recordsFiltered' => $recordsFiltered,
+            'data' => $data
         ]);
     }
 }
