@@ -1,4 +1,7 @@
 @extends('layout.main')
+@push('css')
+    <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+@endpush
 
 @section('container')
     <div class="page-content">
@@ -43,7 +46,8 @@
                                         </div>
                                         <div class="col-4">
                                             <div class="mt-1">
-                                                <a href="{{ url('che') }}/{{ $hewan[0]->id }}" class="btn btn-primary btn-sm mb-1">Buy Now</a>
+                                                <a href="#" class="btn btn-primary btn-sm mb-1 buy" data-id="{{ $hewan[0]->id }}">Buy Now</a>
+                                                {{-- <a href="{{ url('che') }}/{{ $hewan[0]->id }}" class="btn btn-primary btn-sm mb-1">Buy Now</a> --}}
                                             </div>
                                         </div>
                                     </div>
@@ -78,7 +82,7 @@
                                                             </div>
                                                             <div class="flex-shrink-0 text-end ms-3">
                                                                 <h5 class="mb-1"><a href="#" class="font-size-15 text-dark">Rp. {{ number_format($item->harga_hewan, 0,',','.') }}</a></h5>
-                                                                <a href="{{ url('che') }}/{{ $item->id }}" class="btn btn-sm btn-primary">Buy Now</a>
+                                                                <a href="#" class="btn btn-sm btn-primary buy" data-id="{{ $item->id }}">Buy Now</a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -100,7 +104,7 @@
                             </div>
 
                             @else
-                            <h3 class="text-center mb-3">Tidak ada produk</h3>
+                            <h3 class="text-center mb-3">Tidak ada hewan</h3>
                             @endif
 
                         </div>
@@ -114,3 +118,27 @@
     </div>
     <!-- End Page-content -->
 @endsection
+
+@push('js')
+    <script src="/assets/js/jquery-3.5.1.js"></script>
+    <!-- Sweet Alerts js -->
+    <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+    <script>
+
+        $(document).on('click', '.buy', function(e){
+            let id = $(this).data('id');
+            $.ajax({
+                type: "GET",
+                url: "{{ url('che') }}/"+id,
+                data: {'jumlah': 1, '_token': '{{ csrf_token() }}'},
+                dataType: "JSON",
+                success: function(response){
+                    Swal.fire({
+                        icon: 'success',
+                        title: response.message,
+                    });
+                }
+            });        
+        });
+    </script>
+@endpush

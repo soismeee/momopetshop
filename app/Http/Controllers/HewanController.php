@@ -51,7 +51,6 @@ class HewanController extends Controller
             'jkel' => 'required',
             'tgl_lahir' => 'required',
             'berat_hewan' => 'required',
-            'tinggi_hewan' => 'required',
             'harga_hewan' => 'required',
             'jumlah_hewan' => 'required',
             'keterangan_hewan' => 'required',
@@ -69,7 +68,7 @@ class HewanController extends Controller
             $save_dh->jkel = $request->jkel;
             $save_dh->tgl_lahir = $request->tgl_lahir;
             $save_dh->berat_hewan = $request->berat_hewan;
-            $save_dh->tinggi_hewan = $request->tinggi_hewan;
+            // $save_dh->tinggi_hewan = $request->tinggi_hewan;
             $save_dh->harga_hewan = preg_replace('/[^0-9]/', '', $request->harga_hewan);
             $save_dh->jumlah_hewan = $request->jumlah_hewan;
             $save_dh->keterangan_hewan = $request->keterangan_hewan;

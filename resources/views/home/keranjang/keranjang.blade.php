@@ -27,6 +27,7 @@
                                                 <th>Nama</th>
                                                 <th>Gambar</th>
                                                 <th>Kategori</th>
+                                                <th>Jumlah</th>
                                                 <th style="width: 120px;">harga</th>
                                                 <th>#</th>
                                             </tr>
@@ -138,27 +139,28 @@
                         let record = '';
                         data.forEach((params) => {
                             let body = `
-                            <tr>
+                            <tr >
                                 <td>`+params.no+`</td>
                                 <td>
                                     <div>
                                         <h5 class="text-truncate font-size-16">`+params.nama+`</h5>
                                         <p class="mb-0 mt-1">Kategori <span class="fw-medium">`+params.kategori+`</span></p>
+                                        <input type="hidden" name="id[]" id="id" value="`+params.id+`">
+                                        <input type="hidden" name="kategori[]" id="kategori" value="`+params.kategori+`">
+                                        <input type="hidden" name="nama[]" id="nama" value="`+params.nama+`">
+                                        <input type="hidden" name="jumlah[]" id="jumlah" value="`+params.jumlah+`">
+                                        <input type="hidden" name="harga[]" id="harga" value="`+params.harga+`">
+                                        <input type="hidden" name="gambar[]" id="gambar" value="`+params.gambar+`">
+                                        <input type="hidden" name="folder[]" id="folder" value="`+params.folder+`">
+                                        <input type="hidden" name="keterangan[]" id="keterangan" value="`+params.keterangan+`">
                                     </div>
                                 </td>
                                 <td><img src="/Gambar_upload/`+params.folder+`/`+params.gambar+`" alt="" class="avatar-lg rounded p-1"></td>
                                 <td>`+params.kategori+`</td>
+                                <td>`+params.jumlah+`</td>
                                 <td>`+rupiah(params.harga)+`</td>
                                 <td>
                                     <a href="javascript:void(0);" class="px-2 text-danger hapusdata" data-id="`+params.id+`" aria-label="Delete"><i class="bx bx-trash-alt font-size-18"></i></a>
-                                    <input type="hidden" name="id[]" id="id" value="`+params.id+`">
-                                    <input type="hidden" name="kategori[]" id="kategori" value="`+params.kategori+`">
-                                    <input type="hidden" name="nama[]" id="nama" value="`+params.nama+`">
-                                    <input type="hidden" name="jumlah[]" id="jumlah" value="`+params.jumlah+`">
-                                    <input type="hidden" name="harga[]" id="harga" value="`+params.harga+`">
-                                    <input type="hidden" name="gambar[]" id="gambar" value="`+params.gambar+`">
-                                    <input type="hidden" name="folder[]" id="folder" value="`+params.folder+`">
-                                    <input type="hidden" name="keterangan[]" id="keterangan" value="`+params.keterangan+`">
                                 </td>
                             </tr>
                             `

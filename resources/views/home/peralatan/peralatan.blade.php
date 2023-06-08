@@ -1,5 +1,9 @@
 @extends('layout.main')
 
+@push('css')
+    <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+@endpush
+
 @section('container')
 <div class="page-content">
     <div class="container-fluid">
@@ -55,7 +59,7 @@
                                                         <div class="product-content pt-3">
                                                             <p class="text-muted font-size-13 mb-0">{{ $alat->kategori_barang->nama_kategori }}</p>
                                                             <h5 class="mt-1 mb-0"><a href="{{ url('/cdph') }}/{{ $alat->id }}" class="text-dark font-size-16">{{ $alat->nama_barang }}</a></h5>
-                                                            <a href="{{ url('cb')}}/{{ $alat->id }}" class="product-buy-icon bg-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Add To Cart">
+                                                            <a href="#" class="product-buy-icon bg-primary buy" data-id="{{ $alat->id }}">
                                                                 <i class="mdi mdi-cart-outline text-white font-size-16"></i>
                                                             </a>
                                                             <h5 class="font-size-20 text-primary mt-3 mb-0">Rp. {{ number_format($alat->harga_barang,0,',','.') }} </h5>     
@@ -118,4 +122,24 @@
 
 @push('js')
     <script src="/assets/js/jquery-3.5.1.js"></script>
+    <!-- Sweet Alerts js -->
+    <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+    <script>
+
+        $(document).on('click', '.buy', function(e){
+            let id = $(this).data('id');
+            $.ajax({
+                type: "GET",
+                url: "{{ url('cb') }}/"+id,
+                data: {'jumlah': 1, '_token': '{{ csrf_token() }}'},
+                dataType: "JSON",
+                success: function(response){
+                    Swal.fire({
+                        icon: 'success',
+                        title: response.message,
+                    });
+                }
+            });        
+        });
+    </script>
 @endpush

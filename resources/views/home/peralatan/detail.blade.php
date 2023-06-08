@@ -1,8 +1,11 @@
 @extends('layout.main')
+
 @push('css')
     <!-- swiper css -->
     <link rel="stylesheet" href="/assets/libs/swiper/swiper-bundle.min.css">
+    <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
 @endpush
+
 @section('container')
     <div class="page-content">
         <div class="container-fluid">
@@ -67,9 +70,14 @@
                                             <div class="row">
                                                 <div class="col-lg-6 col-sm-8">
                                                     <div class="row text-center mt-4 pt-1">
-                                                        <div class="col-sm-6">
+                                                        <div class="col-sm-5">
                                                             <div class="d-grid">
-                                                                <a href="{{ url('cb') }}/{{ $peralatan->id }}" class="btn btn-primary waves-effect waves-light mt-2 me-1">
+                                                                <input type="number" min="1" class="form-control mt-2" name="jumlah" id="jumlah" placeholder="Qty">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-7">
+                                                            <div class="d-grid">
+                                                                <a href="#" class="btn btn-primary waves-effect waves-light mt-2 me-1" id="keranjang">
                                                                     <i class="bx bx-cart me-2"></i> Masukan keranjang
                                                                 </a>
                                                             </div>
@@ -95,6 +103,42 @@
 @endsection
 
 @push('js')
+<script src="/assets/js/jquery-3.5.1.js"></script>
 <script src="/assets/libs/swiper/swiper-bundle.min.js"></script>
 <script src="/assets/js/pages/ecommerce-product-detail.init.js"></script>
+<script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+
+<script>
+    let jumlah = document.getElementById("jumlah");
+    jumlah.addEventListener("keyup", function (e) {
+        let stok = "{{ $peralatan->stok_barang }}"
+        var a = parseInt(stok);
+        var b = parseInt(jumlah.value);
+        if (a < b) {
+            alert("Permintaan melebihi stok barang"); 
+            jumlah.value = null;    
+        }
+    });
+
+    $(document).on('click', '#keranjang', function(e){
+        let jml = $('#jumlah').val();
+        if (jml) {
+            // alert('masukan jumlah hewan yang ingin dibeli')
+            $.ajax({
+                type: "GET",
+                url: "/cb/{{ $peralatan->id }}",
+                data: {'jumlah': $('#jumlah').val(), '_token': '{{ csrf_token() }}'},
+                dataType: "JSON",
+                success: function(response){
+                    window.location.href = "/ck";
+                }
+            });
+        }else{
+            Swal.fire({
+                icon: 'warning',
+                title: "jumlah pesanan harus diisi!",
+            });
+        }        
+    });
+</script>
 @endpush

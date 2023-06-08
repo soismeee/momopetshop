@@ -147,41 +147,65 @@ class HomeController extends Controller
 
     // DATA CUSTOMER ADA DI FUNGSI DIBAWAH INI //
 
-    public function checkout_barang($id){
+    public function checkout_barang(Request $request, $id){
         $peralatan = Barang::find($id);
-        
-        $keranjang = new Keranjang();
-        $keranjang->id = intval((microtime(true) * 10000));
-        $keranjang->user_id = auth()->user()->id;
-        $keranjang->kategori = $peralatan->kategori;
-        $keranjang->nama = $peralatan->nama_barang;
-        $keranjang->jumlah = 1;
-        $keranjang->harga = $peralatan->harga_barang;
-        $keranjang->folder = "barang";
-        $keranjang->gambar = $peralatan->gambar_barang;
-        $keranjang->keterangan = $peralatan->keterangan_barang;
-        $keranjang->save();
+        $cek = Keranjang::where('user_id', auth()->user()->id)->where('brg_id', $peralatan->id)->where('status', 0)->first();
+        if($cek){
+            $update = Keranjang::find($cek->id);
+            $update->jumlah = $cek->jumlah+$request->jumlah;
+            $update->update();
+        }else{
+            $keranjang = new Keranjang();
+            $keranjang->id = intval((microtime(true) * 10000));
+            $keranjang->user_id = auth()->user()->id;
+            $keranjang->brg_id = $id;
+            $keranjang->kategori = $peralatan->kategori;
+            $keranjang->nama = $peralatan->nama_barang;
+            $keranjang->jumlah = $request->jumlah;
+            $keranjang->harga = $peralatan->harga_barang;
+            $keranjang->folder = "barang";
+            $keranjang->gambar = $peralatan->gambar_barang;
+            $keranjang->keterangan = $peralatan->keterangan_barang;
+            $keranjang->save();
+        }
 
-        return redirect('ck');
+        // return redirect('ck');
+        return response()->json([
+            'status' => 200,
+            'message' => 'Berhasil memasukan ke dalam keranjang'
+        ]);
 
     }
     
-    public function checkout_hewan($id){
+    public function checkout_hewan(Request $request, $id){
+        // masih dalam proses pembuatan jalur ketika cekout, apakah akan menggunakan response json atau redirect
         $hewan = Hewan::find($id);
         
-        $keranjang = new Keranjang();
-        $keranjang->id = intval((microtime(true) * 10000));
-        $keranjang->user_id = auth()->user()->id;
-        $keranjang->kategori = "hewan";
-        $keranjang->nama = $hewan->nama_hewan;
-        $keranjang->jumlah = 1;
-        $keranjang->harga = $hewan->harga_hewan;
-        $keranjang->folder = "hewan";
-        $keranjang->gambar = $hewan->gambar_hewan;
-        $keranjang->keterangan = $hewan->keterangan_hewan;
-        $keranjang->save();
+        $cek = Keranjang::where('user_id', auth()->user()->id)->where('brg_id', $hewan->id)->where('status', 0)->first();
+        if($cek){
+            $update = Keranjang::find($cek->id);
+            $update->jumlah = $cek->jumlah+$request->jumlah;
+            $update->update();
+        }else{
+            $keranjang = new Keranjang();
+            $keranjang->id = intval((microtime(true) * 10000));
+            $keranjang->user_id = auth()->user()->id;
+            $keranjang->brg_id = $id;
+            $keranjang->kategori = "hewan";
+            $keranjang->nama = $hewan->nama_hewan;
+            $keranjang->jumlah = $request->jumlah;
+            $keranjang->harga = $hewan->harga_hewan;
+            $keranjang->folder = "hewan";
+            $keranjang->gambar = $hewan->gambar_hewan;
+            $keranjang->keterangan = $hewan->keterangan_hewan;
+            $keranjang->save();
+        }
 
-        return redirect('ck');
+        // return redirect('ck');
+        return response()->json([
+            'status' => 200,
+            'message' => 'Berhasil memasukan ke dalam keranjang'
+        ]);
 
     }
 

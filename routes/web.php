@@ -14,11 +14,11 @@ use Illuminate\Support\Facades\Route;
 
 
 // route home page
-route::get('/', [HomeController::class, 'index']);
-route::get('/ph', [HomeController::class, 'peralatanHewan'])->name('ph');
-route::get('/h', [HomeController::class, 'hewan'])->name('h');
-route::get('/p', [HomeController::class, 'pakan'])->name('p');
-route::get('/t', [HomeController::class, 'treatment'])->name('t');
+route::get('/', [HomeController::class, 'index'])->middleware('guest');
+route::get('/ph', [HomeController::class, 'peralatanHewan'])->name('ph')->middleware('guest');
+route::get('/h', [HomeController::class, 'hewan'])->name('h')->middleware('guest');
+route::get('/p', [HomeController::class, 'pakan'])->name('p')->middleware('guest');
+route::get('/t', [HomeController::class, 'treatment'])->name('t')->middleware('guest');
 
 // route login dan registrasi
 route::get('/login', [AuthController::class, 'index'])->name('login')->middleware('guest');
