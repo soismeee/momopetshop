@@ -74,7 +74,7 @@ class TreatmentController extends Controller
             }
             return response()->json([
                 'status' => 200,
-                'message' => 'Peralatan Hewan baru berhasil di buat',
+                'message' => 'Treatment baru berhasil di buat',
             ]);
         }
     }

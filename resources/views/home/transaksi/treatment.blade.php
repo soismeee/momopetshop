@@ -11,21 +11,19 @@
             <div class="col-xl-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Transaksi</h4>
-                        <p class="card-title-desc">Data Transaksi.</p>
+                        <h4 class="card-title">Transaksi treatment</h4>
+                        <p class="card-title-desc">Data Transaksi Treatment.</p>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="data-orders" class="table mb-0">
+                            <table id="data-kategori" class="table mb-0">
                                 <thead class="table-light">
                                     <tr>
                                         <th width="5%">No</th>
                                         <th width="15%">ID Pembelian</th>
-                                        <th width="15%">Customer</th>
-                                        <th width="10%">Metode bayar</th>
-                                        <th width="10%">Tanggal</th>
-                                        <th width="10%">Jumlah</th>
-                                        <th width="15%">Total</th>
+                                        <th width="10%">Treatment</th>
+                                        <th width="20%">Total</th>
+                                        <th width="15%">Tanggal</th>
                                         <th width="10%">Status</th>
                                         <th width="10%">#</th>
                                     </tr>
@@ -33,6 +31,7 @@
                                 <tbody></tbody>
                             </table>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -51,14 +50,14 @@
     <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
     <script>
         // load data table
-        const table = $('#data-orders').DataTable({          
+        const table = $('#data-kategori').DataTable({          
             "lengthMenu": [[5, 10, 25, 50, 100, -1],[5, 10, 25, 50, 100, 'All']],
             "pageLength": 10, 
             processing: true,
             serverSide: true,
             responseive: true,
             ajax: {
-                url:"{{ url('json_do') }}",
+                url:"{{ url('json_ctt') }}",
                 type:"POST",
                 data:function(d){
                     d._token = "{{ csrf_token() }}"
@@ -76,21 +75,21 @@
                     "targets": "_all",
                     "defaultContent": "-",
                     "render": function(data, type, row, meta){
-                    return row.id
+                        return row.id
                     }
                 },
                 {
                     "targets": "_all",
                     "defaultContent": "-",
                     "render": function(data, type, row, meta){
-                    return row.user.name
+                        return row.nama_treatment
                     }
                 },
                 {
                     "targets": "_all",
                     "defaultContent": "-",
                     "render": function(data, type, row, meta){
-                    return row.metode_bayar
+                    return rupiah(row.harga_treatment)
                     }
                 },
                 {
@@ -98,20 +97,6 @@
                     "defaultContent": "-",
                     "render": function(data, type, row, meta){
                     return row.tgl_transaksi
-                    }
-                },
-                {
-                    "targets": "_all",
-                    "defaultContent": "-",
-                    "render": function(data, type, row, meta){
-                    return row.total_jumlah
-                    }
-                },
-                {
-                    "targets": "_all",
-                    "defaultContent": "-",
-                    "render": function(data, type, row, meta){
-                    return rupiah(row.total_harga)
                     }
                 },
                 {
@@ -129,19 +114,20 @@
                     "targets": "_all",
                     "defaultContent": "-",
                     "render": function(data, type, row, meta){
-                        if (row.status == 1) {
-                            return `
-                            <div class="btn-group">
-                                <a href="{{ url('/print') }}/`+row.id+`" target="_blank" class="btn btn-sm btn-success">Cetak</a>
-                            </div>
-                            `                        
-                        } else {
-                            return `
-                            <div class="btn-group">
-                                <a href="{{ url('dio') }}/`+row.id+`" class="btn btn-sm btn-primary">Detail</a>
-                            </div>
-                            `                        
-                        }
+                    if (row.status == 1) {
+                        return `
+                        <div class="btn-group">
+                            <a href="/dtc/`+row.id+`" title="Edit" data-id="" class="btn btn-sm btn-primary px-2">Lihat</a>
+                         </div>
+                        `
+                    } else {
+                        return `
+                        <div class="btn-group">
+                            <a href="/dtc/`+row.id+`" title="Edit" data-id="" class="px-2 text-primary"><i class="bx bx-show-alt font-size-18"></i></a>
+                            <a href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" class="px-2 text-danger hapusdata" data-id="`+row.id+`"><i class="bx bx-trash-alt font-size-18"></i></a>
+                        </div>
+                        `
+                    }
                     }
                 },
             ]
@@ -153,6 +139,54 @@
             currency: "IDR"
             }).format(number);
         }
+
+        // fungsi reload table dan reset form input
+        function reloadReset(){
+            table.ajax.reload();
+            document.getElementById("form-kategori").reset()
+        }
+
+        // template sweetalert
+        function sweetAlert(icon, title) {
+            Swal.fire({
+                icon: icon,
+                title: title,
+            });
+        }
+
+        $(document).on('click', '.hapusdata', function(e) {
+            let id = $(this).data('id');
+            Swal.fire({
+                title: 'Apakah anda yakin?',
+                text: "Anda akan menghapus data ini!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "DELETE",
+                        url: "{{ url('/cdtt') }}/" + id,
+                        data: {
+                            '_token': '{{ csrf_token() }}'
+                        },
+                        dataType: 'json',
+                        success: function(response) {
+                            Swal.fire(
+                                'Deleted!',
+                                response.message,
+                                'success'
+                            )
+                            table.ajax.reload();
+                        }
+                    });
+
+                }
+            })
+        });
 
     </script>
 @endpush

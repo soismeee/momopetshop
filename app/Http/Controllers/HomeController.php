@@ -11,7 +11,6 @@ use App\Models\Transaksi;
 use App\Models\TransaksiTreatment;
 use App\Models\Treatment;
 use App\Models\User;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -223,7 +222,7 @@ class HomeController extends Controller
         $tt->tgl_transaksi  = date("Y-m-d");
         $tt->save();
 
-        return redirect('/co');
+        return redirect('/ctt');
     }
 
     public function store(Request $request){
@@ -236,6 +235,7 @@ class HomeController extends Controller
         $transaksi->total_harga = $request->total_harga;
         $transaksi->tgl_transaksi = date("Y-m-d");
         $transaksi->total_bayar = $request->total_bayar;
+        $transaksi->metode_bayar = $request->metode_bayar;
         $transaksi->save();
         $trans_id = $transaksi->id;
 
@@ -261,12 +261,10 @@ class HomeController extends Controller
     public function keranjang(){
         $keranjang = Keranjang::where('user_id', auth()->user()->id)->where('status', 0)->get();
         $jumlah = $keranjang->sum('jumlah');
-        $harga = $keranjang->sum('harga');
         return view('home.keranjang.keranjang', [
             'title' => 'Keranjang',
             'keranjang' => Keranjang::where('user_id', auth()->user()->id)->where('status', 0)->count(),
             'jumlah' => $jumlah,
-            'harga' => $harga,
         ]);
     }
 
@@ -289,7 +287,7 @@ class HomeController extends Controller
                     'keterangan' => $k['keterangan'],
                 ];
                 $total_jumlah += $k['jumlah'];
-                $total_harga += $k['harga'];
+                $total_harga += $k['harga']*$k['jumlah'];
                 $no ++;
             }
             return response()->json([
@@ -324,6 +322,40 @@ class HomeController extends Controller
         $columns = ['id','user_id','total_jumlah', 'total_harga', 'tgl_transaksi', 'total_bayar'];
         $orderBy = $columns[request()->input("order.0.column")];
         $data = Transaksi::select('*')->where('user_id', auth()->user()->id);
+
+        if(request()->input("search.value")){
+            $data = $data->where(function($query){
+                $query->whereRaw('user_id like ? ', ['%'.request()->input("search.value").'%'])
+                ->orWhereRaw('jumlah like ? ', ['%'.request()->input("search.value").'%']);
+            });
+        }
+
+        $recordsFiltered = $data->get()->count();
+        if(request()->input('length') == -1){
+            $data = $data->orderBy($orderBy,request()->input("order.0.dir"))->get();
+        }else{
+            $data = $data->skip(request()->input('start'))->take(request()->input('length'))->orderBy($orderBy,request()->input("order.0.dir"))->get();
+        }
+        $recordsTotal = $data->count();
+
+        return response()->json([
+            'draw' => request()->input('draw'),
+            'recordsTotal' => $recordsTotal,
+            'recordsFiltered' => $recordsFiltered,
+            'data' => $data
+        ]);
+    }
+
+    public function transaksi_treatment(){
+        return view('home.transaksi.treatment', [
+            'title' => 'Data transaksi treatment',
+        ]);
+    }
+
+    public function json_transaksi_treatment(){
+        $columns = ['id','user_id','total_jumlah', 'total_harga', 'tgl_transaksi', 'total_bayar'];
+        $orderBy = $columns[request()->input("order.0.column")];
+        $data = TransaksiTreatment::select('*')->where('user_id', auth()->user()->id);
 
         if(request()->input("search.value")){
             $data = $data->where(function($query){
@@ -391,6 +423,14 @@ class HomeController extends Controller
         return response()->json([
             'status' => 200,
             'message' => 'Data order berhasil di hapus',
+        ]);
+    }
+
+    public function destroy_order_treatment($id){
+        TransaksiTreatment::destroy($id);
+        return response()->json([
+            'status' => 200,
+            'message' => 'Data order treatment berhasil di hapus',
         ]);
     }
 }

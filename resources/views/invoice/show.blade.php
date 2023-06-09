@@ -24,6 +24,12 @@
                                     : {{ $order->user->name }}
                                 </div>
                                 <div class="col-md-3 mb-2">    
+                                    Metode Bayar
+                                </div>
+                                <div class="col-md-9 mb-2">                                    
+                                    : {{ $order->metode_bayar }}    
+                                </div>
+                                <div class="col-md-3 mb-2">    
                                     Tanggal
                                 </div>
                                 <div class="col-md-9 mb-2">                                    
@@ -45,7 +51,12 @@
                                     uang bayar
                                 </div>
                                 <div class="col-md-9 mb-2">                                    
-                                    <input type="text" class="form-control" name="uang" id="uang">    
+                                    @if ($order->metode_bayar == "transfer")
+                                        <p class="text-mute">: Rp. {{ number_format($order->total_harga,0,',','.') }}</p>
+                                        <input type="hidden" class="form-control" name="uang" id="uang" value="{{ $order->total_harga }}">    
+                                    @else
+                                        <input type="text" class="form-control" name="uang" id="uang">    
+                                    @endif
                                 </div>
                                 <div class="col-md-3 mb-2">    
                                     uang kembalian
@@ -73,9 +84,15 @@
                             {{-- @if ($order->status == 1) --}}
                             <a href="{{ url('/print') }}/{{ $order->id }}" target="_blank" class="btn btn-warning" style="display: none" id="cetak"><i class="mdi mdi-printer me-1"></i>Cetak Struk</a>
                             {{-- @else --}}
-                            <button type="submit" class="btn btn-success" id="proses">
+                            @if ($order->metode_bayar == 'tunai')
+                            <button type="button" class="btn btn-success" id="proses">
                                 <i class="mdi mdi-cart-outline me-1"></i> Selesaikan pesanan
                             </button>
+                            @else
+                            <button type="button" class="btn btn-primary" id="proses2">
+                                <i class="mdi mdi-cart-outline me-1"></i> Selesaikan pesanan
+                            </button>
+                            @endif
                             {{-- @endif --}}
                         </div>
                     </div> <!-- end col -->
@@ -123,16 +140,6 @@
     <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 
     <script>
-        const rupiah = (number) => {
-            return new Intl.NumberFormat("id-ID", {
-            style: "decimal",
-            currency: "IDR"
-            }).format(number);
-        }
-
-        $(document).ready(function () {
-            tabel()
-        });
 
         let uang = document.getElementById("uang");
         uang.addEventListener("keyup", function(e) {
@@ -148,6 +155,13 @@
             $('#total_bayar').val(kembalian)
             $('#kembalian').html(rupiah(kembalian));
         });
+
+        const rupiah = (number) => {
+            return new Intl.NumberFormat("id-ID", {
+            style: "decimal",
+            currency: "IDR"
+            }).format(number);
+        }
 
         function convertRupiah(angka, prefix) {
             var number_string = angka.replace(/[^,\d]/g, "").toString(),
@@ -210,8 +224,7 @@
             });
         }
 
-        $(document).on('click', '#proses', function(e){
-            let id = "{{ $order->id }}"
+        function kirimdata(id){
             $.ajax({
                 type: "POST",
                 url: "{{ url('proses') }}/" + id,
@@ -220,9 +233,41 @@
                 success: function(response) {
                     sweetAlert('success', response.message);
                     $('#proses').hide();
+                    $('#proses2').hide();
                     $('#cetak').show();
                 }
             });
+        }
+
+        $(document).ready(function () {
+            tabel()
         });
+
+        $(document).on('click', '#proses', function(e){
+            let id = "{{ $order->id }}"
+            let total_bayar = "{{ $order->total_bayar }}"
+            let cas = $('#uang').val();
+            if (!cas) {
+                sweetAlert('warning', 'Masukan jumlah uang yang dibayarkan')
+            }else{
+                var cas2 = cas.toUpperCase();
+                var dt = cas2.replace(/[^\w\s]/gi, '');
+                var dt2 = dt.replace(/\s/g, '');
+                var dt3 = dt2.replace(/[^0-9]/, '');
+                var dt4 = dt3.substr(1);
+                let hasil = parseInt(dt4) - parseInt(total_bayar);
+                if(hasil < 0){
+                    sweetAlert('warning', 'Uang pembayaran kurang')
+                }else{
+                    kirimdata(id);
+                }
+            }
+        });
+
+        $(document).on('click', '#proses2', function(e){
+            let id = "{{ $order->id }}"
+            kirimdata(id);
+        });
+
     </script>
 @endpush

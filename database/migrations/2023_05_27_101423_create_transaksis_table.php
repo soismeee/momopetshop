@@ -19,6 +19,7 @@ class CreateTransaksisTable extends Migration
             $table->string('total_jumlah');
             $table->string('total_harga');
             $table->string('tgl_transaksi');
+            $table->string('metode_bayar');
             $table->string('total_bayar')->default(0);
             $table->string('status')->default(0);
             $table->timestamps();

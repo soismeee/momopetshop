@@ -9,18 +9,20 @@
     <div class="page-content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-xl-10">
+                <div class="col-xl-12">
                     <div class="card">
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table align-middle mb-0 table-nowrap mb-0 table-keranjang">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>No</th>
-                                            <th>Nama</th>
-                                            <th>Gambar</th>
-                                            <th>Kategori</th>
-                                            <th style="width: 120px;">harga</th>
+                                            <th width="10%">No</th>
+                                            <th width="20%">Nama</th>
+                                            <th width="10%">Gambar</th>
+                                            <th width="10%">Jumlah</th>
+                                            <th width="10%">Kategori</th>
+                                            <th width="20%">harga</th>
+                                            <th width="20%"">Total</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -49,16 +51,16 @@
     <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 
     <script>
+        $(document).ready(function () {
+            tabel()
+        });
+
         const rupiah = (number) => {
             return new Intl.NumberFormat("id-ID", {
             style: "decimal",
             currency: "IDR"
             }).format(number);
         }
-
-        $(document).ready(function () {
-            tabel()
-        });
 
         function tabel(){
             let id = "{{ $detailorder->id }}"
@@ -82,8 +84,10 @@
                                 <td>`+params.no+`</td>
                                 <td><h5 class="text-truncate font-size-16">`+params.nama+`</h5></td>
                                 <td><img src="/Gambar_upload/`+params.folder+`/`+params.gambar+`" alt="" class="avatar-lg rounded p-1"></td>
+                                <td><h5 class="text-truncate font-size-16">`+params.jumlah+`</h5></td>
                                 <td>`+params.kategori+`</td>
-                                <td>`+rupiah(params.harga)+`</td>
+                                <td>Rp. `+rupiah(params.harga)+`</td>
+                                <td>Rp. `+rupiah(params.harga*params.jumlah)+`</td>
                             </tr>
                             `
                             record += body

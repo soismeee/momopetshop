@@ -29,6 +29,7 @@
                                                 <th>Kategori</th>
                                                 <th>Jumlah</th>
                                                 <th style="width: 120px;">harga</th>
+                                                <th style="width: 120px;">Total</th>
                                                 <th>#</th>
                                             </tr>
                                         </thead>
@@ -57,13 +58,54 @@
                                     @if ($keranjang == 0)
                                         <button class="btn btn-dark" disabled>Tidak ada barang</button>
                                     @else
-                                    <button type="submit" class="btn btn-success disabled" id="tombol">
-                                        <i class="mdi mdi-cart-outline me-1"></i> Checkout
-                                    </button>
+                                    <a href="#" class="btn btn-primary" id="cekout">Cekout</a>
                                     @endif
                                 </div>
                             </div> <!-- end col -->
                         </div> <!-- end row-->
+
+                        <div class="row pembayaran" style="display: none">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="font-size-14 mb-3">Pilih pembayaran :</h5>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-6">
+                                            <div>
+                                                <label class="card-radio-label">
+                                                    <input type="radio" name="metode_bayar" id="pay-methodoption3" class="card-radio-input" value="tunai" checked="">
+
+                                                    <span class="card-radio py-3 text-center text-truncate">
+                                                        <i class="bx bx-money d-block h2 mb-3"></i>
+                                                        <span>Tunai</span>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-6 col-sm-6">
+                                            <div data-bs-toggle="collapse">
+                                                <label class="card-radio-label">
+                                                    <input type="radio" name="metode_bayar" id="pay-methodoption1" class="card-radio-input" value="transfer">
+                                                    <span class="card-radio py-3 text-center text-truncate">
+                                                        <i class="bx bx-credit-card d-block h2 mb-3"></i>
+                                                        Transfer
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row my-4 tombol-cekout" style="display: none">
+                            <div class="text-sm-end mt-2 mt-sm-0">                            
+                                <button type="submit" class="btn btn-success disabled" id="tombol">
+                                    <i class="mdi mdi-cart-outline me-1"></i> Selesaikan pembelian
+                                </button>
+                            </div>
+                        </div>
                     </form>
                 </div>
 
@@ -90,8 +132,8 @@
                                     <div class="col-md-5">
                                         Total harga
                                     </div>
-                                    <div class="col-md-7">
-                                        : Rp. {{ number_format($harga,0,',','.') }}
+                                    <div class="col-md-7" id="view-total">
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -159,6 +201,7 @@
                                 <td>`+params.kategori+`</td>
                                 <td>`+params.jumlah+`</td>
                                 <td>`+rupiah(params.harga)+`</td>
+                                <td>`+rupiah(params.harga*params.jumlah)+`</td>
                                 <td>
                                     <a href="javascript:void(0);" class="px-2 text-danger hapusdata" data-id="`+params.id+`" aria-label="Delete"><i class="bx bx-trash-alt font-size-18"></i></a>
                                 </td>
@@ -170,6 +213,7 @@
                         $('#total_jumlah').val(response.total_jumlah);
                         $('#total_harga').val(response.total_harga);
                         $('#total_bayar').val(response.total_harga);
+                        $('#view-total').html("Rp. "+rupiah(response.total_harga))
                         $('#tombol').removeClass('disabled');
                     }
                 }
@@ -208,6 +252,16 @@
 
                 }
             })
+        });
+
+        $(document).on('click', '#cekout', function(e){
+            $('.pembayaran').show();
+            $('.tombol-cekout').show();
+        });
+
+        $(document).on('click', '.card-radio-input', function(e){
+            let value = $(this).val();
+            console.log(value);
         });
     </script>
 @endpush

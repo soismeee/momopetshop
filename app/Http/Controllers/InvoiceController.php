@@ -97,7 +97,7 @@ class InvoiceController extends Controller
         Transaksi::where('id', $id)->update($data);
         return response()->json([
             'status' => 200,
-            'message' => 'Transaksi berhasil'
+            'message' => 'Berhasil melakukan transaksi'
         ]);
     }
 
@@ -164,6 +164,14 @@ class InvoiceController extends Controller
             'recordsTotal' => $recordsTotal,
             'recordsFiltered' => $recordsFiltered,
             'data' => $data
+        ]);
+    }
+
+    public function proses_treatment(Request $request, $id){
+        TransaksiTreatment::where('id', $id)->update(['status' => 1]);
+        return response()->json([
+            'status' => 200,
+            'message' => 'Data berhasil diproses'
         ]);
     }
 }

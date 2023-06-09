@@ -45,21 +45,21 @@
                 
                 <li>
                     <a href="{{ route('h') }}">
-                        <i class="bx bx-basketball icon nav-icon"></i>
+                        <i class="bx bx-bath icon nav-icon"></i>
                         <span class="menu-item" data-key="t-notin_hewan">Hewan</span>
                     </a>
                 </li>
 
                 <li>
                     <a href="{{ route('ph') }}">
-                        <i class="bx bx-file-find icon nav-icon"></i>
+                        <i class="bx bx-box icon nav-icon"></i>
                         <span class="menu-item" data-key="t-notin_peralatan_hewan">Peralatan Hewan</span>
                     </a>
                 </li>
 
                 <li>
                     <a href="{{ route('p') }}">
-                        <i class="bx bx-calendar-event icon nav-icon"></i>
+                        <i class="bx bx-food-menu icon nav-icon"></i>
                         <span class="menu-item" data-key="t-notin_pakan">Pakan</span>
                     </a>
                 </li>

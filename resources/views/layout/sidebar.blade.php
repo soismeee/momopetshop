@@ -53,17 +53,21 @@
                 @can('Customer')
                 <li>
                     <a href="{{ route('ck') }}">
-                        <i class="bx bx-basketball icon nav-icon"></i>
+                        <i class="bx bx-shopping-bag icon nav-icon"></i>
                         <span class="menu-item" data-key="t-keranjang">Keranjang</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="{{ route('co') }}">
-                        <i class="bx bx-file-find icon nav-icon"></i>
+                    <a href="javascript: void(0);" class="has-arrow">
+                        <i class="bx bx-receipt icon nav-icon"></i>
                         <span class="menu-item" data-key="t-transaksi">Daftar Orders</span>
                     </a>
-                </li>    
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route('co') }}" data-key="t-inbox">Daftar Order</a></li>
+                        <li><a href="{{ route('ctt') }}" data-key="t-read-email">Daftar Treatment</a></li>
+                    </ul>
+                </li>  
                 @endcan
 
                 @if (Gate::check('Admin') || Gate::check('Karyawan'))
@@ -79,7 +83,7 @@
 
                 <li>
                     <a href="{{ route('dh.index') }}">
-                        <i class="bx bx-basket icon nav-icon"></i>
+                        <i class="bx bx-bath icon nav-icon"></i>
                         <span class="menu-item" data-key="t-calendar">Data Hewan</span>
                     </a>
                 </li>
@@ -142,21 +146,21 @@
                 
                 <li>
                     <a href="{{ route('ch') }}">
-                        <i class="bx bx-basketball icon nav-icon"></i>
+                        <i class="bx bx-bath icon nav-icon"></i>
                         <span class="menu-item" data-key="t-in_hewan">Hewan</span>
                     </a>
                 </li>
 
                 <li>
                     <a href="{{ route('cph') }}">
-                        <i class="bx bx-file-find icon nav-icon"></i>
+                        <i class="bx bx-box icon nav-icon"></i>
                         <span class="menu-item" data-key="t-in_peralatan_hewan">Peralatan Hewan</span>
                     </a>
                 </li>
 
                 <li>
                     <a href="{{ route('cp') }}">
-                        <i class="bx bx-calendar-event icon nav-icon"></i>
+                        <i class="bx bx-food-menu icon nav-icon"></i>
                         <span class="menu-item" data-key="t-in_pakan">Pakan</span>
                     </a>
                 </li>

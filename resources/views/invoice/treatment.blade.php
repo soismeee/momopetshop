@@ -39,6 +39,25 @@
         </div>
         <!-- End Page-content -->
     </div>
+
+    <div id="modalProses" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" data-bs-scroll="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Proses order treatment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5 id="kode">ID</h5>
+                    <p>Anda akan memproses permintaan treatment hewan, ingin menyelesaikannya ?.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary waves-effect waves-light" id="proses">Ya, proses</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 @endsection
 
 @push('js')
@@ -110,19 +129,30 @@
                     "targets": "_all",
                     "defaultContent": "-",
                     "render": function(data, type, row, meta){
-                    return row.status
+                        if (row.status == 1) {
+                            return '<span class="badge badge-pill badge-soft-success font-size-12">Selesai</span>';
+                        } else {
+                            return '<span class="badge badge-pill badge-soft-danger font-size-12">Proses</span>';
+                        }
                     }
                 },
                 {
                     "targets": "_all",
                     "defaultContent": "-",
                     "render": function(data, type, row, meta){
-                    return `
-                    <div class="btn-group">
-                        <a href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" id="edit-data" data-id="`+row.id+`" class="px-2 text-primary"><i class="bx bx-pencil font-size-18"></i></a>
-                        <a href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" class="px-2 text-danger hapusdata" data-id="`+row.id+`"><i class="bx bx-trash-alt font-size-18"></i></a>
-                    </div>
-                    `
+                        if (row.status == 1) {
+                            return `
+                            <div class="btn-group">
+                                <a href="#" class="btn btn-sm btn-success">Cetak</a>
+                            </div>
+                            `                        
+                        } else {
+                            return `
+                            <div class="btn-group">
+                                <a href="#" class="btn btn-sm btn-primary proses" data-id="`+row.id+`">Proses</a>
+                            </div>
+                            `                        
+                        }
                     }
                 },
             ]
@@ -134,5 +164,36 @@
             currency: "IDR"
             }).format(number);
         }
+
+        // template sweetalert
+        function sweetAlert(icon, title) {
+            Swal.fire({
+                icon: icon,
+                title: title,
+            });
+        }
+
+        $(document).on('click', '.proses', function(e){
+            $('#modalProses').modal('show');
+            let id = $(this).data('id');
+            $('#kode').html("ID #"+id);
+            $('#proses').val(id);
+        });
+
+        $(document).on('click', '#proses', function(e){
+            let id = $(this).val();
+            console.log(id);
+            $.ajax({
+                type: "POST",
+                url: "{{ url('pt') }}/"+id,
+                data: {'_token': '{{ csrf_token() }}' },
+                dataType: "json",
+                success: function(response){
+                    $('#modalProses').modal('hide');
+                    sweetAlert('success', response.message);
+                    table.ajax.reload();
+                }
+            });
+        });
     </script>
 @endpush

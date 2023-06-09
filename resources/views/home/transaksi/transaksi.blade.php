@@ -20,7 +20,8 @@
                                 <thead class="table-light">
                                     <tr>
                                         <th width="5%">No</th>
-                                        <th width="30%">ID Pembelian</th>
+                                        <th width="15%">ID Pembelian</th>
+                                        <th width="15%">Metode Bayar</th>
                                         <th width="10%">Jumlah</th>
                                         <th width="20%">Total</th>
                                         <th width="15%">Tanggal</th>
@@ -75,14 +76,21 @@
                     "targets": "_all",
                     "defaultContent": "-",
                     "render": function(data, type, row, meta){
-                    return row.id
+                        return row.id
                     }
                 },
                 {
                     "targets": "_all",
                     "defaultContent": "-",
                     "render": function(data, type, row, meta){
-                    return row.total_jumlah
+                        return row.metode_bayar
+                    }
+                },
+                {
+                    "targets": "_all",
+                    "defaultContent": "-",
+                    "render": function(data, type, row, meta){
+                        return row.total_jumlah
                     }
                 },
                 {
@@ -114,12 +122,20 @@
                     "targets": "_all",
                     "defaultContent": "-",
                     "render": function(data, type, row, meta){
-                    return `
-                    <div class="btn-group">
-                        <a href="/dtc/`+row.id+`" title="Edit" data-id="" class="px-2 text-primary"><i class="bx bx-show-alt font-size-18"></i></a>
-                        <a href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" class="px-2 text-danger hapusdata" data-id="`+row.id+`"><i class="bx bx-trash-alt font-size-18"></i></a>
-                    </div>
-                    `
+                    if (row.status == 1) {
+                        return `
+                        <div class="btn-group">
+                            <a href="/dtc/`+row.id+`" title="Edit" data-id="" class="btn btn-sm btn-primary px-2">Lihat</a>
+                         </div>
+                        `
+                    } else {
+                        return `
+                        <div class="btn-group">
+                            <a href="/dtc/`+row.id+`" title="Edit" data-id="" class="px-2 text-primary"><i class="bx bx-show-alt font-size-18"></i></a>
+                            <a href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" class="px-2 text-danger hapusdata" data-id="`+row.id+`"><i class="bx bx-trash-alt font-size-18"></i></a>
+                        </div>
+                        `
+                    }
                     }
                 },
             ]

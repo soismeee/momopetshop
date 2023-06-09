@@ -18,6 +18,7 @@ class CreateTransaksiTreatmentsTable extends Migration
             $table->uuid('user_id')->index();
             $table->string('nama_treatment');
             $table->string('harga_treatment');
+            $table->string('metode_bayar')->nullable();
             $table->string('gambar_treatment');
             $table->string('keterangan_treatment');
             $table->string('tgl_transaksi');

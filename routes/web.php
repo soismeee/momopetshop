@@ -33,7 +33,9 @@ route::get('/home', [HomeController::class, 'home'])->name('home')->middleware('
 // route menu customer 
 route::get('/ck', [HomeController::class, 'keranjang'])->name('ck')->middleware('auth');
 route::get('/co', [HomeController::class, 'transaksi'])->name('co')->middleware('auth');
+route::get('/ctt', [HomeController::class, 'transaksi_treatment'])->name('ctt')->middleware('auth');
 route::post('json_ct', [HomeController::class, 'json_transaksi'])->name('json_ct')->middleware('auth');
+route::post('json_ctt', [HomeController::class, 'json_transaksi_treatment'])->name('json_ctt')->middleware('auth');
 
 // route menu produk customer
 route::get('/ch', [HomeController::class, 'in_hewan'])->name('ch')->middleware('auth');
@@ -74,6 +76,7 @@ route::get('/json_co/{id}', [HomeController::class, 'json_detailorder'])->name('
 route::put('/udc/{id}', [UserController::class, 'update_customer'])->name('udc')->middleware('auth');
 route::post('/json_cus', [UserController::class, 'json_customer'])->name('json_cus')->middleware('auth');
 route::delete('/cdt/{id}', [HomeController::class, 'destroy_order'])->name('cdt')->middleware('auth');
+route::delete('/cdtt/{id}', [HomeController::class, 'destroy_order_treatment'])->name('cdtt')->middleware('auth');
 
 
 // ROUTE DATA MASTER //
@@ -108,7 +111,7 @@ route::get('/print/{id}', [InvoiceController::class, 'print'])->name('print')->m
 route::post('/json_do', [InvoiceController::class, 'json_orders'])->name('json_do')->middleware('auth');
 route::post('/json_dit', [InvoiceController::class, 'json_treatment'])->name('json_dit')->middleware('auth');
 route::post('/proses/{id}', [InvoiceController::class, 'proses'])->name('proses')->middleware('auth');
-
+route::post('/pt/{id}', [InvoiceController::class, 'proses_treatment'])->name('pt')->middleware('auth');
 
 // route laporan
 route::get('/lo', [InvoiceController::class, 'laporan_order'])->name('lo')->middleware('auth');

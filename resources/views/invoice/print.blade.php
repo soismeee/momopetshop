@@ -42,7 +42,7 @@
                 <tr>
                     <td>{{ $data->nama }}</td>
                     <td style="text-align: center">{{ $data->jumlah }}</td>
-                    <td>Rp. {{ number_format($data->harga,0, ',','.') }}</td>
+                    <td>Rp. {{ number_format($data->harga*$data->jumlah,0, ',','.') }}</td>
                 </tr>
             @endforeach
             <tr>
