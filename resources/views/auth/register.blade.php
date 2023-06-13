@@ -55,6 +55,11 @@
                                                 <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" placeholder="Masukan nama" value="{{ old('name') }}">
                                                  <span class="bx bx-user-circle"></span>
                                                 </div>
+                                                @error('name')
+                                                    <div class="text-danger">
+                                                    Nama harus diisi
+                                                    </div>
+                                                @enderror
                                             </div>
 
                                         <div class="mb-3">
@@ -64,8 +69,8 @@
                                                  <span class="bx bx-user"></span>
                                             </div>
                                             @error('username')
-                                                <div class="invalid-feedback">
-                                                {{ $message }}
+                                                <div class="text-danger">
+                                                Username harus diisi
                                                 </div>
                                             @enderror
                                         </div>
@@ -77,8 +82,8 @@
                                                 <span class="bx bx-mail-send"></span>
                                             </div>     
                                             @error('email')
-                                                <div class="invalid-feedback">
-                                                {{ $message }}
+                                                <div class="text-danger">
+                                                Email harus diisi
                                                 </div>
                                             @enderror
                                         </div>
@@ -90,8 +95,8 @@
                                                 <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" placeholder="Masukan password">
                                             </div>
                                             @error('password')
-                                                <div class="invalid-feedback">
-                                                {{ $message }}
+                                                <div class="text-danger">
+                                                Password tidak boleh kosong
                                                 </div>
                                             @enderror
                                         </div>

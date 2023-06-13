@@ -18,6 +18,7 @@
         <link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
         <!-- App Css-->
         <link href="/assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
+        
 
     </head>
 
@@ -66,9 +67,14 @@
                                         <div class="mb-3">
                                             <label class="form-label" for="username">Username</label>
                                             <div class="position-relative input-custom-icon">
-                                                <input type="text" class="form-control" id="username" name="username" placeholder="Masukan username">
+                                                <input type="text" class="form-control @error('username') is-invalid @enderror" id="username" name="username" placeholder="Masukan username" value="{{ old('username') }}">
                                                  <span class="bx bx-user"></span>
                                             </div>
+                                            @error('username')
+                                                <div class="text-danger">
+                                                    Username harus diisi.
+                                                </div>
+                                            @enderror
                                         </div>
                 
                                         <div class="mb-3">
@@ -78,11 +84,16 @@
                                             <label class="form-label" for="password-input">Password</label>
                                             <div class="position-relative auth-pass-inputgroup input-custom-icon">
                                                 <span class="bx bx-lock-alt"></span>
-                                                <input type="password" class="form-control" id="password" name="password" placeholder="Masukan password">
+                                                <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" placeholder="Masukan password">
                                                 <button type="button" class="btn btn-link position-absolute h-100 end-0 top-0" id="password-addon">
                                                     <i class="mdi mdi-eye-outline font-size-18 text-muted"></i>
                                                 </button>
                                             </div>
+                                            @error('username')
+                                                <div class="text-danger">
+                                                    Password harus diisi.
+                                                </div>
+                                            @enderror
                                         </div>
                                         
                                         <div class="mt-3">
@@ -120,8 +131,10 @@
         <script src="/assets/libs/metismenujs/metismenujs.min.js"></script>
         <script src="/assets/libs/simplebar/simplebar.min.js"></script>
         <script src="/assets/libs/eva-icons/eva.min.js"></script>
-
+        <script src="/assets/js/pages/form-validation.init.js"></script>
         <script src="/assets/js/pages/pass-addon.init.js"></script>
+
+        <script src="/assets/js/app.js"></script>
 
     </body>
 
