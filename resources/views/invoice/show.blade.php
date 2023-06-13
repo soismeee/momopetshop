@@ -16,58 +16,71 @@
                         </div>
                         <div class="card-body p-4 pt-2">
                             <div class="row">
-
-                                <div class="col-md-3 mb-2">    
-                                    Customer
+                                <div class="col-lg-8">
+                                    <div class="row">
+                                        <div class="col-md-3 mb-2">    
+                                            Customer
+                                        </div>
+                                        <div class="col-md-9 mb-2">                                    
+                                            : {{ $order->user->name }}
+                                        </div>
+                                        <div class="col-md-3 mb-2">    
+                                            Metode Bayar
+                                        </div>
+                                        <div class="col-md-9 mb-2">                                    
+                                            : {{ $order->metode_bayar }}    
+                                        </div>
+                                        <div class="col-md-3 mb-2">    
+                                            Tanggal
+                                        </div>
+                                        <div class="col-md-9 mb-2">                                    
+                                            : {{ date("d/m/Y", strtotime($order->tgl_transaksi)) }}    
+                                        </div>
+                                        <div class="col-md-3 mb-2">    
+                                            Jumlah baranng
+                                        </div>
+                                        <div class="col-md-9 mb-2">                                    
+                                            : {{ $order->total_jumlah }}
+                                        </div>
+                                        <div class="col-md-3 mb-2">    
+                                            Total bayar
+                                        </div>
+                                        <div class="col-md-9 mb-2">                                    
+                                            : Rp. {{ number_format($order->total_harga,0,',','.') }}    
+                                        </div>
+                                        <div class="col-md-3 mb-2">    
+                                            uang bayar
+                                        </div>
+                                        <div class="col-md-9 mb-2">                                    
+                                            @if ($order->metode_bayar == "transfer")
+                                                <p class="text-mute">: Rp. {{ number_format($order->total_harga,0,',','.') }}</p>
+                                                <input type="hidden" class="form-control" name="uang" id="uang" value="{{ $order->total_harga }}">    
+                                            @else
+                                                <input type="text" class="form-control" name="uang" id="uang">    
+                                            @endif
+                                        </div>
+                                        <div class="col-md-3 mb-2">    
+                                            uang kembalian
+                                        </div>
+                                        <div class="col-md-9 mb-2">                                    
+                                            : <strong>Rp.</strong> <strong id="kembalian">0</strong>
+                                            <input type="hidden" name="total_bayar" id="total_bayar">
+                                            <input type="hidden" name="total_harga" id="total_harga" value="{{ $order->total_harga }}">
+                                        </div>
+                                    </div>    
                                 </div>
-                                <div class="col-md-9 mb-2">                                    
-                                    : {{ $order->user->name }}
-                                </div>
-                                <div class="col-md-3 mb-2">    
-                                    Metode Bayar
-                                </div>
-                                <div class="col-md-9 mb-2">                                    
-                                    : {{ $order->metode_bayar }}    
-                                </div>
-                                <div class="col-md-3 mb-2">    
-                                    Tanggal
-                                </div>
-                                <div class="col-md-9 mb-2">                                    
-                                    : {{ date("d/m/Y", strtotime($order->tgl_transaksi)) }}    
-                                </div>
-                                <div class="col-md-3 mb-2">    
-                                    Jumlah baranng
-                                </div>
-                                <div class="col-md-9 mb-2">                                    
-                                    : {{ $order->total_jumlah }}
-                                </div>
-                                <div class="col-md-3 mb-2">    
-                                    Total bayar
-                                </div>
-                                <div class="col-md-9 mb-2">                                    
-                                    : Rp. {{ number_format($order->total_harga,0,',','.') }}    
-                                </div>
-                                <div class="col-md-3 mb-2">    
-                                    uang bayar
-                                </div>
-                                <div class="col-md-9 mb-2">                                    
+                                <div class="col-lg-4">
+                                    <h5>Bukti Transfer :</h5>
                                     @if ($order->metode_bayar == "transfer")
-                                        <p class="text-mute">: Rp. {{ number_format($order->total_harga,0,',','.') }}</p>
-                                        <input type="hidden" class="form-control" name="uang" id="uang" value="{{ $order->total_harga }}">    
+                                        @if ($order->bukti == null)
+                                            <strong class="text-danger">Pelanggan belum mengirim bukti pembayaran</strong>
+                                        @else
+                                            <img src="/Gambar_upload/bukti_pembayaran/{{ $order->bukti }}" width="100px">
+                                        @endif
                                     @else
-                                        <input type="text" class="form-control" name="uang" id="uang">    
+                                    <strong>Pelanggan membayar dengan uang tunai</strong>
                                     @endif
-                                </div>
-                                <div class="col-md-3 mb-2">    
-                                    uang kembalian
-                                </div>
-                                <div class="col-md-9 mb-2">                                    
-                                    : <strong>Rp.</strong> <strong id="kembalian">0</strong>
-                                    <input type="hidden" name="total_bayar" id="total_bayar">
-                                    <input type="hidden" name="total_harga" id="total_harga" value="{{ $order->total_harga }}">
-                                </div>
-
-
+                                </div>                           
                             </div>
                             <!-- end table-responsive -->
                         </div>

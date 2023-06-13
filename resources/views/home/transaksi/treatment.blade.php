@@ -123,8 +123,7 @@
                     } else {
                         return `
                         <div class="btn-group">
-                            <a href="/dtc/`+row.id+`" title="Edit" data-id="" class="px-2 text-primary"><i class="bx bx-show-alt font-size-18"></i></a>
-                            <a href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" class="px-2 text-danger hapusdata" data-id="`+row.id+`"><i class="bx bx-trash-alt font-size-18"></i></a>
+                            <a href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" class="btn btn-sm btn-danger hapusdata" data-id="`+row.id+`">Hapus</a>
                         </div>
                         `
                     }

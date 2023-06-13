@@ -49,6 +49,7 @@ route::get('/cdte/{id}', [HomeController::class, 'detail_treatment'])->name('cdt
 
 route::post('/sac', [HomeController::class, 'store_alamat'])->name('sac')->middleware('auth');
 route::post('/save', [HomeController::class, 'store'])->name('save')->middleware('auth');
+route::post('/ubtf', [HomeController::class, 'upload_buktitf'])->name('ubtf')->middleware('auth');
 route::get('/json_k', [HomeController::class, 'json_keranjang'])->name('json_k')->middleware('auth');
 route::get('/jap/{id}', [HomeController::class, 'json_alamat_pelanggan'])->name('jap')->middleware('auth');
 route::delete('/di/{id}', [HomeController::class, 'destroy_item'])->name('di')->middleware('auth');

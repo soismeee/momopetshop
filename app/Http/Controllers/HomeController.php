@@ -484,4 +484,29 @@ class HomeController extends Controller
             ]);
         }
     }
+
+    public function upload_buktitf(Request $request){
+        $rules = Validator::make($request->all(), [
+            'bukti' => 'required',
+        ]);
+
+        if ($rules->fails()) {
+            return response()->json([
+                'status' => 401,
+                'message' => 'Data tidak bisa diinputkan',
+            ]);
+        } else {
+            $upload_bukti = Transaksi::find($request->id);
+            $upload_bukti->bukti = $request->file('bukti')->getClientOriginalName();
+            $upload_bukti->update();
+
+            if ($request->hasFile('bukti')) {
+                $request->file('bukti')->move('Gambar_upload/bukti_pembayaran/', $request->file('bukti')->getClientOriginalName());
+            }
+            return response()->json([
+                'status' => 200,
+                'message' => 'Bukti pembayaran berhasil dikirim',
+            ]);
+        }
+    }
 }

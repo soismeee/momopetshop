@@ -72,7 +72,7 @@
                     if(response.status == 401) {
                         let datakosong =
                         `<tr class="text-center">
-                            <td colspan="6">`+response.errors+`</td>
+                            <td colspan="8">`+response.errors+`</td>
                         </tr>`
                         $('table tbody').append(datakosong);
                     }else{
