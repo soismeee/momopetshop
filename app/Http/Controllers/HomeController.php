@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AlamatPelanggan;
 use App\Models\Barang;
 use App\Models\DetailTransaksi;
 use App\Models\Hewan;
@@ -12,6 +13,7 @@ use App\Models\TransaksiTreatment;
 use App\Models\Treatment;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class HomeController extends Controller
 {
@@ -232,6 +234,7 @@ class HomeController extends Controller
         $transaksi->id = date("YmdHis").intval(microtime(true));
         $transaksi->user_id = auth()->user()->id;
         $transaksi->total_jumlah = $request->total_jumlah;
+        $transaksi->ac_id = $request->ac_id;
         $transaksi->total_harga = $request->total_harga;
         $transaksi->tgl_transaksi = date("Y-m-d");
         $transaksi->total_bayar = $request->total_bayar;
@@ -432,5 +435,53 @@ class HomeController extends Controller
             'status' => 200,
             'message' => 'Data order treatment berhasil di hapus',
         ]);
+    }
+
+    public function json_alamat_pelanggan($id){
+        $alamat = AlamatPelanggan::where('user_id', $id)->count();
+        if ($alamat == null){
+            return response()->json([
+                'status' => 404,
+                'errors' => 'Tidak ada alamat di database'
+            ]);
+        } else {
+            $skip = 1;
+            $limit = $alamat - $skip;
+            return response()->json([
+                'status' => 200,
+                'data' => AlamatPelanggan::skip($skip)->take($limit)->get(),
+                'first' => AlamatPelanggan::where('user_id', $id)->first()
+            ]);
+        }
+        
+    }
+
+    public function store_alamat(Request $request){
+        $validate = Validator::make($request->all(), [
+            'label_alamat' => 'required',
+            'nama_customer' => 'required',
+            'telepon' => 'required',
+            'alamat_lengkap' => 'required',
+        ]);
+
+        if($validate->fails()){
+            return response()->json([
+                'status' => 401,
+                'errors' => 'Alamat tidak boleh kosong'
+            ]);
+        } else {
+            $alamat = new AlamatPelanggan();
+            $alamat->user_id = auth()->user()->id;
+            $alamat->label_alamat = $request->label_alamat;
+            $alamat->nama = $request->nama_customer;
+            $alamat->telepon = $request->telepon;
+            $alamat->alamat_lengkap = $request->alamat_lengkap;
+            $alamat->save();
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Alamat baru berhasil ditambahkan'
+            ]);
+        }
     }
 }
