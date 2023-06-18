@@ -94,8 +94,7 @@
                                     <h6 class="mb-0">{{ auth()->user()->name }}</h6>
                                     <p class="mb-0 font-size-11 text-muted">{{ auth()->user()->email }}</p>
                                 </div>
-                                <a class="dropdown-item" href="contacts-profile.html"><i class="mdi mdi-account-circle text-muted font-size-16 align-middle me-2"></i> <span class="align-middle">Profile</span></a>
-                                <a class="dropdown-item d-flex align-items-center" href="#"><i class="mdi mdi-cog-outline text-muted font-size-16 align-middle me-2"></i> <span class="align-middle me-3">Settings</span></a>
+                                <a class="dropdown-item" href="{{ route('profil') }}"><i class="mdi mdi-account-circle text-muted font-size-16 align-middle me-2"></i> <span class="align-middle">Profile</span></a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalLogout"><i class="mdi mdi-logout text-muted font-size-16 align-middle me-2"></i> <span class="align-middle">Logout</span></a>
                             </div>

@@ -61,6 +61,35 @@ class AuthController extends Controller
         return redirect('login')->with('success', 'Berhasil registrasi, silahkan login');
     }
 
+    public function profil(){
+        return view('home.profil', [
+            'title' => 'Profil pengguna',
+        ]);
+    }
+
+    public function update_user(Request $request){
+        $rules = $request->validate([
+            'name' => 'required',
+            'username' => 'required|max:255',
+        ]);
+
+        $user = User::find($request->id);
+        if($request->name == $user->name && $request->username == $user->username && $request->password == null){
+            return redirect('/profil')->with('warning', 'Tidak ada perubahan profil!!');
+        }else{
+            if ($request->password) {
+                $rules['password'] = Hash::make($request->password);
+            }
+            User::where('id', $request->id)->update($rules);
+            
+            Auth::logout();
+    
+            request()->session()->invalidate();
+            request()->session()->regenerateToken();
+            return redirect('/login')->with('success', 'Data user berhasil diubah!!');
+        }
+    }
+
     // fungsi logout
     public function logout()
     {

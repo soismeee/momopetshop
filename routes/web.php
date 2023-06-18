@@ -29,6 +29,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 
 // ROUTE TELAH LOGIN //
 route::get('/home', [HomeController::class, 'home'])->name('home')->middleware('auth');
+route::get('/profil', [AuthController::class, 'profil'])->name('profil')->middleware('auth');
+route::post('/chusr', [AuthController::class, 'update_user'])->name('chusr')->middleware('auth');
 
 // route menu customer 
 route::get('/ck', [HomeController::class, 'keranjang'])->name('ck')->middleware('auth');
