@@ -230,6 +230,11 @@ class HomeController extends Controller
     public function store(Request $request){
         // dd($request);
 
+        $rules = $request->validate([
+            'ac_id' => 'required',
+            'metode_bayar' => 'required',
+        ]);
+
         $transaksi = new Transaksi();
         $transaksi->id = date("YmdHis").intval(microtime(true));
         $transaksi->user_id = auth()->user()->id;
@@ -254,7 +259,11 @@ class HomeController extends Controller
                 'gambar' => $request->gambar[$key],
                 'keterangan' => $request->keterangan[$key],
             ]);
+            // if($request->kategori[$key] == "hewan"){
 
+            // }else{
+
+            // }
             Keranjang::where('id', $request->id[$key])->update(['status' => 1]);
         }
 

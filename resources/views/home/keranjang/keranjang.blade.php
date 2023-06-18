@@ -125,7 +125,11 @@
                                                     <p class="text-muted text-truncate mb-4">Data alamat pengiriman customer</p>
                                                     <div class="mb-3">
                                                         <div class="row" id="list_alamat">
-                                                            
+                                                            @error('ac_id')
+                                                                <div class="text-danger">
+                                                                    <strong>Masukan informasi alamat terlebih dahulu.</strong>
+                                                                </div>
+                                                            @enderror
                                                         </div>
                                                     </div>
                                                 </div>
@@ -387,7 +391,7 @@
                         $('#add-alamat').addClass('btn-primary');
                         $('#add-alamat').html('Simpan Data');
                         $('#list_alamat').empty();
-                        tabel()
+                        alamat()
                     }
                 }
             });
