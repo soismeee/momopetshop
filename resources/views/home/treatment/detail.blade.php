@@ -41,7 +41,6 @@
                                             </div>
 
                                             <div class="px-4 mt-2">
-
                                                 <div class="text-end mt-3">
                                                     <a href="{{ url('/cht') }}/{{ $treatment->id }}" class="btn btn-success w-sm text-truncate ms-2">
                                                         <i class="bx bx-send ms-2 align-middle"></i> Pesan sekarang

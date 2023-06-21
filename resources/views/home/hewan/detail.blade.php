@@ -115,6 +115,8 @@
 <script>
     let jumlah = document.getElementById("jumlah");
     jumlah.addEventListener("keyup", function (e) {
+        let nilai = jumlah.value;
+        if(!nilai){jumlah.value = null;}
         let stok = "{{ $hewan->jumlah_hewan }}"
         var a = parseInt(stok);
         var b = parseInt(jumlah.value);
