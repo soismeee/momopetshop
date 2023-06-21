@@ -150,6 +150,11 @@ class HomeController extends Controller
 
     public function checkout_barang(Request $request, $id){
         $peralatan = Barang::find($id);
+        $stok = $peralatan->stok_barang;
+
+        $peralatan->stok_barang = $stok-$request->jumlah;
+        $peralatan->update();
+
         $cek = Keranjang::where('user_id', auth()->user()->id)->where('brg_id', $peralatan->id)->where('status', 0)->first();
         if($cek){
             $update = Keranjang::find($cek->id);
@@ -175,12 +180,15 @@ class HomeController extends Controller
             'status' => 200,
             'message' => 'Berhasil memasukan ke dalam keranjang'
         ]);
-
     }
     
     public function checkout_hewan(Request $request, $id){
         // masih dalam proses pembuatan jalur ketika cekout, apakah akan menggunakan response json atau redirect
         $hewan = Hewan::find($id);
+        $jml = $hewan->jumlah_hewan;
+
+        $hewan->jumlah_hewan = $jml-$request->jumlah;
+        $hewan->update();
         
         $cek = Keranjang::where('user_id', auth()->user()->id)->where('brg_id', $hewan->id)->where('status', 0)->first();
         if($cek){
@@ -318,6 +326,25 @@ class HomeController extends Controller
     }
 
     public function destroy_item($id){
+        $keranjang = Keranjang::find($id);
+        $item = $keranjang->brg_id;
+        $kategori = $keranjang->kategori;
+        $jml_item = $keranjang->jumlah;
+
+        if($kategori == "hewan"){
+            $hewan = Hewan::find($item);
+            $jml_hewan = $hewan->jumlah_hewan;
+
+            $hewan->jumlah_hewan = $jml_hewan+$jml_item;
+            $hewan->update();
+        }else{
+            $barang = Barang::find($item);
+            $jml_barang = $barang->stok_barang;
+
+            $barang->stok_barang = $jml_barang+$jml_item;
+            $barang->update();
+        }
+
         Keranjang::destroy($id);
         return response()->json([
             'status' => 200,
