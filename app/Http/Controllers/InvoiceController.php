@@ -121,7 +121,7 @@ class InvoiceController extends Controller
         ]);
     }
 
-    public function print_laporan(Request $request){
+    public function print_laporan_penjualan(Request $request){
         $rules = $request->validate([
             'awal' => 'required',
             'akhir' => 'required',
@@ -132,7 +132,7 @@ class InvoiceController extends Controller
 
         $transaksi = Transaksi::with('user')->whereBetween('tgl_transaksi',[$awal,$akhir])->get();
         $total = $transaksi->sum('total_harga');
-        return view('laporan.print_laporan', [
+        return view('laporan.print_laporan_penjualan', [
             'title' => 'Laporan Penjualan Penjualan',
             'orders' => $transaksi,
             'awal' => $awal,
@@ -182,6 +182,26 @@ class InvoiceController extends Controller
         return response()->json([
             'status' => 200,
             'message' => 'Data berhasil diproses'
+        ]);
+    }
+
+    public function print_laporan_treatment(Request $request){
+        $rules = $request->validate([
+            'awal' => 'required',
+            'akhir' => 'required',
+        ]);
+
+        $awal = $rules['awal'];
+        $akhir = $rules['akhir'];
+
+        $transaksi = TransaksiTreatment::with('user')->whereBetween('tgl_transaksi',[$awal,$akhir])->get();
+        $total = $transaksi->sum('harga_treatment');
+        return view('laporan.print_laporan_treatment', [
+            'title' => 'Laporan Transaksi Treatment',
+            'treatment' => $transaksi,
+            'awal' => $awal,
+            'akhir' => $akhir,
+            'total_transaksi' => $total
         ]);
     }
 }

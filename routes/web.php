@@ -121,4 +121,5 @@ route::post('/pt/{id}', [InvoiceController::class, 'proses_treatment'])->name('p
 route::get('/lo', [InvoiceController::class, 'laporan_order'])->name('lo')->middleware('auth');
 route::get('/lt', [InvoiceController::class, 'laporan_treatment'])->name('lt')->middleware('auth');
 
-route::post('/clo', [InvoiceController::class, 'print_laporan'])->name('clo')->middleware('auth');
+route::post('/clo', [InvoiceController::class, 'print_laporan_penjualan'])->name('clo')->middleware('auth');
+route::post('/clt', [InvoiceController::class, 'print_laporan_treatment'])->name('clt')->middleware('auth');
