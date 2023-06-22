@@ -23,6 +23,7 @@
     </style>
     <h2 class='tengah'>MOMOPETSHOP</h2>
     <h3 class='tengah'>Laporan Pendapatan Penjualan di momopetshop</h3>
+    <p class='tengah'>Periode tanggal : {{ date('d/m/Y', strtotime($awal)) }} s/d {{ date('d/m/Y', strtotime($akhir)) }}</p>
     <br/>
     <table>
         <tr>

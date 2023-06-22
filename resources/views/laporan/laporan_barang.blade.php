@@ -17,9 +17,22 @@
                                 <h4 class="card-title">Laporan Penjualan barang</h4>
                                 <p class="card-title-desc">Data penjualan barang</p>
                             </div>
-                            <div>
-                                <a href="{{ route('clo') }}" target="_blank" class="btn btn-primary">Cetak laporan</a>
-                            </div>
+                            <form action="{{ route('clo') }}" method="POST">
+                                @csrf
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <label for="form-label">Dari tanggal</label>
+                                        <input type="date" class="form-control" name="awal" id="awal" placeholder="Tanggal awal">
+                                    </div>
+                                    <div class="col-auto">
+                                        <label for="form-label">Sampai tanggal</label>
+                                        <input type="date" class="form-control" name="akhir" id="akhir" placeholder="Tanggal akhir">
+                                    </div>
+                                    <div class="col-auto">
+                                        <button class="btn btn-md btn-primary mt-4">Cetak laporan</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                     <div class="card-body">

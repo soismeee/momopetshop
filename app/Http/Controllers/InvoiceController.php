@@ -121,12 +121,22 @@ class InvoiceController extends Controller
         ]);
     }
 
-    public function print_laporan(){
-        $transaksi = Transaksi::with('user')->get();
+    public function print_laporan(Request $request){
+        $rules = $request->validate([
+            'awal' => 'required',
+            'akhir' => 'required',
+        ]);
+
+        $awal = $rules['awal'];
+        $akhir = $rules['akhir'];
+
+        $transaksi = Transaksi::with('user')->whereBetween('tgl_transaksi',[$awal,$akhir])->get();
         $total = $transaksi->sum('total_harga');
         return view('laporan.print_laporan', [
             'title' => 'Laporan Penjualan Penjualan',
             'orders' => $transaksi,
+            'awal' => $awal,
+            'akhir' => $akhir,
             'total_penjualan' => $total
         ]);
     }
