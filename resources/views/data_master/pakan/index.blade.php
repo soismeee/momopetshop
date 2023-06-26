@@ -194,6 +194,12 @@
             harga_barang.value = convertRupiah(this.value, "Rp. ");
         });
 
+        let jumlah = document.getElementById("stok_barang");
+        jumlah.addEventListener("keyup", function (e) {
+            let nilai = jumlah.value;
+            if(!nilai){jumlah.value = null;}
+        });
+
         function convertRupiah(angka, prefix) {
             var number_string = angka.replace(/[^,\d]/g, "").replace(/,/g,'').toString(),
                 split = number_string.split(","),

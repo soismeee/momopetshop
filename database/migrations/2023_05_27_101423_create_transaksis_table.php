@@ -16,7 +16,7 @@ class CreateTransaksisTable extends Migration
         Schema::create('transaksis', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('user_id')->index();
-            $table->uuid('ac_id')->index();
+            $table->uuid('ac_id')->index(); // alamat customer
             $table->string('total_jumlah');
             $table->string('total_harga');
             $table->string('tgl_transaksi');
