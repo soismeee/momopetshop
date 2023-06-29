@@ -108,6 +108,13 @@ class InvoiceController extends Controller
             'detail' => DetailTransaksi::where('trans_id', $id)->get()
         ]);
     }
+    
+    public function print_treatment($id){
+        return view('invoice.print_treatment', [
+            'title' => 'Struk treatment',
+            'transaksi' => TransaksiTreatment::find($id)
+        ]);
+    }
 
     public function laporan_order(){
         return view('laporan.laporan_barang', [

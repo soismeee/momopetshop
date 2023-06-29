@@ -218,13 +218,19 @@ class HomeController extends Controller
 
     }
 
-    public function checkout_treatment($id){
-
+    public function checkout_treatment(Request $request, $id){
+        $rules = $request->validate([
+            'ac_id' => 'required',
+            'metode_bayar' => 'required',
+        ]);
+        
         $t = Treatment::find($id);
 
         $tt = new TransaksiTreatment();
         $tt->id = date("YmdHis").intval(microtime(true));
         $tt->user_id = auth()->user()->id;
+        $tt->ac_id = $request->ac_id;
+        $tt->metode_bayar = $request->metode_bayar;
         $tt->nama_treatment = $t->nama_treatment;
         $tt->harga_treatment = $t->harga_treatment;
         $tt->gambar_treatment = $t->gambar_treatment;
@@ -357,6 +363,7 @@ class HomeController extends Controller
             'title' => 'Transaksi',
         ]);
     }
+
     public function json_transaksi(){
         $columns = ['id','user_id','total_jumlah', 'total_harga', 'tgl_transaksi', 'total_bayar'];
         $orderBy = $columns[request()->input("order.0.column")];
@@ -473,6 +480,22 @@ class HomeController extends Controller
         ]);
     }
 
+    public function detail_order_treatment($id){
+        $tr = TransaksiTreatment::find($id);
+        if ($tr) {
+            return response()->json([
+                'status' => 200,
+                'data' => $tr
+            ]);
+        } else {
+            return response()->json([
+                'status' => 401,
+                'errors' => 'Data tidak ditemukan'
+            ]);
+        }
+        
+    }
+
     public function json_alamat_pelanggan($id){
         $alamat = AlamatPelanggan::where('user_id', $id)->count();
         if ($alamat == null){
@@ -535,6 +558,31 @@ class HomeController extends Controller
             $upload_bukti = Transaksi::find($request->id);
             $upload_bukti->bukti = $request->file('bukti')->getClientOriginalName();
             $upload_bukti->update();
+
+            if ($request->hasFile('bukti')) {
+                $request->file('bukti')->move('Gambar_upload/bukti_pembayaran/', $request->file('bukti')->getClientOriginalName());
+            }
+            return response()->json([
+                'status' => 200,
+                'message' => 'Bukti pembayaran berhasil dikirim',
+            ]);
+        }
+    }
+    
+    public function upload_buktitf_treatment(Request $request){
+        $rules = Validator::make($request->all(), [
+            'bukti' => 'required',
+        ]);
+
+        if ($rules->fails()) {
+            return response()->json([
+                'status' => 401,
+                'message' => 'Data tidak bisa diinputkan',
+            ]);
+        } else {
+            $upload_bukti_treatment = TransaksiTreatment::find($request->id);
+            $upload_bukti_treatment->bukti = $request->file('bukti')->getClientOriginalName();
+            $upload_bukti_treatment->update();
 
             if ($request->hasFile('bukti')) {
                 $request->file('bukti')->move('Gambar_upload/bukti_pembayaran/', $request->file('bukti')->getClientOriginalName());

@@ -20,12 +20,13 @@
                                 <thead class="table-light">
                                     <tr>
                                         <th width="5%">No</th>
-                                        <th width="15%">ID Pembelian</th>
+                                        <th width="10%">ID Pembelian</th>
                                         <th width="10%">Treatment</th>
-                                        <th width="20%">Total</th>
+                                        <th width="15%">Total</th>
                                         <th width="15%">Tanggal</th>
+                                        <th width="15%">Metode Bayar</th>
                                         <th width="10%">Status</th>
-                                        <th width="10%">#</th>
+                                        <th width="5%">#</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -39,6 +40,49 @@
         </div>
         <!-- End Page-content -->
     </div>
+
+    <!-- sample modal content -->
+    <div id="modalBuktiTF" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" data-bs-scroll="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Upload Bukti Transfer</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="form-uploadbukti">
+                    @csrf
+                    <div class="modal-body">
+                        <label class="form-label">Upload bukti transfer</label>
+                        <input type="hidden" id="id" name="id">
+                        <input type="file" class="form-control" name="bukti" id="bukti">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary waves-effect waves-light">Kirim Bukti Transfer </button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div id="modalDetail" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" data-bs-scroll="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Detail transaksi treatment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title" id="idpembelian">#</h4>
+                    <h5>Nama : {{ auth()->user()->name }}</h5>
+                    <h5 id="totalpembayaran">Total Pembayaran : Rp. 0</h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary waves-effect" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 @endsection
 
 @push('js')
@@ -103,6 +147,21 @@
                     "targets": "_all",
                     "defaultContent": "-",
                     "render": function(data, type, row, meta){
+                        if (row.metode_bayar == "tunai") {
+                            return '<span class="badge badge-pill badge-soft-primary font-size-12">Tunai</span>';
+                        } else {
+                            if (row.bukti == null) {
+                                return `<span class="badge badge-pill badge-soft-dark font-size-12">Transfer</span> <button class="btn btn-sm btn-dark buktitf" data-id="`+row.id+`">Bukti TF</button>`;  
+                            } else {
+                                return `<span class="badge badge-pill badge-soft-dark font-size-12">Transfer, bukti terlampir</span>`;  
+                            }
+                        }
+                    }
+                },
+                {
+                    "targets": "_all",
+                    "defaultContent": "-",
+                    "render": function(data, type, row, meta){
                         if (row.status == 1) {
                             return '<span class="badge badge-pill badge-soft-success font-size-12">Selesai</span>';
                         } else {
@@ -117,7 +176,7 @@
                     if (row.status == 1) {
                         return `
                         <div class="btn-group">
-                            <a href="/dtc/`+row.id+`" title="Edit" data-id="" class="btn btn-sm btn-primary px-2">Lihat</a>
+                            <a href="#" title="Edit" data-id="`+row.id+`" class="btn btn-sm btn-primary px-2 show">Lihat</a>
                          </div>
                         `
                     } else {
@@ -153,6 +212,12 @@
             });
         }
 
+        $(document).on('click', '.buktitf', function(e){
+            let id = $(this).data('id');
+            $('#id').val(id)
+            $('#modalBuktiTF').modal('show')
+        });
+
         $(document).on('click', '.hapusdata', function(e) {
             let id = $(this).data('id');
             Swal.fire({
@@ -187,5 +252,40 @@
             })
         });
 
+        $(document).on('click', '.show', function(e){
+            let id = $(this).data('id');
+            $.ajax({
+                type: "GET",
+                url: "{{ url('sdt') }}/"+id,
+                dataType: "json",
+                success: function(response){
+                    $('#idpembelian').html('ID: #'+response.data.id);
+                    $('#totalpembayaran').html("Total Pembayaran : Rp. "+rupiah(response.data.harga_treatment));
+                    $('#modalDetail').modal('show');
+                }
+            });
+        });
+
+        $('#form-uploadbukti').on('submit', function(e){
+            e.preventDefault();
+            $.ajax({
+                url: "{{ url('/ubtft') }}",
+                method: "POST",
+                data: new FormData(this),
+                dataType:'JSON',
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function(response) {
+                    console.log(response);
+                    if (response.status == 401) {
+                        alert('Bukti TF tidak dapat dikirim')   
+                    } else {
+                        $('#modalBuktiTF').modal('hide')
+                        table.ajax.reload();
+                    }
+                }
+            });
+        });
     </script>
 @endpush

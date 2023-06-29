@@ -16,6 +16,7 @@ class CreateTransaksiTreatmentsTable extends Migration
         Schema::create('transaksi_treatments', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('user_id')->index();
+            $table->string('ac_id'); // alamat customer
             $table->string('nama_treatment');
             $table->string('harga_treatment');
             $table->string('metode_bayar')->nullable();
@@ -23,6 +24,7 @@ class CreateTransaksiTreatmentsTable extends Migration
             $table->string('keterangan_treatment');
             $table->string('tgl_transaksi');
             $table->string('total_bayar')->default(0);
+            $table->string('bukti')->nullable();
             $table->string('status')->default(0);
             $table->timestamps();
         });

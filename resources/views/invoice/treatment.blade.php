@@ -143,7 +143,7 @@
                         if (row.status == 1) {
                             return `
                             <div class="btn-group">
-                                <a href="#" class="btn btn-sm btn-success">Cetak</a>
+                                <a href="{{ url('print_t') }}/`+row.id+`" class="btn btn-sm btn-success">Cetak</a>
                             </div>
                             `                        
                         } else {

@@ -246,7 +246,7 @@
             }).format(number);
         }
 
-        $(document).ready(function () {
+        $(document).ready(() => {
             tabel()
             alamat()
         });
