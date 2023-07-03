@@ -8,6 +8,7 @@ use App\Http\Controllers\KategoriPakanController;
 use App\Http\Controllers\KategoriPHController;
 use App\Http\Controllers\PakanController;
 use App\Http\Controllers\PeralatanHewanController;
+use App\Http\Controllers\StokOpnameController;
 use App\Http\Controllers\TreatmentController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -118,6 +119,10 @@ route::post('/json_do', [InvoiceController::class, 'json_orders'])->name('json_d
 route::post('/json_dit', [InvoiceController::class, 'json_treatment'])->name('json_dit')->middleware('auth');
 route::post('/proses/{id}', [InvoiceController::class, 'proses'])->name('proses')->middleware('auth');
 route::post('/pt/{id}', [InvoiceController::class, 'proses_treatment'])->name('pt')->middleware('auth');
+
+// route opname
+route::get('/sopp', [StokOpnameController::class, 'opname_alat_pakan'])->name('sopp')->middleware('auth');
+route::get('/soh', [StokOpnameController::class, 'opname_hewan'])->name('soh')->middleware('auth');
 
 // route laporan
 route::get('/lo', [InvoiceController::class, 'laporan_order'])->name('lo')->middleware('auth');

@@ -108,6 +108,17 @@
                         <li><a href="{{ route('dp.index') }}" data-key="t-advanced-tables">Pakan</a></li>
                     </ul>
                 </li>
+                
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow">
+                        <i class="bx bx-file-find icon nav-icon"></i>
+                        <span class="menu-item" data-key="t-tables">Stok Opname</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route('sopp') }}" data-key="t-basic-tables">Peralatan dan pakan</a></li>
+                        <li><a href="{{ route('soh') }}" data-key="t-advanced-tables">Hewan</a></li>
+                    </ul>
+                </li>
 
                 <li>
                     <a href="{{ route('dt.index') }}">

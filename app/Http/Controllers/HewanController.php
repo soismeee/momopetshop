@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Hewan;
+use App\Models\HewanMasuk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -74,9 +75,19 @@ class HewanController extends Controller
             $save_dh->keterangan_hewan = $request->keterangan_hewan;
             $save_dh->gambar_hewan = $request->file('gambar_hewan')->getClientOriginalName();
             $save_dh->save();
+
+            $hewan_id = $save_dh->id;
+            $hewan_masuk = new HewanMasuk();
+            $hewan_masuk->hewan_id = $hewan_id;
+            $hewan_masuk->jumlah = $request->jumlah_hewan;
+            $hewan_masuk->harga = preg_replace('/[^0-9]/', '', $request->harga_hewan);
+            $hewan_masuk->save();
+
             if ($request->hasFile('gambar_hewan')) {
                 $request->file('gambar_hewan')->move('Gambar_upload/hewan/', $request->file('gambar_hewan')->getClientOriginalName());
             }
+
+
             return response()->json([
                 'status' => 200,
                 'message' => 'Hewan baru berhasil di masukan ke aplikasi',

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\KategoriBarang;
 use App\Models\Barang;
+use App\Models\BarangMasuk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -78,6 +79,14 @@ class PakanController extends Controller
             if ($request->hasFile('gambar_barang')) {
                 $request->file('gambar_barang')->move('Gambar_upload/barang/', $request->file('gambar_barang')->getClientOriginalName());
             }
+            $barang_id = $save_kph->id;
+            $barang_masuk = new BarangMasuk();
+            $barang_masuk->barang_id = $barang_id;
+            $barang_masuk->kategori = "pakan";
+            $barang_masuk->jumlah = $request->stok_barang;
+            $barang_masuk->harga = preg_replace('/[^0-9]/', '', $request->harga_barang);
+            $barang_masuk->save();
+
             return response()->json([
                 'status' => 200,
                 'message' => 'Peralatan Hewan baru berhasil di buat',
