@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\AlamatPelanggan;
 use App\Models\Barang;
+use App\Models\BarangKeluar;
 use App\Models\DetailTransaksi;
 use App\Models\Hewan;
+use App\Models\HewanKeluar;
 use App\Models\KategoriBarang;
 use App\Models\Keranjang;
 use App\Models\Transaksi;
@@ -273,12 +275,25 @@ class HomeController extends Controller
                 'gambar' => $request->gambar[$key],
                 'keterangan' => $request->keterangan[$key],
             ]);
-            // if($request->kategori[$key] == "hewan"){
-
-            // }else{
-
-            // }
+            
+            $keranjang = Keranjang::find($request->id[$key]);
+            $kategori = $keranjang->kategori;
+            if ($kategori == "hewan") {
+                HewanKeluar::create([
+                    'hewan_id' => $keranjang->brg_id,
+                    'jumlah' => $request->jumlah[$key],
+                    'harga' => $request->harga[$key]
+                ]);
+            } else {
+                BarangKeluar::create([
+                    'barang_id' => $keranjang->brg_id,
+                    'kategori' => $request->kategori[$key],
+                    'jumlah' => $request->jumlah[$key],
+                    'harga' => $request->harga[$key]
+                ]);
+            }
             Keranjang::where('id', $request->id[$key])->update(['status' => 1]);
+            
         }
 
         return redirect('co');

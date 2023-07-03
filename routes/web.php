@@ -122,7 +122,12 @@ route::post('/pt/{id}', [InvoiceController::class, 'proses_treatment'])->name('p
 
 // route opname
 route::get('/sopp', [StokOpnameController::class, 'opname_alat_pakan'])->name('sopp')->middleware('auth');
+route::get('/json_sopp', [StokOpnameController::class, 'json_sopp'])->name('json_sopp')->middleware('auth');
+route::get('/csopp', [StokOpnameController::class, 'cetak_sopp'])->name('csopp')->middleware('auth');
+
 route::get('/soh', [StokOpnameController::class, 'opname_hewan'])->name('soh')->middleware('auth');
+route::get('/json_soh', [StokOpnameController::class, 'json_soh'])->name('json_soh')->middleware('auth');
+route::get('/csoh', [StokOpnameController::class, 'cetak_soh'])->name('csoh')->middleware('auth');
 
 // route laporan
 route::get('/lo', [InvoiceController::class, 'laporan_order'])->name('lo')->middleware('auth');
