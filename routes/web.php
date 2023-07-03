@@ -90,6 +90,7 @@ route::post('/json_dkp', [KategoriPakanController::class, 'json'])->middleware('
 route::resource('/dh', HewanController::class)->middleware('auth');
 route::post('/json_dh', [HewanController::class, 'json'])->middleware('auth');
 route::post('dh_update/{id}', [HewanController::class, 'update'])->middleware('auth');
+route::post('/adth', [HewanController::class, 'add_stok'])->middleware('auth');
 
 // peralatan hewan
 route::resource('/dph', PeralatanHewanController::class)->middleware('auth');

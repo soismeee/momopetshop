@@ -175,12 +175,6 @@ class HewanController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         Hewan::destroy($id);
@@ -188,5 +182,34 @@ class HewanController extends Controller
             'status' => 200,
             'message' => 'Data hewan berhasil di hapus',
         ]);
+    }
+
+    public function add_stok(Request $request){
+        $id = $request->id;
+        $hewan = Hewan::find($id);
+        $stok = $hewan->jumlah_hewan;
+
+        $hewan->jumlah_hewan = $stok+$request->jumlah;
+        $hewan->update();
+        
+        $hewan_masuk = new HewanMasuk();
+        $hewan_masuk->hewan_id = $id;
+        $hewan_masuk->harga = $hewan->harga_hewan;
+        $hewan_masuk->jumlah = $request->jumlah;
+        $hewan_masuk->save();
+
+        if ($hewan) {
+            return response()->json([
+                'status' => 200,
+                'message' => 'Berhasil menambahkan jumlah hewan'
+            ]);
+        } else {
+            return response()->json([
+                'status' => 401,
+                'errors' => 'Gagal menambahkan jumlah hewan'
+            ]);
+        }
+        
+
     }
 }

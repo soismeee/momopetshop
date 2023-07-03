@@ -100,8 +100,12 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Hewan</h4>
-                                <p class="card-title-desc">Data Hewan</p>
+                                <div class="d-flex justify-content-between">
+                                    <div class="col-lg-8 col-md-8 col-sm-12">
+                                        <h4 class="card-title">Hewan</h4>
+                                        <p class="card-title-desc">Data Hewan</p>
+                                    </div>
+                                </div>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -113,9 +117,10 @@
                                                 <th width="15%">Harga</th>
                                                 <th width="10%">Jumlah</th>
                                                 <th width="10%">Umur</th>
-                                                <th width="30%">Ket</th>
+                                                <th width="15%">Ket</th>
                                                 <th width="10%">Gambar</th>
-                                                <th width="5%">#</th>
+                                                <th width="10%">Tambah</th>
+                                                <th width="10%">#</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
@@ -130,6 +135,29 @@
         </div>
         <!-- End Page-content -->
     </div>
+
+    <!-- sample modal content -->
+    <div id="modalStok" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" data-bs-scroll="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Modal tambah stok</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-12">
+                        <label for="form-label">Tambah Stok</label>
+                        <input type="hidden" name="idstok" id="idstok">
+                        <input type="number" class="form-control" name="jumlah_stok" id="jumlah_stok">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Batal</button>
+                    <button class="btn btn-primary waves-effect waves-light" id="tambah_stok">Tambah Stok</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 @endsection
 
 @push('js')
@@ -213,6 +241,15 @@
                     "defaultContent": "-",
                     "render": function(data, type, row, meta){
                         return `<img src="/Gambar_upload/hewan/`+row.gambar_hewan+`" height="50px">`
+                    }
+                },
+                {
+                    "targets": "_all",
+                    "defaultContent": "-",
+                    "render": function(data, type, row, meta){
+                    return `
+                    <a href="#" title="Tambah stok" id="add-stok" data-id="`+row.id+`" class="btn btn-sm btn-primary">+ Jumlah</a>
+                    `
                     }
                 },
                 {
@@ -389,6 +426,33 @@
 
                 }
             })
+        });
+
+        $(document).on('click', '#add-stok', function(e) {
+            e.preventDefault();
+            idstok = ($(this).data('id'));
+            $('#idstok').val(idstok);
+            $('#modalStok').modal('show');  
+        })
+
+        $(document).on('click', '#tambah_stok', function(e){
+            let datastok = {'id': $('#idstok').val(), 'jumlah': $('#jumlah_stok').val(), '_token': '{{ csrf_token() }}' };
+            if(!$('#jumlah_stok').val()){ return sweetAlert('error', 'Jumlah stok harus diisi!!!') }
+            $.ajax({
+                url: "{{ url('adth') }}",
+                type: 'POST',
+                data: datastok,
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status == 401) {
+                        sweetAlert('error', response.errors);
+                    } else {
+                        sweetAlert('success', response.message);
+                        table.ajax.reload();
+                        $('#modalStok').modal('hide');  
+                    }
+                }
+            });
         });
     </script>
 @endpush
