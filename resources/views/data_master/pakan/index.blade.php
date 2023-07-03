@@ -91,7 +91,8 @@
                                                 <th width="20%">Nama</th>
                                                 <th width="20%">Harga</th>
                                                 <th width="10%">Stok</th>
-                                                <th width="40%">Ket</th>
+                                                <th width="30%">Ket</th>
+                                                <th width="10%">Tambah</th>
                                                 <th width="5%">#</th>
                                             </tr>
                                         </thead>
@@ -107,6 +108,29 @@
         </div>
         <!-- End Page-content -->
     </div>
+
+    <!-- sample modal content -->
+    <div id="modalStok" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" data-bs-scroll="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Modal tambah stok</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-12">
+                        <label for="form-label">Tambah Stok</label>
+                        <input type="hidden" name="idstok" id="idstok">
+                        <input type="number" class="form-control" name="jumlah_stok" id="jumlah_stok">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Batal</button>
+                    <button class="btn btn-primary waves-effect waves-light" id="tambah_stok">Tambah Stok</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 @endsection
 
 @push('js')
@@ -165,6 +189,15 @@
                     "defaultContent": "-",
                     "render": function(data, type, row, meta){
                     return row.keterangan_barang
+                    }
+                },
+                {
+                    "targets": "_all",
+                    "defaultContent": "-",
+                    "render": function(data, type, row, meta){
+                    return `
+                    <a href="#" title="Tambah stok" id="add-stok" data-id="`+row.id+`" class="btn btn-sm btn-primary">+ Stok</a>
+                    `
                     }
                 },
                 {
@@ -338,6 +371,33 @@
                     });
                 }
             })
+        });
+
+        $(document).on('click', '#add-stok', function(e) {
+            e.preventDefault();
+            idstok = ($(this).data('id'));
+            $('#idstok').val(idstok);
+            $('#modalStok').modal('show');  
+        })
+
+        $(document).on('click', '#tambah_stok', function(e){
+            let datastok = {'id': $('#idstok').val(), 'jumlah': $('#jumlah_stok').val(), '_token': '{{ csrf_token() }}' };
+            if(!$('#jumlah_stok').val()){ return sweetAlert('error', 'Jumlah stok harus diisi!!!') }
+            $.ajax({
+                url: "{{ url('adtap') }}",
+                type: 'POST',
+                data: datastok,
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status == 401) {
+                        sweetAlert('error', response.errors);
+                    } else {
+                        sweetAlert('success', response.message);
+                        table.ajax.reload();
+                        $('#modalStok').modal('hide');  
+                    }
+                }
+            });
         });
     </script>
 @endpush

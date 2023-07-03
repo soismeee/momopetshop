@@ -14,7 +14,7 @@ class PakanController extends Controller
     public function index()
     {
         return view('data_master.pakan.index', [
-            'title' => 'Peralatan Hewan',
+            'title' => 'Pakan Hewan',
             'kategori' => KategoriBarang::where('kategori', 'pakan')->get()
         ]);
     }

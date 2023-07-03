@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\KategoriBarang;
 use App\Models\Barang;
+use App\Models\BarangMasuk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -173,12 +174,6 @@ class PeralatanHewanController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         Barang::destroy($id);
@@ -186,5 +181,35 @@ class PeralatanHewanController extends Controller
             'status' => 200,
             'message' => 'Data peralatan hewan berhasil di hapus',
         ]);
+    }
+
+    public function add_stok(Request $request){
+        $id = $request->id;
+        $barang = Barang::find($id);
+        $stok = $barang->stok_barang;
+
+        $barang->stok_barang = $stok+$request->jumlah;
+        $barang->update();
+        
+        $barang_masuk = new BarangMasuk();
+        $barang_masuk->barang_id = $id;
+        $barang_masuk->kategori = $barang->kategori;
+        $barang_masuk->harga = $barang->harga_barang;
+        $barang_masuk->jumlah = $request->jumlah;
+        $barang_masuk->save();
+
+        if ($barang) {
+            return response()->json([
+                'status' => 200,
+                'message' => 'Berhasil menambahkan jumlah hewan'
+            ]);
+        } else {
+            return response()->json([
+                'status' => 401,
+                'errors' => 'Gagal menambahkan jumlah hewan'
+            ]);
+        }
+        
+
     }
 }
