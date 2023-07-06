@@ -6,15 +6,11 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateHewansTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('hewans', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->string('kode_hewan')->unique();
             $table->string('nama_hewan');
             $table->string('jkel');
             $table->string('tgl_lahir');
@@ -28,11 +24,6 @@ class CreateHewansTable extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('hewans');

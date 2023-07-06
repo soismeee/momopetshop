@@ -54,6 +54,7 @@ class PakanController extends Controller
         // dd($request);
         $rules = Validator::make($request->all(), [
             'kp_id' => 'required',
+            'kode_barang' => 'required|unique:barangs',
             'nama_barang' => 'required',
             'harga_barang' => 'required',
             'stok_barang' => 'required',
@@ -69,6 +70,7 @@ class PakanController extends Controller
             $save_kph = new Barang();
             $save_kph->id = Str::uuid()->toString();
             $save_kph->kb_id = $request->kp_id;
+            $save_kph->kode_barang = $request->kode_barang;
             $save_kph->kategori = 'pakan';
             $save_kph->nama_barang = $request->nama_barang;
             $save_kph->harga_barang = preg_replace('/[^0-9]/', '', $request->harga_barang);

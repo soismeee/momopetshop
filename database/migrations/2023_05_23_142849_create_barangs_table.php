@@ -16,6 +16,7 @@ class CreateBarangsTable extends Migration
         Schema::create('barangs', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('kb_id')->index();
+            $table->string('kode_barang')->unique();
             $table->string('kategori');
             $table->string('nama_barang');
             $table->string('harga_barang');

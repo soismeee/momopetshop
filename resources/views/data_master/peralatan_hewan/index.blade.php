@@ -25,9 +25,19 @@
                                     @csrf
                                     <input type="hidden" id="id" name="id">
                                     <input type="hidden" id="form" value="tambah">
-                                    <div class="mb-3">
-                                        <label for="formrow-firstname-input" class="form-label">Nama barang</label>
-                                        <input type="text" class="form-control input" placeholder="Masukan nama barang" name="nama_barang" id="nama_barang">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="mb-3">
+                                                <label for="formrow-firstname-input" class="form-label">Kode barang</label>
+                                                <input type="text" class="form-control input" placeholder="Masukan kode barang" name="kode_barang" id="kode_barang">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="mb-3">
+                                                <label for="formrow-firstname-input" class="form-label">Nama barang</label>
+                                                <input type="text" class="form-control input" placeholder="Masukan nama barang" name="nama_barang" id="nama_barang">
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div class="row">
@@ -191,7 +201,7 @@
                     "targets": "_all",
                     "defaultContent": "-",
                     "render": function(data, type, row, meta){
-                    return row.nama_barang
+                    return `<span class="badge bg-dark">`+row.kode_barang+`</span> `+row.nama_barang
                     }
                 },
                 {
@@ -305,6 +315,7 @@
             e.preventDefault();
             $('#add-data').addClass('disabled');
             $('#add-data').html(`<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Loading...`);
+            $('#kode_barang').attr('readonly', false);
             let form = $('#form').val();
             let url = '';
             if (form == 'ubah') {
@@ -354,6 +365,8 @@
                         $('.input').removeClass('is-invalid');
                         $('#id').val(response.data.id);
                         $('#nama_barang').val(response.data.nama_barang);
+                        $('#kode_barang').val(response.data.kode_barang);
+                        $('#kode_barang').attr('readonly', true);
                         $('#kph_id').val(response.data.kb_id);
                         harga_barang.value = convertRupiah(response.data.harga_barang, "Rp. ");
                         $('#stok_barang').val(response.data.stok_barang);

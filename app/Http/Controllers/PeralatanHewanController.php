@@ -57,6 +57,7 @@ class PeralatanHewanController extends Controller
         $rules = Validator::make($request->all(), [
             'kph_id' => 'required',
             'nama_barang' => 'required',
+            'kode_barang' => 'required|unique:barangs',
             'harga_barang' => 'required',
             'stok_barang' => 'required',
             'keterangan_barang' => 'required',
@@ -72,6 +73,7 @@ class PeralatanHewanController extends Controller
             $save_kph->id = Str::uuid()->toString();
             $save_kph->kb_id = $request->kph_id;
             $save_kph->kategori = 'alat';
+            $save_kph->kode_barang = $request->kode_barang;
             $save_kph->nama_barang = $request->nama_barang;
             $save_kph->harga_barang = preg_replace('/[^0-9]/', '', $request->harga_barang);
             $save_kph->stok_barang = $request->stok_barang;
@@ -81,6 +83,14 @@ class PeralatanHewanController extends Controller
             if ($request->hasFile('gambar_barang')) {
                 $request->file('gambar_barang')->move('Gambar_upload/barang/', $request->file('gambar_barang')->getClientOriginalName());
             }
+
+            $barang_id = $save_kph->id;
+            $barang_masuk = new BarangMasuk();
+            $barang_masuk->barang_id = $barang_id;
+            $barang_masuk->kategori = "alat";
+            $barang_masuk->jumlah = $request->stok_barang;
+            $barang_masuk->harga = preg_replace('/[^0-9]/', '', $request->harga_barang);
+            $barang_masuk->save();
             return response()->json([
                 'status' => 200,
                 'message' => 'Peralatan Hewan baru berhasil di buat',

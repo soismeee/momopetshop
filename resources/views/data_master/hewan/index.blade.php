@@ -31,6 +31,27 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="mb-3">
+                                                <label for="formrow-firstname-input" class="form-label">Kode Hewan </label>
+                                                <input type="text" class="form-control input" placeholder="Masukan kode hewan" name="kode_hewan" id="kode_hewan">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="mb-3">
+                                                <label for="harga" class="form-label">Harga Hewan</label>
+                                                <input type="text" class="form-control input" placeholder="harga hewan" id="harga_hewan" name="harga_hewan">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        {{-- <div class="col-md-3">
+                                            <div class="mb-3">
+                                                <label for="tinggi_hewan" class="form-label">Tinggi hewan</label>
+                                                <input type="number" class="form-control input" placeholder="Tinggi Hewan" id="tinggi_hewan" name="tinggi_hewan">
+                                            </div>
+                                        </div> --}}
+                                        <div class="col-md-3">
+                                            <div class="mb-3">
                                                 <label for="formrow-firstname-input" class="form-label">Jenis Kelamin</label>
                                                 <select name="jkel" id="jkel" class="form-select input">
                                                     <option value="Jantan">Jantan</option>
@@ -44,25 +65,10 @@
                                                 <input type="date" class="form-control input" placeholder="Masukan tanggal lahir" name="tgl_lahir" id="tgl_lahir">
                                             </div>
                                         </div>
-                                    </div>
-
-                                    <div class="row">
                                         <div class="col-md-3">
                                             <div class="mb-3">
                                                 <label for="berat_hewan" class="form-label">Berat hewan</label>
                                                 <input type="number" class="form-control input" placeholder="Berat Hewan" id="berat_hewan" name="berat_hewan">
-                                            </div>
-                                        </div>
-                                        {{-- <div class="col-md-3">
-                                            <div class="mb-3">
-                                                <label for="tinggi_hewan" class="form-label">Tinggi hewan</label>
-                                                <input type="number" class="form-control input" placeholder="Tinggi Hewan" id="tinggi_hewan" name="tinggi_hewan">
-                                            </div>
-                                        </div> --}}
-                                        <div class="col-md-3">
-                                            <div class="mb-3">
-                                                <label for="harga" class="form-label">Harga Hewan</label>
-                                                <input type="text" class="form-control input" placeholder="harga hewan" id="harga_hewan" name="harga_hewan">
                                             </div>
                                         </div>
                                         <div class="col-md-3">
@@ -194,7 +200,7 @@
                     "targets": "_all",
                     "defaultContent": "-",
                     "render": function(data, type, row, meta){
-                    return row.nama_hewan
+                    return `<span class="badge bg-dark">`+row.kode_hewan+`</span> `+ row.nama_hewan
                     }
                 },
                 {
@@ -333,6 +339,7 @@
             e.preventDefault();
             $('#add-data').addClass('disabled');
             $('#add-data').html(`<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Loading...`);
+            $('#kode_hewan').attr('readonly', false);
             let form = $('#form').val();
             let url = '';
             if (form == 'ubah') {
@@ -379,6 +386,8 @@
                     } else {
                         $('.input').removeClass('is-invalid');
                         $('#id').val(response.data.id);
+                        $('#kode_hewan').val(response.data.kode_hewan);
+                        $('#kode_hewan').attr('readonly', true);
                         $('#nama_hewan').val(response.data.nama_hewan);
                         $('#jkel').val(response.data.jkel);
                         $('#tgl_lahir').val(response.data.tgl_lahir);
