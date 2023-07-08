@@ -312,6 +312,12 @@
         {{-- <script src="/assets/js/pages/dashboard.init.js"></script> --}}
 
         <script src="/assets/js/app.js"></script>
+        <script>
+            window.onload = function() {
+                1024 <= window.innerWidth && window.innerWidth <= 1366 && (document.body.setAttribute("data-sidebar-size",
+                    "lg"))
+            };
+        </script>
         @stack('js')
     </body>
 

@@ -12,7 +12,7 @@ class TreatmentController extends Controller
     public function index()
     {
         return view('data_master.treatment.index', [
-            'title' => 'Peralatan Hewan',
+            'title' => 'Data Treatment',
         ]);
     }
 
@@ -79,46 +79,76 @@ class TreatmentController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        //
+        $show_dt = Treatment::find($id);
+        if ($show_dt) {
+            return response()->json([
+                'status' => 200,
+                'data' => $show_dt
+            ]);
+        } else {
+            return response()->json([
+                'status' => 401,
+                'message' => 'data tidak ditemukan'
+            ]);
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
+        $validate = Validator::make($request->all(), [
+            'nama_treatment' => 'required',
+            'harga_treatment' => 'required',
+            'status_treatment' => 'required',
+            'keterangan_treatment' => 'required',
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json([
+                'status' => 401,
+                'errors' => 'Data tidak berhasil diambil',
+            ]);
+        } else {
+            $update_dt = Treatment::find($id);
+
+            if($request->hasFile('gambar_treatment') == null &&
+            $update_dt->nama_treatment == $request->nama_treatment &&
+            $update_dt->harga_treatment == $request->harga_treatment &&
+            $update_dt->status_treatment == $request->status_treatment &&
+            $update_dt->keterangan_treatment == $request->keterangan_treatment)
+            {
+                return response()->json([
+                    'status' => 201,
+                    'message' => 'Tidak ada data yang diubah',
+                ]);
+            }
+
+            if ($update_dt) {
+                if ($request->hasFile('gambar_treatment')) {
+                    $request->file('gambar_treatment')->move('Gambar_upload/treatment/', $request->file('gambar_treatment')->getClientOriginalName());
+                    $update_dt->gambar_treatment = $request->file('gambar_treatment')->getClientOriginalName();
+                }
+
+                $update_dt->nama_treatment = $request->nama_treatment;
+                $update_dt->status_treatment = $request->status_treatment;
+                $update_dt->harga_treatment = preg_replace('/[^0-9]/', '', $request->harga_treatment);
+                $update_dt->keterangan_treatment = $request->keterangan_treatment;
+                $update_dt->update();
+
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Data berhasil diubah',
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'Data tidak bisa di ubah',
+                ]);
+            }
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         Treatment::destroy($id);

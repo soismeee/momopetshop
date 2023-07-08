@@ -23,6 +23,8 @@
                             <div class="card-body">
                                 <form id="form-treatment" enctype="multipart/form-data">
                                     @csrf
+                                    <input type="hidden" id="id" name="id">
+                                    <input type="hidden" id="form" value="tambah">
                                     <div class="mb-3">
                                         <label for="formrow-firstname-input" class="form-label">Nama treatment</label>
                                         <input type="text" class="form-control input" placeholder="Masukan nama treatment" name="nama_treatment" id="nama_treatment">
@@ -205,6 +207,8 @@
         // fungsi mengubah tombol simpan
         function tombolSimpan() {
             $('#add-data').removeClass('disabled');
+            $('#add-data').removeClass('btn-warning');
+            $('#add-data').addClass('btn-primary');
             $('#add-data').html('Simpan Data');
         }
 
@@ -232,8 +236,16 @@
             e.preventDefault();
             $('#add-data').addClass('disabled');
             $('#add-data').html(`<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Loading...`);
+            let form = $('#form').val();
+            let url = '';
+            if (form == 'ubah') {
+                let id = $('#id').val();
+                url = "{{ url('dt_update') }}/"+id
+            } else {
+                url = "{{ route('dt.index') }}"
+            }
             $.ajax({
-                url: "{{ route('dt.index') }}",
+                url: url,
                 method: "POST",
                 data: new FormData(this),
                 dataType:'JSON',
@@ -241,6 +253,7 @@
                 cache: false,
                 processData: false,
                 success: function(response) {
+                    $('#form').val('tambah');
                     if (response.status == 401) {
                         $('.input').addClass('is-invalid');
                         tombolSimpan()
@@ -249,6 +262,33 @@
                         sweetAlert('success', response.message);
                         reloadReset();
                         tombolSimpan();
+                    }
+                }
+            });
+        });
+
+        $(document).on('click', '#edit-data', function(e) {
+            e.preventDefault();
+            let id = $(this).data('id');
+            $('#add-data').text('Ubah data');
+            $('#add-data').removeClass('btn btn-primary');
+            $('#add-data').addClass('btn btn-warning');
+            $.ajax({
+                type: "GET",
+                url: "{{ route('dt.index') }}/" + id,
+                success: function(response) {
+                    if (response.status == 401) {
+                        sweetAlert('error', response.message);
+                    } else {
+                        $('.input').removeClass('is-invalid');
+                        $('#id').val(response.data.id);
+                        $('#nama_treatment').val(response.data.nama_treatment);
+                        $('#harga_treatment').val(response.data.harga_treatment);
+                        $('#status_treatment').val(response.data.status_treatment);
+                        $('#keterangan_treatment').val(response.data.keterangan_treatment);
+                        harga_treatment.value = convertRupiah(response.data.harga_treatment, "Rp. ");
+                        $('.label-gambar').html('Ubah gambar (biarkan kosong jika tidak ingin mengganti gambar)');
+                        $('#form').val('ubah');
                     }
                 }
             });

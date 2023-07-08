@@ -21,10 +21,12 @@
                                     </div>
 
                                     <div>
-                                        <h4 class="mt-4 pt-1 mb-0 font-size-22">Rp. {{ number_format($perbulan,0,',','.') }} </h4>
+                                        <h4 class="mt-4 pt-1 mb-0 font-size-22">Rp. {{ number_format($perbulan, 0, ',', '.') }}
+                                        </h4>
                                         <div class="d-flex mt-1 align-items-end overflow-hidden">
                                             <div class="flex-grow-1">
-                                                <p class="text-muted mb-0 text-truncate">Penjualan pada bulan {{ date('M') }}</p>
+                                                <p class="text-muted mb-0 text-truncate">Penjualan pada bulan
+                                                    {{ date('M') }}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -49,10 +51,13 @@
                                     </div>
 
                                     <div>
-                                        <h4 class="mt-4 pt-1 mb-0 font-size-22">Rp. {{ number_format($pertahun, 0,',','.') }} <span class="text-danger fw-medium font-size-13 align-middle"> </h4>
+                                        <h4 class="mt-4 pt-1 mb-0 font-size-22">Rp.
+                                            {{ number_format($pertahun, 0, ',', '.') }} <span
+                                                class="text-danger fw-medium font-size-13 align-middle"> </h4>
                                         <div class="d-flex mt-1 align-items-end overflow-hidden">
                                             <div class="flex-grow-1">
-                                                <p class="text-muted mb-0 text-truncate">Total penjualan pada tahun {{ date('Y') }}</p>
+                                                <p class="text-muted mb-0 text-truncate">Total penjualan pada tahun
+                                                    {{ date('Y') }}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -81,7 +86,8 @@
                                         <h4 class="mt-4 pt-1 mb-0 font-size-22">{{ $pelanggan }} </h4>
                                         <div class="d-flex mt-1 align-items-end overflow-hidden">
                                             <div class="flex-grow-1">
-                                                <p class="text-muted mb-0 text-truncate">Jumlah user yang terdaftar pada aplikasi ini</p>
+                                                <p class="text-muted mb-0 text-truncate">Jumlah user yang terdaftar pada
+                                                    aplikasi ini</p>
                                             </div>
                                         </div>
                                     </div>
@@ -89,7 +95,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="col-xl-3">
                         <div class="card">
                             <div class="card-body">
@@ -109,7 +115,8 @@
                                         <h4 class="mt-4 pt-1 mb-0 font-size-22">{{ $treatment }} </h4>
                                         <div class="d-flex mt-1 align-items-end overflow-hidden">
                                             <div class="flex-grow-1">
-                                                <p class="text-muted mb-0 text-truncate">Total treatment pada momopetshop</p>
+                                                <p class="text-muted mb-0 text-truncate">Total treatment pada momopetshop
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
@@ -145,7 +152,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="col-xl-3">
                         <div class="card">
                             <div class="card-body">
@@ -180,3 +187,7 @@
     </div>
     <!-- End Page-content -->
 @endsection
+@push('js')
+    {{-- <script src="/assets/js/jquery-3.5.1.js"></script> --}}
+    
+@endpush

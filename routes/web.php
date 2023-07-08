@@ -92,9 +92,9 @@ route::post('/json_dh', [HewanController::class, 'json'])->middleware('auth');
 route::post('dh_update/{id}', [HewanController::class, 'update'])->middleware('auth');
 route::post('/adth', [HewanController::class, 'add_stok'])->middleware('auth');
 
-route::post('/adtap', [PeralatanHewanController::class, 'add_stok'])->middleware('auth');
 // peralatan hewan
 route::resource('/dph', PeralatanHewanController::class)->middleware('auth');
+route::post('/adtap', [PeralatanHewanController::class, 'add_stok'])->middleware('auth');
 route::post('/json_dph', [PeralatanHewanController::class, 'json'])->middleware('auth');
 route::post('dph_update/{id}', [PeralatanHewanController::class, 'update'])->middleware('auth');
 route::post('/upload', [PeralatanHewanController::class, 'upload'])->middleware('auth');
@@ -108,6 +108,7 @@ route::post('dp_update/{id}', [PakanController::class, 'update'])->middleware('a
 // treatment
 route::resource('/dt', TreatmentController::class)->middleware('auth');
 route::post('/json_dt', [TreatmentController::class, 'json'])->middleware('auth');
+route::post('dt_update/{id}', [TreatmentController::class, 'update'])->middleware('auth');
 
 // ROUTE MANAJEMEN ADMIN DAN KARYAWAN //
 // route invoice
@@ -126,6 +127,8 @@ route::post('/pt/{id}', [InvoiceController::class, 'proses_treatment'])->name('p
 route::get('/sopp', [StokOpnameController::class, 'opname_alat_pakan'])->name('sopp')->middleware('auth');
 route::get('/json_sopp', [StokOpnameController::class, 'json_sopp'])->name('json_sopp')->middleware('auth');
 route::get('/csopp', [StokOpnameController::class, 'cetak_sopp'])->name('csopp')->middleware('auth');
+route::post('/esb/{id}', [StokOpnameController::class, 'update_barang'])->name('esb')->middleware('auth');
+route::post('/esh/{id}', [StokOpnameController::class, 'update_hewan'])->name('esh')->middleware('auth');
 
 route::get('/soh', [StokOpnameController::class, 'opname_hewan'])->name('soh')->middleware('auth');
 route::get('/json_soh', [StokOpnameController::class, 'json_soh'])->name('json_soh')->middleware('auth');

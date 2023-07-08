@@ -28,15 +28,17 @@
     <table>
         <tr>
             <th align="left" width="5%">No</th>
-            <th align="left" width="35%">Nama Barang</th>
-            <th align="left" width="20%">Kategori</th>
+            <th align="left" width="20%">Kode Barang</th>
+            <th align="left" width="30%">Nama Barang</th>
+            <th align="left" width="15%">Kategori</th>
             <th align="left" width="10%">Barang Masuk</th>
             <th align="left" width="10%">Barang Keluar</th>
-            <th align="left" width="20%">Stok Barang</th>
+            <th align="left" width="10%">Stok Barang</th>
         </tr>
         @foreach ($sopp as $item)
             <tr>
                 <td>{{ $loop->iteration }}</td>
+                <td>{{ $item['kode_barang'] }}</td>
                 <td>{{ $item['nama_barang'] }}</td>
                 <td>{{ $item['kategori'] }}</td>
                 <td>{{ $item['masuk'] }}</td>
@@ -45,6 +47,9 @@
             </tr>
         @endforeach
     </table>
+    <p style="margin-left: 68%">{{ auth()->user()->name }}</p>
+    <br><br><br><br>
+    <p style="margin-left: 65%">(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</p>
 </body>
 <script>
     print()

@@ -31,12 +31,14 @@
 
                                 <thead>
                                     <tr>
-                                        <th>#</th>
-                                        <th>Nama Barang</th>
-                                        <th>Kategori</th>
-                                        <th>Barang Masuk</th>
-                                        <th>Barang Keluar</th>
-                                        <th>Stok</th>
+                                        <th width="5%">#</th>
+                                        <th width="10%">Kode</th>
+                                        <th width="20%">Nama Barang</th>
+                                        <th width="10%">Kategori</th>
+                                        <th width="15%">Barang Masuk</th>
+                                        <th width="15%">Barang Keluar</th>
+                                        <th width="15%">Stok</th>
+                                        <th width="10%">Opsi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -57,6 +59,30 @@
             <!-- container-fluid -->
         </div>
         <!-- End Page-content -->
+
+        <!-- sample modal content -->
+        <div id="modalStok" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" data-bs-scroll="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="myModalLabel">Modal edit stok</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="col-12">
+                            <label for="form-label">Edit Stok</label>
+                            <input type="hidden" name="id" id="id">
+                            <input type="number" class="form-control" name="jumlah_stok" id="jumlah_stok">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Batal</button>
+                        <button class="btn btn-primary waves-effect waves-light" id="update_stok">Edit Stok</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        
     </div>
 @endsection
 
@@ -100,11 +126,13 @@
                             let body = `
                             <tr >
                                 <td>`+params.no+`</td>
+                                <td>`+params.kode_barang+`</td>
                                 <td>`+params.nama_barang+`</td>
                                 <td>`+params.kategori+`</td>
                                 <td>`+params.masuk+`</td>
                                 <td>`+params.keluar+`</td>
                                 <td>`+(parseInt(params.masuk)-parseInt(params.keluar))+`</td>
+                                <td><button class="btn btn-sm btn-primary" id="edit-stok" data-id="`+params.id+`">Edit Stok</button></td>
                             </tr>`
                             record += body
                         })
@@ -113,5 +141,43 @@
                 }
             });
         }
+
+        // template sweetalert
+        function sweetAlert(icon, title) {
+            Swal.fire({
+                icon: icon,
+                title: title,
+            });
+        }
+
+        $(document).on('click', '#edit-stok', function(e){
+            let id = $(this).data('id');
+            $('#id').val(id);
+            $('#modalStok').modal('show');
+        });
+        
+        $(document).on('click', '#update_stok', function(e){
+            if(!$('#jumlah_stok').val()){ return sweetAlert('error', 'Jumlah stok harus diisi!!!') }
+            let idstok = $('#id').val();
+            let bulanstok = $('#bulan').val();
+            let datastok = { 'jumlah': $('#jumlah_stok').val(), '_token': '{{ csrf_token() }}' };
+            $.ajax({
+                url: "{{ url('/esb') }}/"+idstok,
+                type: 'POST',
+                data: datastok,
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status == 401) {
+                        sweetAlert('error', response.errors);
+                    } else {
+                        $('#loading').show()
+                        $('table tbody').empty();
+                        $('#modalStok').modal('hide');  
+                        $('#jumlah_stok').val(null);
+                        tabel(bulanstok);
+                    }
+                }
+            });
+        });
     </script>
 @endpush

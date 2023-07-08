@@ -19,15 +19,17 @@ class StokOpnameController extends Controller
     }
 
     public function json_sopp(){
-        $barang = Barang::select('id', 'kategori', 'nama_barang', 'harga_barang', 'stok_barang')->get();
+        $barang = Barang::select('id', 'kode_barang', 'kategori', 'nama_barang', 'harga_barang', 'stok_barang')->orderBy('kategori', 'asc')->get();
         $no = 1;
-        foreach ($barang as $item) {
+        foreach ($barang as $b) {
             $data[] = [
                 'no' => $no,
-                'nama_barang' => $item->nama_barang,
-                'kategori' => $item->kategori,
-                'masuk' => BarangMasuk::where('barang_id', $item->id)->whereMonth('created_at', date('m', strtotime(request('bulan'))))->sum('jumlah'),
-                'keluar' => BarangKeluar::where('barang_id', $item->id)->whereMonth('created_at', date('m', strtotime(request('bulan'))))->sum('jumlah')
+                'id' => $b->id,
+                'kode_barang' => $b->kode_barang,
+                'nama_barang' => $b->nama_barang,
+                'kategori' => $b->kategori,
+                'masuk' => BarangMasuk::where('barang_id', $b->id)->whereMonth('created_at', date('m', strtotime(request('bulan'))))->sum('jumlah'),
+                'keluar' => BarangKeluar::where('barang_id', $b->id)->whereMonth('created_at', date('m', strtotime(request('bulan'))))->sum('jumlah')
             ];
             $no++;
         }
@@ -45,9 +47,10 @@ class StokOpnameController extends Controller
     }
 
     public function cetak_sopp(){
-        $barang = Barang::select('id', 'kategori', 'nama_barang', 'harga_barang', 'stok_barang')->get();
+        $barang = Barang::select('id', 'kode_barang','kategori', 'nama_barang', 'harga_barang', 'stok_barang')->get();
         foreach ($barang as $item) {
             $data[] = [
+                'kode_barang' => $item->kode_barang,
                 'nama_barang' => $item->nama_barang,
                 'kategori' => $item->kategori,
                 'masuk' => BarangMasuk::where('barang_id', $item->id)->whereMonth('created_at', date('m', strtotime(request('bulan'))))->sum('jumlah'),
@@ -69,15 +72,17 @@ class StokOpnameController extends Controller
     }
 
     public function json_soh(){
-        $hewan = Hewan::select('id', 'nama_hewan', 'harga_hewan', 'jumlah_hewan')->get();
+        $hewan = Hewan::select('id', 'kode_hewan','nama_hewan', 'harga_hewan', 'jumlah_hewan')->get();
         $no = 1;
-        foreach ($hewan as $item) {
+        foreach ($hewan as $h) {
             $data[] = [
                 'no' => $no,
-                'nama_hewan' => $item->nama_hewan,
-                'kategori' => $item->kategori,
-                'masuk' => HewanMasuk::where('hewan_id', $item->id)->whereMonth('created_at', date('m', strtotime(request('bulan'))))->sum('jumlah'),
-                'keluar' => HewanKeluar::where('hewan_id', $item->id)->whereMonth('created_at', date('m', strtotime(request('bulan'))))->sum('jumlah')
+                'id' => $h->id,
+                'kode_hewan' => $h->kode_hewan,
+                'nama_hewan' => $h->nama_hewan,
+                'kategori' => $h->kategori,
+                'masuk' => HewanMasuk::where('hewan_id', $h->id)->whereMonth('created_at', date('m', strtotime(request('bulan'))))->sum('jumlah'),
+                'keluar' => HewanKeluar::where('hewan_id', $h->id)->whereMonth('created_at', date('m', strtotime(request('bulan'))))->sum('jumlah')
             ];
             $no++;
         }
@@ -95,9 +100,10 @@ class StokOpnameController extends Controller
     }
 
     public function cetak_soh(){
-        $hewan = Hewan::select('id', 'nama_hewan', 'harga_hewan', 'jumlah_hewan')->get();
+        $hewan = Hewan::select('id', 'kode_hewan','nama_hewan', 'harga_hewan', 'jumlah_hewan')->get();
         foreach ($hewan as $item) {
             $data[] = [
+                'kode_hewan' => $item->kode_hewan,
                 'nama_hewan' => $item->nama_hewan,
                 'kategori' => $item->kategori,
                 'masuk' => HewanMasuk::where('hewan_id', $item->id)->whereMonth('created_at', date('m', strtotime(request('bulan'))))->sum('jumlah'),
@@ -110,5 +116,56 @@ class StokOpnameController extends Controller
             'soh' => $data,
             'bulan' => request('bulan')
         ]);
+    }
+
+    public function update_barang(Request $request, $id){
+        $barang = Barang::find($id);
+        $stok_barang = $barang->stok_barang;
+        $barang->stok_barang = $stok_barang + $request->jumlah;
+        $barang->update();
+        
+        $barang_masuk = new BarangMasuk();
+        $barang_masuk->barang_id = $id;
+        $barang_masuk->kategori = $barang->kategori;
+        $barang_masuk->harga = $barang->harga_barang;
+        $barang_masuk->jumlah = $request->jumlah;
+        $barang_masuk->save();
+
+        if($barang){
+            return response()->json([
+                'status' => 200,
+                'message' => 'Berhasil mengedit stok barang'
+            ]);
+        }else{
+            return response()->json([
+                'status' => 401,
+                'errors' => 'Tidak berhasil mengedit stok barang'
+            ]);
+        }
+    }
+
+    public function update_hewan(Request $request, $id){
+        $hewan = Hewan::find($id);
+        $jumlah_hewan = $hewan->jumlah_hewan;
+        $hewan->jumlah_hewan = $jumlah_hewan + $request->jumlah;
+        $hewan->update();
+        
+        $hewan_masuk = new HewanMasuk();
+        $hewan_masuk->hewan_id = $id;
+        $hewan_masuk->harga = $hewan->harga_hewan;
+        $hewan_masuk->jumlah = $request->jumlah;
+        $hewan_masuk->save();
+
+        if($hewan){
+            return response()->json([
+                'status' => 200,
+                'message' => 'Berhasil mengedit stok hewan'
+            ]);
+        }else{
+            return response()->json([
+                'status' => 401,
+                'errors' => 'Tidak berhasil mengedit stok hewan'
+            ]);
+        }
     }
 }

@@ -58,6 +58,9 @@
         </tr>
     </table>
 </body>
+<p style="margin-left: 68%">{{ auth()->user()->name }}</p>
+<br><br><br><br>
+<p style="margin-left: 65%">(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</p>
 <script>
     print()
 </script>

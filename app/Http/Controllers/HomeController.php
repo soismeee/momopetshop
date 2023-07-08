@@ -56,7 +56,7 @@ class HomeController extends Controller
     public function treatment(){
         return view('not_in.treatment', [
             'title' => 'Treatment',
-            'treatment' => Treatment::all()
+            'treatment' => Treatment::where('status_treatment', 'aktif')->get()
         ]);
     }
     
@@ -137,7 +137,7 @@ class HomeController extends Controller
     public function in_treatment(){
         return view('home.treatment.treatment', [
             'title' => 'Data treatment',
-            'treatment' => Treatment::all()
+            'treatment' => Treatment::where('status_treatment', 'aktif')->get()
         ]);
     }
 

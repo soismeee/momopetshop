@@ -57,6 +57,9 @@
             <td><strong>Rp. {{ number_format($total_penjualan,0,',','.') }}</strong></td>
         </tr>
     </table>
+    <p style="margin-left: 68%">{{ auth()->user()->name }}</p>
+    <br><br><br><br>
+    <p style="margin-left: 65%">(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</p>
 </body>
 <script>
     print()

@@ -1,7 +1,7 @@
 @extends('layout.main')
 @push('css')
     <!-- Sweet Alert-->
-    <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
 @endpush
 
 @section('container')
@@ -88,7 +88,7 @@
                 </div>
                 <div class="row my-4">
                     <div class="col-sm-6">
-                        <a href="/do" class="btn btn-link text-muted">
+                        <a href="{{ url('do') }}" class="btn btn-link text-muted">
                             <i class="mdi mdi-arrow-left me-1"></i> Kembali ke invoice
                         </a>
                     </div> <!-- end col -->
@@ -149,8 +149,8 @@
 @endsection
 
 @push('js')
-    <script src="/assets/js/jquery-3.5.1.js"></script>
-    <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+    <script src="{{ asset('assets/js/jquery-3.5.1.js') }}"></script>
+    <script src="{{ asset('assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
 
     <script>
 

@@ -85,9 +85,9 @@
                                             <div class="position-relative auth-pass-inputgroup input-custom-icon">
                                                 <span class="bx bx-lock-alt"></span>
                                                 <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" placeholder="Masukan password">
-                                                <button type="button" class="btn btn-link position-absolute h-100 end-0 top-0" id="password-addon">
+                                                {{-- <button type="button" class="btn btn-link position-absolute h-100 end-0 top-0" id="password-addon">
                                                     <i class="mdi mdi-eye-outline font-size-18 text-muted"></i>
-                                                </button>
+                                                </button> --}}
                                             </div>
                                             @error('username')
                                                 <div class="text-danger">

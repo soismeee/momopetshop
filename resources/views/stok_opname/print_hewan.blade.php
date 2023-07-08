@@ -28,14 +28,16 @@
     <table>
         <tr>
             <th align="left" width="5%">No</th>
+            <th align="left" width="15%">Kode</th>
             <th align="left" width="35%">Nama hewan</th>
-            <th align="left" width="20%">hewan Masuk</th>
-            <th align="left" width="20%">hewan Keluar</th>
-            <th align="left" width="20%">Stok hewan</th>
+            <th align="left" width="15%">hewan Masuk</th>
+            <th align="left" width="15%">hewan Keluar</th>
+            <th align="left" width="15%">Stok hewan</th>
         </tr>
         @foreach ($soh as $item)
             <tr>
                 <td>{{ $loop->iteration }}</td>
+                <td>{{ $item['kode_hewan'] }}</td>
                 <td>{{ $item['nama_hewan'] }}</td>
                 <td>{{ $item['masuk'] }}</td>
                 <td>{{ $item['keluar'] }}</td>
@@ -43,6 +45,9 @@
             </tr>
         @endforeach
     </table>
+    <p style="margin-left: 68%">{{ auth()->user()->name }}</p>
+    <br><br><br><br>
+    <p style="margin-left: 65%">(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</p>
 </body>
 <script>
     print()

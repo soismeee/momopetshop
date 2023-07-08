@@ -309,6 +309,7 @@
                 cache: false,
                 processData: false,
                 success: function(response) {
+                    $('#form').val('tambah');
                     if (response.status == 401) {
                         $('.input').addClass('is-invalid');
                         tombolSimpan()
