@@ -47,7 +47,7 @@ class StokOpnameController extends Controller
     }
 
     public function cetak_sopp(){
-        $barang = Barang::select('id', 'kode_barang','kategori', 'nama_barang', 'harga_barang', 'stok_barang')->get();
+        $barang = Barang::select('id', 'kode_barang','kategori', 'nama_barang', 'harga_barang', 'stok_barang')->orderBy('kategori', 'asc')->get();
         foreach ($barang as $item) {
             $data[] = [
                 'kode_barang' => $item->kode_barang,

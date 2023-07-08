@@ -35,7 +35,7 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td colspan="6" class="text-center" id="loading">
+                                                <td colspan="8" class="text-center" id="loading">
                                                     <div class="spinner-border" role="status">
                                                         <span class="visually-hidden">Loading...</span>
                                                     </div>
@@ -179,8 +179,6 @@
                                             </div>
                                         </li>
                                     </ol>
-
-                                    
                                 </div>
                             </div>
                         </div>
