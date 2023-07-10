@@ -42,7 +42,7 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td colspan="5" class="text-center" id="loading">
+                                        <td colspan="7" class="text-center" id="loading">
                                             <div class="spinner-border" role="status">
                                                 <span class="visually-hidden">Loading...</span>
                                             </div>
