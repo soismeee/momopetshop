@@ -108,6 +108,17 @@
                         <li><a href="{{ route('dp.index') }}" data-key="t-advanced-tables">Pakan</a></li>
                     </ul>
                 </li>
+
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow">
+                        <i class="bx bx-cuboid icon nav-icon"></i>
+                        <span class="menu-item" data-key="t-icons">Data Persediaan</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ url('pb') }}" data-key="t-evaicons">Barang</a></li>
+                        <li><a href="{{ url('ph') }}" data-key="t-boxicons">Hewan</a></li>
+                    </ul>
+                </li>
                 
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">

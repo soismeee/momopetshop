@@ -8,6 +8,7 @@ use App\Http\Controllers\KategoriPakanController;
 use App\Http\Controllers\KategoriPHController;
 use App\Http\Controllers\PakanController;
 use App\Http\Controllers\PeralatanHewanController;
+use App\Http\Controllers\PersediaanController;
 use App\Http\Controllers\StokOpnameController;
 use App\Http\Controllers\TreatmentController;
 use App\Http\Controllers\UserController;
@@ -133,6 +134,21 @@ route::post('/esh/{id}', [StokOpnameController::class, 'update_hewan'])->name('e
 route::get('/soh', [StokOpnameController::class, 'opname_hewan'])->name('soh')->middleware('auth');
 route::get('/json_soh', [StokOpnameController::class, 'json_soh'])->name('json_soh')->middleware('auth');
 route::get('/csoh', [StokOpnameController::class, 'cetak_soh'])->name('csoh')->middleware('auth');
+
+// route persediaan
+route::get('pb', [PersediaanController::class, 'barang'])->name('pb')->middleware('auth');
+route::get('pb/{id}', [PersediaanController::class, 'get_barang'])->middleware('auth');
+route::put('pb/{id}', [PersediaanController::class, 'update_barang'])->middleware('auth');
+route::post('cpb', [PersediaanController::class, 'cetak_laporan_barang'])->name('cpb')->middleware('auth');
+route::post('json_pb', [PersediaanController::class, 'json_barang'])->name('json_pb')->middleware('auth');
+route::post('spb', [PersediaanController::class, 'store_barang'])->name('spb')->middleware('auth');
+
+route::get('ph', [PersediaanController::class, 'hewan'])->name('ph')->middleware('auth');
+route::get('ph/{id}', [PersediaanController::class, 'get_hewan'])->middleware('auth');
+route::put('ph/{id}', [PersediaanController::class, 'update_hewan'])->middleware('auth');
+route::post('cph', [PersediaanController::class, 'cetak_laporan_hewan'])->name('cph')->middleware('auth');
+route::post('json_ph', [PersediaanController::class, 'json_hewan'])->name('json_ph')->middleware('auth');
+route::post('sph', [PersediaanController::class, 'store_hewan'])->name('sph')->middleware('auth');
 
 // route laporan
 route::get('/lo', [InvoiceController::class, 'laporan_order'])->name('lo')->middleware('auth');
