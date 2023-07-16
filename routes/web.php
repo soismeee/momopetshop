@@ -142,6 +142,7 @@ route::put('pb/{id}', [PersediaanController::class, 'update_barang'])->middlewar
 route::post('cpb', [PersediaanController::class, 'cetak_laporan_barang'])->name('cpb')->middleware('auth');
 route::post('json_pb', [PersediaanController::class, 'json_barang'])->name('json_pb')->middleware('auth');
 route::post('spb', [PersediaanController::class, 'store_barang'])->name('spb')->middleware('auth');
+route::delete('dpb/{id}', [PersediaanController::class, 'destroy_barang'])->name('dpb')->middleware('auth');
 
 route::get('ph', [PersediaanController::class, 'hewan'])->name('ph')->middleware('auth');
 route::get('ph/{id}', [PersediaanController::class, 'get_hewan'])->middleware('auth');
@@ -149,6 +150,7 @@ route::put('ph/{id}', [PersediaanController::class, 'update_hewan'])->middleware
 route::post('cph', [PersediaanController::class, 'cetak_laporan_hewan'])->name('cph')->middleware('auth');
 route::post('json_ph', [PersediaanController::class, 'json_hewan'])->name('json_ph')->middleware('auth');
 route::post('sph', [PersediaanController::class, 'store_hewan'])->name('sph')->middleware('auth');
+route::delete('dtph/{id}', [PersediaanController::class, 'destroy_hewan'])->name('dtph')->middleware('auth');
 
 // route laporan
 route::get('/lo', [InvoiceController::class, 'laporan_order'])->name('lo')->middleware('auth');

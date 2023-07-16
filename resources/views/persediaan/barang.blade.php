@@ -190,6 +190,7 @@
                     return `
                     <div class="btn-group">
                         <a href="javascript:void(0);" title="Edit" id="edit-data" data-id="`+row.id+`" class="btn btn-sm btn-primary">Edit</a>
+                        <a href="javascript:void(0);" title="Delete" class="btn btn-sm btn-danger hapusdata" data-id="`+row.id+`">Hapus</a>
                     </div>
                     `
                     }
@@ -326,6 +327,32 @@
                     }
                 }
             });
+        });
+
+        $(document).on('click', '.hapusdata', function(e) {
+            let id = $(this).data('id');
+            Swal.fire({
+                title: 'Apakah anda yakin?',
+                text: "Anda akan menghapus data ini!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Delete!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "DELETE",
+                        url: "{{ url('dpb') }}/" + id,
+                        data: {'_token': '{{ csrf_token() }}'},
+                        dataType: 'json',
+                        success: function(response) {
+                            Swal.fire('Terhapus!',response.message,'success');
+                            table.ajax.reload();
+                        }
+                    });
+                }
+            })
         });
     </script>
 @endpush

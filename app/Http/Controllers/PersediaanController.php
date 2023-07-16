@@ -117,12 +117,12 @@ class PersediaanController extends Controller
         $bmin->jumlah = $request->jumlah_barang;
         $bmin->save();
 
-        // update stok barang lama 
+        // update stok barang lama untuk mengurangi
         $bmin = new BarangMasuk();
         $bmin->barang_id = $barang->id;
         $bmin->kategori = $barang->kategori;
         $bmin->harga = $barang->harga_barang;
-        $bmin->jumlah = $tbm->jumlah_barang;
+        $bmin->jumlah = '-'.$tbm->jumlah_barang;
         $bmin->save();
 
         // update stok pada master barang
@@ -148,6 +148,32 @@ class PersediaanController extends Controller
         }
     }
 
+    public function destroy_barang($id){
+        $tbm = TransaksiBarangMasuk::find($id);
+        $barang_id = $tbm->barang_id;
+        $jumlah_barang = $tbm->jumlah_barang;
+
+        $barang = Barang::find($barang_id);
+        $stok_barang = $barang->stok_barang;
+        $barang->stok_barang = $stok_barang - $jumlah_barang;
+        $barang->update();
+
+        // update stok barang lama untuk mengurangi
+        $bmin = new BarangMasuk();
+        $bmin->barang_id = $barang->id;
+        $bmin->kategori = $barang->kategori;
+        $bmin->harga = $barang->harga_barang;
+        $bmin->jumlah = '-'.$jumlah_barang;
+        $bmin->save();
+
+        $tbm->delete();
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Berhasil menghapus data!'
+        ]);
+    }
+
     public function cetak_laporan_barang(Request $request){
         $month = substr(request('bulan'), 5);
         $year = substr(request('bulan'), 0,4);
@@ -160,6 +186,7 @@ class PersediaanController extends Controller
             'data' => $data 
         ]);
     }
+
 
     // #############################################################################################################################################
     public function hewan(){
@@ -263,11 +290,11 @@ class PersediaanController extends Controller
         $bmin->jumlah = $request->jumlah_hewan;
         $bmin->save();
 
-        // update stok hewan lama 
+        // update stok hewan lama untuk mengurangi
         $bmin = new hewanMasuk();
         $bmin->hewan_id = $hewan->id;
         $bmin->harga = $hewan->harga_hewan;
-        $bmin->jumlah = $tbm->jumlah_hewan;
+        $bmin->jumlah = '-'.$tbm->jumlah_hewan;
         $bmin->save();
 
         // update stok pada master hewan
@@ -291,6 +318,31 @@ class PersediaanController extends Controller
                 'errors' => 'Data tidak berhasil diubah',
             ]);
         }
+    }
+
+    public function destroy_hewan($id){
+        $thm = TransaksiHewanMasuk::find($id);
+        $hewan_id = $thm->hewan_id;
+        $jumlah_hewantransaksi = $thm->jumlah_hewan;
+
+        $hewan = Hewan::find($hewan_id);
+        $jumlah_hewan = $hewan->jumlah_hewan;
+        $hewan->jumlah_hewan = $jumlah_hewan - $jumlah_hewantransaksi;
+        $hewan->update();
+
+         // update stok hewan lama untuk mengurangi
+         $bmin = new hewanMasuk();
+         $bmin->hewan_id = $hewan->id;
+         $bmin->harga = $hewan->harga_hewan;
+         $bmin->jumlah = '-'.$thm->jumlah_hewan;
+         $bmin->save();
+
+        $thm->delete();
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Berhasil menghapus data!'
+        ]);
     }
 
     public function cetak_laporan_hewan(Request $request){

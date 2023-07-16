@@ -42,7 +42,7 @@
                 <td>{{ $item->user->name }}</td>
                 <td>{{ $item->total_jumlah }}</td>
                 <td>Rp. {{ number_format($item->total_harga, 0, ',', '.') }}</td>
-                <td>{{ date('d M Y', strtotime($item->tanggal)) }}</td>
+                <td>{{ date('d M Y', strtotime($item->tgl_transaksi)) }}</td>
                 <td>
                     @if ($item->status == 1)
                         Selesai

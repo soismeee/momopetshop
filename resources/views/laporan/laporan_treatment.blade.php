@@ -17,7 +17,7 @@
                                 <h4 class="card-title">Laporan Transaksi Treatment</h4>
                                 <p class="card-title-desc">Data transaksi treatment</p>
                             </div>
-                            <form action="{{ route('clo') }}" method="POST">
+                            <form action="{{ route('clt') }}" method="POST">
                                 @csrf
                                 <div class="row">
                                     <div class="col-auto">
