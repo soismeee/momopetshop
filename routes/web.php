@@ -138,6 +138,7 @@ route::get('/csoh', [StokOpnameController::class, 'cetak_soh'])->name('csoh')->m
 // route persediaan
 route::get('pb', [PersediaanController::class, 'barang'])->name('pb')->middleware('auth');
 route::get('pb/{id}', [PersediaanController::class, 'get_barang'])->middleware('auth');
+route::get('gdb/{id}', [PersediaanController::class, 'get_data_barang'])->middleware('auth');
 route::put('pb/{id}', [PersediaanController::class, 'update_barang'])->middleware('auth');
 route::post('cpb', [PersediaanController::class, 'cetak_laporan_barang'])->name('cpb')->middleware('auth');
 route::post('json_pb', [PersediaanController::class, 'json_barang'])->name('json_pb')->middleware('auth');
@@ -146,6 +147,7 @@ route::delete('dpb/{id}', [PersediaanController::class, 'destroy_barang'])->name
 
 route::get('ph', [PersediaanController::class, 'hewan'])->name('ph')->middleware('auth');
 route::get('ph/{id}', [PersediaanController::class, 'get_hewan'])->middleware('auth');
+route::get('gdh/{id}', [PersediaanController::class, 'get_data_hewan'])->middleware('auth');
 route::put('ph/{id}', [PersediaanController::class, 'update_hewan'])->middleware('auth');
 route::post('cph', [PersediaanController::class, 'cetak_laporan_hewan'])->name('cph')->middleware('auth');
 route::post('json_ph', [PersediaanController::class, 'json_hewan'])->name('json_ph')->middleware('auth');

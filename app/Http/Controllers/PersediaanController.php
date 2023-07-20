@@ -103,6 +103,22 @@ class PersediaanController extends Controller
             ]);
         }
     }
+    
+    public function get_data_barang($id)
+    {
+        $show_db = Barang::find($id);
+        if ($show_db) {
+            return response()->json([
+                'status' => 200,
+                'data' => $show_db
+            ]);
+        } else {
+            return response()->json([
+                'status' => 401,
+                'message' => 'data tidak ditemukan'
+            ]);
+        }
+    }
 
     public function update_barang(Request $request, $id){
         $tbm = TransaksiBarangMasuk::find($id);
@@ -269,6 +285,22 @@ class PersediaanController extends Controller
             return response()->json([
                 'status' => 200,
                 'data' => $show_ph
+            ]);
+        } else {
+            return response()->json([
+                'status' => 401,
+                'message' => 'data tidak ditemukan'
+            ]);
+        }
+    }
+
+    public function get_data_hewan($id)
+    {
+        $show_dh = Hewan::find($id);
+        if ($show_dh) {
+            return response()->json([
+                'status' => 200,
+                'data' => $show_dh
             ]);
         } else {
             return response()->json([

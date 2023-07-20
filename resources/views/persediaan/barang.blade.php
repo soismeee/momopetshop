@@ -44,7 +44,7 @@
                                                 <div class="col-md-4">
                                                     <div class="mb-3">
                                                         <label for="formrow-firstname-input" class="form-label">Nominal barang</label>
-                                                        <input type="text" class="form-control input" placeholder="Masukan nominal harga barang" name="nominal_barang" id="nominal_barang">
+                                                        <input type="text" class="form-control input" placeholder="Masukan nominal harga barang" name="nominal_barang" id="nominal_barang" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -181,7 +181,7 @@
                     "targets": "_all",
                     "defaultContent": "-",
                     "render": function(data, type, row, meta){
-                    return rupiah(row.nominal_barang)
+                    return rupiah(row.nominal_barang*row.jumlah_barang)
                     }
                 },
                 {
@@ -266,6 +266,22 @@
             rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
             return prefix == undefined ? rupiah : rupiah ? prefix + rupiah : "";
         }
+        
+        $(document).on('change', '#barang_id', function(e){
+            e.preventDefault()
+            let idchange = $(this).val();
+            $.ajax({
+                type: "GET",
+                url: "{{ url('gdb') }}/" + idchange,
+                success: function(response) {
+                    if (response.status == 401) {
+                        sweetAlert('error', response.message);
+                    } else {
+                        nominal_barang.value = convertRupiah(response.data.harga_beli, "Rp. ");
+                    }
+                }
+            });
+        })
 
         $(document).on('click', '#add-data', function(e) {
             e.preventDefault();

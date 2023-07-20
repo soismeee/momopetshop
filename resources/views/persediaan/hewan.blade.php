@@ -44,7 +44,7 @@
                                                 <div class="col-md-4">
                                                     <div class="mb-3">
                                                         <label for="formrow-firstname-input" class="form-label">Nominal hewan</label>
-                                                        <input type="text" class="form-control input" placeholder="Masukan nominal harga hewan" name="nominal_hewan" id="nominal_hewan">
+                                                        <input type="text" class="form-control input" placeholder="Masukan nominal harga hewan" name="nominal_hewan" id="nominal_hewan" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -88,8 +88,8 @@
                                                 <th width="20%">Kode hewan</th>
                                                 <th width="20%">Nama hewan</th>
                                                 <th width="15%">Jumlah</th>
-                                                <th width="15%">Tgl Transaksi</th>
                                                 <th width="15%">Nominal</th>
+                                                <th width="15%">Tgl Transaksi</th>
                                                 <th width="10%">#</th>
                                             </tr>
                                         </thead>
@@ -174,7 +174,7 @@
                     "targets": "_all",
                     "defaultContent": "-",
                     "render": function(data, type, row, meta){
-                    return rupiah(row.nominal_hewan)
+                    return rupiah(row.nominal_hewan*row.jumlah_hewan)
                     }
                 },
                 {
@@ -259,6 +259,22 @@
             rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
             return prefix == undefined ? rupiah : rupiah ? prefix + rupiah : "";
         }
+
+        $(document).on('change', '#hewan_id', function(e){
+            e.preventDefault()
+            let idchange = $(this).val();
+            $.ajax({
+                type: "GET",
+                url: "{{ url('gdh') }}/" + idchange,
+                success: function(response) {
+                    if (response.status == 401) {
+                        sweetAlert('error', response.message);
+                    } else {
+                        nominal_hewan.value = convertRupiah(response.data.harga_beli, "Rp. ");
+                    }
+                }
+            });
+        })
 
         $(document).on('click', '#add-data', function(e) {
             e.preventDefault();
