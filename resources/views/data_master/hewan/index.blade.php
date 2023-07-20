@@ -44,7 +44,7 @@
                                         <div class="col-md-3">
                                             <div class="mb-3">
                                                 <label for="harga beli" class="form-label">Harga Harga beli</label>
-                                                <input type="text" class="form-control input" placeholder="harga hewan" id="harga_beli" name="harga_beli">
+                                                <input type="text" class="form-control input" placeholder="harga beli hewan" id="harga_beli" name="harga_beli">
                                             </div>
                                         </div>
                                     </div>

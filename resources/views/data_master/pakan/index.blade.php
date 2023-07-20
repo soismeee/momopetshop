@@ -38,7 +38,7 @@
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label for="formrow-email-input" class="form-label">Kategori Barang</label>
                                                 <select name="kp_id" id="kp_id" class="form-select">
@@ -46,6 +46,12 @@
                                                         <option value="{{ $item->id }}">{{ $item->nama_kategori }}</option>
                                                     @endforeach
                                                 </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="mb-3">
+                                                <label for="formrow-password-input" class="form-label">Stok</label>
+                                                <input type="number" class="form-control input" placeholder="Masukan stok barang" id="stok_barang" name="stok_barang">
                                             </div>
                                         </div>
                                         <div class="col-md-3">
@@ -56,8 +62,8 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="mb-3">
-                                                <label for="formrow-password-input" class="form-label">Stok</label>
-                                                <input type="number" class="form-control input" placeholder="Masukan stok barang" id="stok_barang" name="stok_barang">
+                                                <label for="harga_beli" class="form-label">Harga Beli</label>
+                                                <input type="text" class="form-control input" placeholder="harga barang" id="harga_beli" name="harga_beli">
                                             </div>
                                         </div>
                                     </div>
@@ -184,7 +190,7 @@
                     "targets": "_all",
                     "defaultContent": "-",
                     "render": function(data, type, row, meta){
-                    return "Rp. " +rupiah(row.harga_barang)
+                        return "Rp. Harga beli  " +rupiah(row.harga_barang)+ '<br /> Harga beli Rp. '+rupiah(row.harga_beli)
                     }
                 },
                 {
@@ -235,6 +241,11 @@
         var harga_barang = document.getElementById("harga_barang");
         harga_barang.addEventListener("keyup", function(e) {
             harga_barang.value = convertRupiah(this.value, "Rp. ");
+        });
+
+        var harga_beli = document.getElementById("harga_beli");
+        harga_beli.addEventListener("keyup", function(e) {
+            harga_beli.value = convertRupiah(this.value, "Rp. ");
         });
 
         let jumlah = document.getElementById("stok_barang");
@@ -346,6 +357,7 @@
                         $('#nama_barang').val(response.data.nama_barang);
                         $('#kp_id').val(response.data.kb_id);
                         harga_barang.value = convertRupiah(response.data.harga_barang, "Rp. ");
+                        harga_beli.value = convertRupiah(response.data.harga_beli, "Rp. ");
                         $('#stok_barang').val(response.data.stok_barang);
                         $('#keterangan_barang').val(response.data.keterangan_barang);
                         $('#form').val('ubah');

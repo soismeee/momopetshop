@@ -76,6 +76,7 @@ class PeralatanHewanController extends Controller
             $save_kph->kode_barang = $request->kode_barang;
             $save_kph->nama_barang = $request->nama_barang;
             $save_kph->harga_barang = preg_replace('/[^0-9]/', '', $request->harga_barang);
+            $save_kph->harga_beli = preg_replace('/[^0-9]/', '', $request->harga_beli);
             $save_kph->stok_barang = $request->stok_barang;
             $save_kph->keterangan_barang = $request->keterangan_barang;
             $save_kph->gambar_barang = $request->file('gambar_barang')->getClientOriginalName();
@@ -150,6 +151,7 @@ class PeralatanHewanController extends Controller
             $update_db->nama_barang == $request->nama_barang &&
             $update_db->kb_id == $request->kph_id &&
             $update_db->stok_barang == $request->stok_barang &&
+            $update_db->harga_beli == $request->harga_beli &&
             $update_db->keterangan_barang == $request->keterangan_barang)
             {
                 return response()->json([
@@ -168,6 +170,7 @@ class PeralatanHewanController extends Controller
                 $update_db->kb_id = $request->kph_id;
                 $update_db->stok_barang = $request->stok_barang;
                 $update_db->harga_barang = preg_replace('/[^0-9]/', '', $request->harga_barang);
+                $update_db->harga_beli = preg_replace('/[^0-9]/', '', $request->harga_beli);
                 $update_db->keterangan_barang = $request->keterangan_barang;
                 $update_db->update();
 
