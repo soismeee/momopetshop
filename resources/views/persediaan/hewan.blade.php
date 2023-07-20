@@ -85,10 +85,11 @@
                                         <thead class="table-light">
                                             <tr>
                                                 <th width="5%">No</th>
-                                                <th width="25%">Kode hewan</th>
-                                                <th width="25%">Nama hewan</th>
+                                                <th width="20%">Kode hewan</th>
+                                                <th width="20%">Nama hewan</th>
                                                 <th width="15%">Jumlah</th>
-                                                <th width="20%">Nominal</th>
+                                                <th width="15%">Tgl Transaksi</th>
+                                                <th width="15%">Nominal</th>
                                                 <th width="10%">#</th>
                                             </tr>
                                         </thead>
@@ -174,6 +175,14 @@
                     "defaultContent": "-",
                     "render": function(data, type, row, meta){
                     return rupiah(row.nominal_hewan)
+                    }
+                },
+                {
+                    "targets": "_all",
+                    "defaultContent": "-",
+                    "render": function(data, type, row, meta){
+                        var tanggal = new Date(row.created_at)
+                        return tanggal.getDate()+"/"+tanggal.getMonth()+"/"+tanggal.getFullYear()
                     }
                 },
                 {

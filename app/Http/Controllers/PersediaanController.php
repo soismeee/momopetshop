@@ -23,9 +23,9 @@ class PersediaanController extends Controller
         $monthbarang = substr(request('bulan'), 5);
         $yearbarang = substr(request('bulan'), 0,4);
 
-        $columns = ['id','barang_id','kode_barang','kategori', 'nama_barang', 'jumlah_barang', 'nominal_barang'];
+        $columns = ['id','barang_id','kode_barang','kategori', 'nama_barang', 'jumlah_barang', 'nominal_barang', 'created_at'];
         $orderBy = $columns[request()->input("order.0.column")];
-        $data = TransaksiBarangMasuk::select('id','barang_id','kode_barang','kategori', 'nama_barang', 'jumlah_barang', 'nominal_barang')->whereMonth('created_at', $monthbarang)->whereYear('created_at', $yearbarang);
+        $data = TransaksiBarangMasuk::select('id','barang_id','kode_barang','kategori', 'nama_barang', 'jumlah_barang', 'nominal_barang', 'created_at')->whereMonth('created_at', $monthbarang)->whereYear('created_at', $yearbarang);
 
         if(request()->input("search.value")){
             $data = $data->where(function($query){
@@ -200,9 +200,9 @@ class PersediaanController extends Controller
         $monthhewan = substr(request('bulan'), 5);
         $yearhewan = substr(request('bulan'), 0,4);
 
-        $columns = ['id','hewan_id','kode_hewan', 'nama_hewan', 'jumlah_hewan', 'nominal_hewan'];
+        $columns = ['id','hewan_id','kode_hewan', 'nama_hewan', 'jumlah_hewan', 'nominal_hewan', 'created_at'];
         $orderBy = $columns[request()->input("order.0.column")];
-        $data = TransaksiHewanMasuk::select('id','hewan_id','kode_hewan', 'nama_hewan', 'jumlah_hewan', 'nominal_hewan')->whereMonth('created_at', $monthhewan)->whereYear('created_at', $yearhewan);
+        $data = TransaksiHewanMasuk::select('id','hewan_id','kode_hewan', 'nama_hewan', 'jumlah_hewan', 'nominal_hewan', 'created_at')->whereMonth('created_at', $monthhewan)->whereYear('created_at', $yearhewan);
 
         if(request()->input("search.value")){
             $data = $data->where(function($query){
