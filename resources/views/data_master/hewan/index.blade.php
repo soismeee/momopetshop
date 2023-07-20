@@ -23,13 +23,13 @@
                                     <input type="hidden" id="id" name="id">
                                     <input type="hidden" id="form" value="tambah">
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label for="formrow-firstname-input" class="form-label">Nama Hewan</label>
                                                 <input type="text" class="form-control input" placeholder="Masukan nama barang" name="nama_hewan" id="nama_hewan">
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-2">
                                             <div class="mb-3">
                                                 <label for="formrow-firstname-input" class="form-label">Kode Hewan </label>
                                                 <input type="text" class="form-control input" placeholder="Masukan kode hewan" name="kode_hewan" id="kode_hewan">
@@ -39,6 +39,12 @@
                                             <div class="mb-3">
                                                 <label for="harga" class="form-label">Harga Hewan</label>
                                                 <input type="text" class="form-control input" placeholder="harga hewan" id="harga_hewan" name="harga_hewan">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="mb-3">
+                                                <label for="harga beli" class="form-label">Harga Harga beli</label>
+                                                <input type="text" class="form-control input" placeholder="harga hewan" id="harga_beli" name="harga_beli">
                                             </div>
                                         </div>
                                     </div>
@@ -207,7 +213,7 @@
                     "targets": "_all",
                     "defaultContent": "-",
                     "render": function(data, type, row, meta){
-                    return "Rp. " +rupiah(row.harga_hewan)
+                    return "Rp. Harga beli  " +rupiah(row.harga_hewan)+ '<br /> Harga beli Rp. '+rupiah(row.harga_beli)
                     }
                 },
                 {
@@ -283,6 +289,11 @@
         let harga_hewan = document.getElementById("harga_hewan");
         harga_hewan.addEventListener("keyup", function(e) {
             harga_hewan.value = convertRupiah(this.value, "Rp. ");
+        });
+        
+        let harga_beli = document.getElementById("harga_beli");
+        harga_beli.addEventListener("keyup", function(e) {
+            harga_beli.value = convertRupiah(this.value, "Rp. ");
         });
 
         let jumlah = document.getElementById("jumlah_hewan");
@@ -396,6 +407,7 @@
                         $('#jumlah_hewan').val(response.data.jumlah_hewan);
                         $('#keterangan_hewan').val(response.data.keterangan_hewan);
                         harga_hewan.value = convertRupiah(response.data.harga_hewan, "Rp. ");
+                        harga_beli.value = convertRupiah(response.data.harga_beli, "Rp. ");
                         $('.label-gambar').html('Ubah gambar (biarkan kosong jika tidak ingin mengganti gambar)');
                         $('#form').val('ubah');
                     }

@@ -20,6 +20,7 @@ class CreateBarangsTable extends Migration
             $table->string('kategori');
             $table->string('nama_barang');
             $table->string('harga_barang');
+            $table->string('harga_beli');
             $table->string('stok_barang');
             $table->string('keterangan_barang');
             $table->string('gambar_barang');

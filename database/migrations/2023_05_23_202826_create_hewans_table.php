@@ -19,6 +19,7 @@ class CreateHewansTable extends Migration
             $table->string('gambar_hewan');
             $table->string('jumlah_hewan');
             $table->string('harga_hewan');
+            $table->string('harga_beli');
             $table->string('keterangan_hewan');
             $table->timestamps();
         });

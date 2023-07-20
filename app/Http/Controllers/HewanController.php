@@ -54,6 +54,7 @@ class HewanController extends Controller
             'tgl_lahir' => 'required',
             'berat_hewan' => 'required',
             'harga_hewan' => 'required',
+            'harga_beli' => 'required',
             'jumlah_hewan' => 'required',
             'keterangan_hewan' => 'required',
         ]);
@@ -73,6 +74,7 @@ class HewanController extends Controller
             $save_dh->berat_hewan = $request->berat_hewan;
             // $save_dh->tinggi_hewan = $request->tinggi_hewan;
             $save_dh->harga_hewan = preg_replace('/[^0-9]/', '', $request->harga_hewan);
+            $save_dh->harga_beli = preg_replace('/[^0-9]/', '', $request->harga_beli);
             $save_dh->jumlah_hewan = $request->jumlah_hewan;
             $save_dh->keterangan_hewan = $request->keterangan_hewan;
             $save_dh->gambar_hewan = $request->file('gambar_hewan')->getClientOriginalName();
@@ -139,6 +141,7 @@ class HewanController extends Controller
             $update_dh->tgl_lahir == $request->tgl_lahir &&
             $update_dh->berat_hewan == $request->berat_hewan &&
             $update_dh->jumlah_hewan == $request->jumlah_hewan &&
+            $update_dh->harga_beli == $request->harga_beli &&
             $update_dh->keterangan_hewan == $request->keterangan_hewan
             )
             {
@@ -160,6 +163,7 @@ class HewanController extends Controller
                 $update_dh->berat_hewan = $request->berat_hewan;
                 // $update_dh->tinggi_hewan = $request->tinggi_hewan;
                 $update_dh->harga_hewan = preg_replace('/[^0-9]/', '', $request->harga_hewan);
+                $update_dh->harga_beli = preg_replace('/[^0-9]/', '', $request->harga_beli);
                 $update_dh->jumlah_hewan = $request->jumlah_hewan;
                 $update_dh->keterangan_hewan = $request->keterangan_hewan;
                 $update_dh->update();
