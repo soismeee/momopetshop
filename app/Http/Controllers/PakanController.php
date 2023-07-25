@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\KategoriBarang;
 use App\Models\Barang;
 use App\Models\BarangMasuk;
+use App\Models\TransaksiBarangMasuk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -79,6 +80,16 @@ class PakanController extends Controller
             $save_kph->keterangan_barang = $request->keterangan_barang;
             $save_kph->gambar_barang = $request->file('gambar_barang')->getClientOriginalName();
             $save_kph->save();
+
+            $tbm = new TransaksiBarangMasuk();
+            $tbm->barang_id = $save_kph->id;
+            $tbm->kode_barang = $request->kode_barang;
+            $tbm->kategori = 'pakan';
+            $tbm->nama_barang = $request->nama_barang;
+            $tbm->jumlah_barang = $request->stok_barang;
+            $tbm->nominal_barang = preg_replace('/[^0-9]/', '', $request->harga_beli);
+            $tbm->save();
+            
             if ($request->hasFile('gambar_barang')) {
                 $request->file('gambar_barang')->move('Gambar_upload/barang/', $request->file('gambar_barang')->getClientOriginalName());
             }

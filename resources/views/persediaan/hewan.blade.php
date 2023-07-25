@@ -174,7 +174,7 @@
                     "targets": "_all",
                     "defaultContent": "-",
                     "render": function(data, type, row, meta){
-                    return rupiah(row.nominal_hewan*row.jumlah_hewan)
+                    return rupiah(row.nominal_hewan)
                     }
                 },
                 {

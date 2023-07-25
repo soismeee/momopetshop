@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Hewan;
 use App\Models\HewanMasuk;
+use App\Models\TransaksiHewanMasuk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -80,6 +81,14 @@ class HewanController extends Controller
             $save_dh->gambar_hewan = $request->file('gambar_hewan')->getClientOriginalName();
             $save_dh->save();
 
+            $tbm = new TransaksiHewanMasuk();
+            $tbm->hewan_id = $save_dh->id;
+            $tbm->kode_hewan = $request->kode_hewan;
+            $tbm->nama_hewan = $request->nama_hewan;
+            $tbm->jumlah_hewan = $request->jumlah_hewan;
+            $tbm->nominal_hewan = preg_replace('/[^0-9]/', '', $request->harga_beli);
+            $tbm->save();
+
             $hewan_id = $save_dh->id;
             $hewan_masuk = new HewanMasuk();
             $hewan_masuk->hewan_id = $hewan_id;
@@ -90,6 +99,7 @@ class HewanController extends Controller
             if ($request->hasFile('gambar_hewan')) {
                 $request->file('gambar_hewan')->move('Gambar_upload/hewan/', $request->file('gambar_hewan')->getClientOriginalName());
             }
+
 
 
             return response()->json([
