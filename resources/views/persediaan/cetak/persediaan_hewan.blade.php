@@ -23,7 +23,7 @@
     </style>
     <h2 class='tengah'>MOMOPETSHOP</h2>
     <h3 class='tengah'>Laporan Persediaan stok hewan di momopetshop</h3>
-    <p class='tengah'>Periode bulan : {{ date('m/Y', strtotime($bulan)) }}</p>
+    <p class='tengah'>Periode bulan : {{ $bulan }}</p>
     <br/>
     <table>
         <tr>
@@ -38,7 +38,7 @@
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $item->kode_hewan }}</td>
                 <td>{{ $item->nama_hewan }}</td>
-                <td>{{ $item->jumlah_hewan }}</td>
+                <td>{{ $item->jml_hewan }}</td>
                 <td>Rp. {{ number_format($item->nominal_hewan, 0, ',', '.') }}</td>
             </tr>
         @endforeach

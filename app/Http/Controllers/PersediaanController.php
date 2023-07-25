@@ -25,7 +25,7 @@ class PersediaanController extends Controller
 
         $columns = ['id','barang_id','kode_barang','kategori', 'nama_barang', 'jumlah_barang', 'nominal_barang', 'created_at'];
         $orderBy = $columns[request()->input("order.0.column")];
-        $data = TransaksiBarangMasuk::select('id','barang_id','kode_barang','kategori', 'nama_barang', 'jumlah_barang', 'nominal_barang', 'created_at')->whereMonth('created_at', $monthbarang)->whereYear('created_at', $yearbarang);
+        $data = TransaksiBarangMasuk::whereMonth('created_at', $monthbarang)->whereYear('created_at', $yearbarang)->groupBy('kode_barang')->selectRaw('*, sum(jumlah_barang) as jml_brg');
 
         if(request()->input("search.value")){
             $data = $data->where(function($query){
@@ -191,14 +191,19 @@ class PersediaanController extends Controller
     }
 
     public function cetak_laporan_barang(Request $request){
-        $month = substr(request('bulan'), 5);
-        $year = substr(request('bulan'), 0,4);
-
-        $data = TransaksiBarangMasuk::select('id','barang_id','kode_barang','kategori', 'nama_barang', 'jumlah_barang', 'nominal_barang')->whereMonth('created_at', $month)->whereYear('created_at', $year)->get();
-        
+        // $month = substr(request('bulan'), 5);
+        // $year = substr(request('bulan'), 0,4);
+        // $data = TransaksiBarangMasuk::select('id','barang_id','kode_barang','kategori', 'nama_barang', 'jumlah_barang', 'nominal_barang')->whereMonth('created_at', $month)->whereYear('created_at', $year)->get();
+        $awal = $request->awal. " 00:00:00";
+        $akhir = $request->akhir. " 23:59:59";
+        if ($request->kategori == "All") {
+            $data = TransaksiBarangMasuk::whereBetween('created_at', [$awal, $akhir])->groupBy('kode_barang')->selectRaw('*, sum(jumlah_barang) as jml_brg')->get();
+        }else{
+            $data = TransaksiBarangMasuk::where('kategori', $request->kategori)->whereBetween('created_at', [$awal, $akhir])->groupBy('kode_barang')->selectRaw('*, sum(jumlah_barang) as jml_brg')->get();
+        }
         return view('persediaan.cetak.persediaan_barang', [
             'title' => 'Cetak Laporan',
-            'bulan' => $request->bulan,
+            'bulan' => date('d-m-Y', strtotime($request->awal)). " s/d " . date('d-m-Y', strtotime($request->akhir)),
             'data' => $data 
         ]);
     }
@@ -218,7 +223,7 @@ class PersediaanController extends Controller
 
         $columns = ['id','hewan_id','kode_hewan', 'nama_hewan', 'jumlah_hewan', 'nominal_hewan', 'created_at'];
         $orderBy = $columns[request()->input("order.0.column")];
-        $data = TransaksiHewanMasuk::select('id','hewan_id','kode_hewan', 'nama_hewan', 'jumlah_hewan', 'nominal_hewan', 'created_at')->whereMonth('created_at', $monthhewan)->whereYear('created_at', $yearhewan);
+        $data = TransaksiHewanMasuk::whereMonth('created_at', $monthhewan)->whereYear('created_at', $yearhewan)->groupBy('kode_hewan')->selectRaw('*, sum(jumlah_hewan) as jml_hewan');
 
         if(request()->input("search.value")){
             $data = $data->where(function($query){
@@ -378,14 +383,16 @@ class PersediaanController extends Controller
     }
 
     public function cetak_laporan_hewan(Request $request){
-        $month = substr(request('bulan'), 5);
-        $year = substr(request('bulan'), 0,4);
-
-        $data = TransaksiHewanMasuk::select('id','hewan_id','kode_hewan', 'nama_hewan', 'jumlah_hewan', 'nominal_hewan')->whereMonth('created_at', $month)->whereYear('created_at', $year)->get();
+        // $month = substr(request('bulan'), 5);
+        // $year = substr(request('bulan'), 0,4);
+        // $data = TransaksiHewanMasuk::select('id','hewan_id','kode_hewan', 'nama_hewan', 'jumlah_hewan', 'nominal_hewan')->whereMonth('created_at', $month)->whereYear('created_at', $year)->get();
         
+        $awal = $request->awal. " 00:00:00";
+        $akhir = $request->akhir. " 23:59:59";
+        $data = TransaksiHewanMasuk::groupBy('kode_hewan')->selectRaw('*, sum(jumlah_hewan) as jml_hewan')->whereBetween('created_at', [$awal, $akhir])->get();
         return view('persediaan.cetak.persediaan_hewan', [
             'title' => 'Cetak Laporan',
-            'bulan' => $request->bulan,
+            'bulan' => date('d-m-Y', strtotime($request->awal)). " s/d " . date('d-m-Y', strtotime($request->akhir)),
             'data' => $data 
         ]);
     }

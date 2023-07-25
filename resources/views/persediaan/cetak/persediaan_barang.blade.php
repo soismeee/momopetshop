@@ -23,7 +23,7 @@
     </style>
     <h2 class='tengah'>MOMOPETSHOP</h2>
     <h3 class='tengah'>Laporan Persediaan stok barang di momopetshop</h3>
-    <p class='tengah'>Periode bulan : {{ date('m/Y', strtotime($bulan)) }}</p>
+    <p class='tengah'>Periode bulan : {{ $bulan }}</p>
     <br/>
     <table>
         <tr>
@@ -40,7 +40,7 @@
                 <td>{{ $item->kode_barang }}</td>
                 <td>{{ $item->nama_barang }}</td>
                 <td>{{ $item->kategori }}</td>
-                <td>{{ $item->jumlah_barang }}</td>
+                <td>{{ $item->jml_brg }}</td>
                 <td>Rp. {{ number_format($item->nominal_barang, 0, ',', '.') }}</td>
             </tr>
         @endforeach

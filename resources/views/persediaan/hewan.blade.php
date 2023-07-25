@@ -64,15 +64,17 @@
                             <div class="card-header">
                                 
                                 <div class="d-flex justify-content-between">
-                                    <div class="col-lg-8 col-md-8 col-sm-12">
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
                                         <h4 class="card-title">hewan masuk</h4>
                                         <p class="card-title-desc">Data hewan masuk.</p>
                                     </div>
-                                    <div class="col-lg-4 col-md-4 col-sm-12 text-end">
+                                    <div class="col-lg-6 col-md-6 col-sm-12 text-end">
+                                        <input type="hidden" name="bulan" id="bulan" value="{{ date('Y-m') }}">
                                         <form action="{{ url('cph') }}" method="POST">
                                             @csrf
                                             <div class="input-group">
-                                                <input type="month" class="form-control" name="bulan" id="bulan" value="{{ date('Y-m') }}">
+                                                <input type="date" class="form-control" name="awal" id="awal">
+                                                <input type="date" class="form-control" name="akhir" id="akhir">
                                                 <button type="submit" class="btn btn-primary" id="cetak">Cetak Data</button>
                                             </div>
                                         </form>
@@ -167,7 +169,7 @@
                     "targets": "_all",
                     "defaultContent": "-",
                     "render": function(data, type, row, meta){
-                    return row.jumlah_hewan
+                    return row.jml_hewan
                     }
                 },
                 {
