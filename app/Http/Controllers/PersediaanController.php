@@ -20,12 +20,19 @@ class PersediaanController extends Controller
     }
 
     public function json_barang(){
-        $monthbarang = substr(request('bulan'), 5);
-        $yearbarang = substr(request('bulan'), 0,4);
+        // $monthbarang = substr(request('bulan'), 5);
+        // $yearbarang = substr(request('bulan'), 0,4);
+        $awal = request('awal');
+        $akhir = request('akhir');
+        if ($awal == null || $akhir == null) {
+            $awal = date('Y-m-01');
+            $akhir = date('Y-m-d'). " 23:59:59";
+        }
 
         $columns = ['id','barang_id','kode_barang','kategori', 'nama_barang', 'jumlah_barang', 'nominal_barang', 'created_at'];
         $orderBy = $columns[request()->input("order.0.column")];
-        $data = TransaksiBarangMasuk::whereMonth('created_at', $monthbarang)->whereYear('created_at', $yearbarang)->groupBy('kode_barang')->selectRaw('*, sum(jumlah_barang) as jml_brg');
+        // $data = TransaksiBarangMasuk::whereMonth('created_at', $monthbarang)->whereYear('created_at', $yearbarang)->groupBy('kode_barang')->selectRaw('*, sum(jumlah_barang) as jml_brg');
+        $data = TransaksiBarangMasuk::whereBetween('created_at', [$awal, $akhir])->groupBy('kode_barang')->selectRaw('*, sum(jumlah_barang) as jml_brg');
 
         if(request()->input("search.value")){
             $data = $data->where(function($query){
@@ -218,12 +225,19 @@ class PersediaanController extends Controller
     }
 
     public function json_hewan(){
-        $monthhewan = substr(request('bulan'), 5);
-        $yearhewan = substr(request('bulan'), 0,4);
+        // $monthhewan = substr(request('bulan'), 5);
+        // $yearhewan = substr(request('bulan'), 0,4);
+        $awal = request('awal');
+        $akhir = request('akhir');
+        if ($awal == null || $akhir == null) {
+            $awal = date('Y-m-01');
+            $akhir = date('Y-m-d'). " 23:59:59";
+        }
 
         $columns = ['id','hewan_id','kode_hewan', 'nama_hewan', 'jumlah_hewan', 'nominal_hewan', 'created_at'];
         $orderBy = $columns[request()->input("order.0.column")];
-        $data = TransaksiHewanMasuk::whereMonth('created_at', $monthhewan)->whereYear('created_at', $yearhewan)->groupBy('kode_hewan')->selectRaw('*, sum(jumlah_hewan) as jml_hewan');
+        // $data = TransaksiHewanMasuk::whereMonth('created_at', $monthhewan)->whereYear('created_at', $yearhewan)->groupBy('kode_hewan')->selectRaw('*, sum(jumlah_hewan) as jml_hewan');
+        $data = TransaksiHewanMasuk::whereBetween('created_at', [$awal, $akhir])->groupBy('kode_hewan')->selectRaw('*, sum(jumlah_hewan) as jml_hewan');
 
         if(request()->input("search.value")){
             $data = $data->where(function($query){

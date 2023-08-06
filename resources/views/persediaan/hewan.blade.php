@@ -69,12 +69,11 @@
                                         <p class="card-title-desc">Data hewan masuk.</p>
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-12 text-end">
-                                        <input type="hidden" name="bulan" id="bulan" value="{{ date('Y-m') }}">
                                         <form action="{{ url('cph') }}" method="POST">
                                             @csrf
                                             <div class="input-group">
                                                 <input type="date" class="form-control" name="awal" id="awal">
-                                                <input type="date" class="form-control" name="akhir" id="akhir">
+                                                <input type="date" class="form-control" name="akhir" id="akhir" readonly>
                                                 <button type="submit" class="btn btn-primary" id="cetak">Cetak Data</button>
                                             </div>
                                         </form>
@@ -124,10 +123,16 @@
     <!-- init js -->
     <script src="/assets/js/form-advanced.init.js"></script>
     <script>
-        $(document).on('change', '#bulan', function(e){
+        $(document).on('change', '#akhir', function(e){
             e.preventDefault();
             table.ajax.reload();
         })
+
+        $(document).on('change', '#awal', function(e){
+            e.preventDefault();
+            $('#akhir').removeAttr('readonly');
+        });
+
         // load data table
         const table = $('#data-hewan').DataTable({          
             "lengthMenu": [[5, 10, 25, 50, 100, -1],[5, 10, 25, 50, 100, 'All']],
@@ -140,7 +145,8 @@
                 type:"POST",
                 data:function(d){
                     d._token = "{{ csrf_token() }}"
-                    d.bulan = $('#bulan').val()
+                    d.awal = $('#awal').val()
+                    d.akhir = $('#akhir').val()
                 }
             },
             columns:[

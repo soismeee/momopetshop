@@ -23,7 +23,7 @@
     </style>
     <h2 class='tengah'>MOMOPETSHOP</h2>
     <h3 class='tengah'>Laporan SO hewan di momopetshop</h3>
-    <p class='tengah'>Periode bulan : {{ date('m/Y', strtotime($bulan)) }}</p>
+    <p class='tengah'>Periode bulan : {{ $bulan }}</p>
     <br/>
     <table>
         <tr>

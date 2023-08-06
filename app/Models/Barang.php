@@ -16,6 +16,6 @@ class Barang extends Model
 
     public function kategori_barang()
     {
-        return $this->belongsTo(KategoriBarang::class, 'kb_id');
+        return $this->belongsTo('App\Models\KategoriBarang', 'kb_id');
     }
 }

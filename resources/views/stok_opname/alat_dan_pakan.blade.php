@@ -10,18 +10,32 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
-                            <div class="col-lg-8 col-md-8 col-sm-12">
+                            <div class="col-lg-7 col-md-7 col-sm-12">
                                 <h4 class="card-title">Opname stok barang</h4>
                                 <p class="card-title-desc">Data stok barang.</p>
                             </div>
-                            <div class="col-lg-4 col-md-4 col-sm-12 text-end">
+                            <div class="col-lg-5 col-md-5 col-sm-12 text-end">
+                                <input type="hidden" name="bulan" id="bulan" value="{{ date('Y-m') }}">
                                 <form action="{{ url('csopp') }}" method="GET">
+                                    @csrf
+                                    <div class="input-group">
+                                        <select name="kategori" id="kategori" class="form-select">
+                                            <option value="All">All</option>
+                                            <option value="pakan">Pakan</option>
+                                            <option value="alat">Peralatan</option>
+                                        </select>
+                                        <input type="date" class="form-control" name="awal" id="awal">
+                                        <input type="date" class="form-control" name="akhir" id="akhir" readonly>
+                                        <button type="submit" class="btn btn-primary" id="cetak">Cetak Opname</button>
+                                    </div>
+                                </form>
+                                {{-- <form action="{{ url('csopp') }}" method="GET">
                                     @csrf
                                     <div class="input-group">
                                         <input type="month" class="form-control" name="bulan" id="bulan" value="{{ date('Y-m') }}">
                                         <button type="submit" class="btn btn-primary" id="cetak">Cetak Opname</button>
                                     </div>
-                                </form>
+                                </form> --}}
                             </div>
                         </div>
                     </div>
@@ -96,6 +110,11 @@
         $(document).ready(() => {
             let bulan = $('#bulan').val();
             tabel(bulan);
+        });
+
+        $(document).on('change', '#awal', function(e){
+            e.preventDefault();
+            $('#akhir').removeAttr('readonly');
         });
 
         $(document).on('change', '#bulan', function(e){

@@ -108,7 +108,7 @@ class HomeController extends Controller
         return view('home.peralatan.peralatan', [
             'title' => 'Data Peralatan',
             'kategori' => KategoriBarang::where('kategori', 'alat')->get(),
-            'peralatan' => Barang::with('kategori_barang')->where('kategori', 'alat')->get()
+            'peralatan' => Barang::where('kategori', 'alat')->get()
         ]);
     }
 
@@ -123,7 +123,7 @@ class HomeController extends Controller
         return view('home.pakan.pakan', [
             'title' => 'Data pakan',
             'kategori' => KategoriBarang::where('kategori', 'pakan')->get(),
-            'pakan' => Barang::with('kategori_barang')->where('kategori', 'pakan')->get()
+            'pakan' => Barang::where('kategori', 'pakan')->get()
         ]);
     }
 

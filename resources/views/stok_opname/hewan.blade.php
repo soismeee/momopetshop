@@ -15,10 +15,12 @@
                                 <p class="card-title-desc">Data stok hewan.</p>
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-12 text-end">
+                                <input type="hidden" name="bulan" id="bulan" value="{{ date('Y-m') }}">
                                 <form action="{{ url('csoh') }}" method="GET">
                                     @csrf
                                     <div class="input-group">
-                                        <input type="month" class="form-control" name="bulan" id="bulan" value="{{ date('Y-m') }}">
+                                        <input type="date" class="form-control" name="awal" id="awal">
+                                        <input type="date" class="form-control" name="akhir" id="akhir" readonly>
                                         <button type="submit" class="btn btn-primary" id="cetak">Cetak Opname</button>
                                     </div>
                                 </form>
@@ -101,6 +103,11 @@
             $('#loading').show()
             $('table tbody').empty();
             tabel($(this).val());
+        });
+        
+        $(document).on('change', '#awal', function(e){
+            e.preventDefault();
+            $('#akhir').removeAttr('readonly');
         });
 
         function tabel(bulan) {
