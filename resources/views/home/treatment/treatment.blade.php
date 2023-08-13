@@ -36,6 +36,7 @@
                                             <i class="bx bxs-paste h2 text-primary mb-0"></i>
                                             <h5 class="font-size-17 mb-0 mt-3">{{ $item->nama_treatment }}</h5>
                                             <p class="mb-2 pt-2">Rp. {{ number_format($item->harga_treatment,0,',','.') }}</p>
+                                            <p>Waktu : {{ $item->dari }} - {{ $item->sampai }}</p>
                                             <a href="{{ url('/cdte') }}/{{ $item->id }}" class="btn btn-sm btn-primary">Lihat detail</a>    
                                         </div>
                                     </div>

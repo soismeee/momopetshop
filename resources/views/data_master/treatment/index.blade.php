@@ -25,9 +25,19 @@
                                     @csrf
                                     <input type="hidden" id="id" name="id">
                                     <input type="hidden" id="form" value="tambah">
-                                    <div class="mb-3">
-                                        <label for="formrow-firstname-input" class="form-label">Nama treatment</label>
-                                        <input type="text" class="form-control input" placeholder="Masukan nama treatment" name="nama_treatment" id="nama_treatment">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="formrow-firstname-input" class="form-label">Nama treatment</label>
+                                                <input type="text" class="form-control input" placeholder="Masukan nama treatment" name="nama_treatment" id="nama_treatment">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="formrow-password-input" class="form-label">Tarif treatment</label>
+                                                <input type="text" class="form-control input" placeholder="Masukan tarif treatment" id="harga_treatment" name="harga_treatment">
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div class="row">
@@ -40,10 +50,16 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-3">
                                             <div class="mb-3">
-                                                <label for="formrow-password-input" class="form-label">Tarif treatment</label>
-                                                <input type="text" class="form-control input" placeholder="Masukan tarif treatment" id="harga_treatment" name="harga_treatment">
+                                                <label for="formrow-password-input" class="form-label">Dari pukul</label>
+                                                <input type="time" class="form-control input" id="dari" name="dari">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="mb-3">
+                                                <label for="formrow-password-input" class="form-label">Sampai pukul</label>
+                                                <input type="time" class="form-control input" id="sampai" name="sampai">
                                             </div>
                                         </div>
                                     </div>
@@ -86,7 +102,8 @@
                                                 <th width="20%">Nama treatment</th>
                                                 <th width="20%">Tarif</th>
                                                 <th width="10%">Status</th>
-                                                <th width="40%">Ket</th>
+                                                <th width="10%">Waktu</th>
+                                                <th width="30%">Keterangan</th>
                                                 <th width="5%">#</th>
                                             </tr>
                                         </thead>
@@ -152,6 +169,13 @@
                     "defaultContent": "-",
                     "render": function(data, type, row, meta){
                     return row.status_treatment
+                    }
+                },
+                {
+                    "targets": "_all",
+                    "defaultContent": "-",
+                    "render": function(data, type, row, meta){
+                    return row.dari +" - "+ row.sampai
                     }
                 },
                 {

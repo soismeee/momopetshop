@@ -53,6 +53,8 @@ class TreatmentController extends Controller
             'harga_treatment' => 'required',
             'status_treatment' => 'required',
             'keterangan_treatment' => 'required',
+            'dari' => 'required',
+            'sampai' => 'required',
         ]);
 
         if ($rules->fails()) {
@@ -67,6 +69,8 @@ class TreatmentController extends Controller
             $save_kph->harga_treatment = preg_replace('/[^0-9]/', '', $request->harga_treatment);
             $save_kph->status_treatment = $request->status_treatment;
             $save_kph->keterangan_treatment = $request->keterangan_treatment;
+            $save_kph->dari = $request->dari;
+            $save_kph->sampai = $request->sampai;
             $save_kph->gambar_treatment = $request->file('gambar_treatment')->getClientOriginalName();
             $save_kph->save();
             if ($request->hasFile('gambar_treatment')) {
@@ -102,6 +106,8 @@ class TreatmentController extends Controller
             'harga_treatment' => 'required',
             'status_treatment' => 'required',
             'keterangan_treatment' => 'required',
+            'dari' => 'required',
+            'sampai' => 'required',
         ]);
 
         if ($validate->fails()) {
@@ -116,6 +122,8 @@ class TreatmentController extends Controller
             $update_dt->nama_treatment == $request->nama_treatment &&
             $update_dt->harga_treatment == $request->harga_treatment &&
             $update_dt->status_treatment == $request->status_treatment &&
+            $update_dt->dari == $request->dari &&
+            $update_dt->sampai == $request->sampai &&
             $update_dt->keterangan_treatment == $request->keterangan_treatment)
             {
                 return response()->json([
@@ -134,6 +142,8 @@ class TreatmentController extends Controller
                 $update_dt->status_treatment = $request->status_treatment;
                 $update_dt->harga_treatment = preg_replace('/[^0-9]/', '', $request->harga_treatment);
                 $update_dt->keterangan_treatment = $request->keterangan_treatment;
+                $update_dt->dari = $request->dari;
+                $update_dt->sampai = $request->sampai;
                 $update_dt->update();
 
                 return response()->json([

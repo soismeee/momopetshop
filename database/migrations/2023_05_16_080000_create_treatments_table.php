@@ -20,6 +20,8 @@ class CreateTreatmentsTable extends Migration
             $table->string('keterangan_treatment');
             $table->string('status_treatment');
             $table->string('gambar_treatment');
+            $table->string('dari');
+            $table->string('sampai');
             $table->timestamps();
         });
     }

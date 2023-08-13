@@ -15,7 +15,7 @@
                                             <span class="badge bg-success font-size-14 me-1"><i class="mdi mdi-star"></i>
                                                 {{ $treatment->status_treatment }}</span>
                                         </div>
-
+                                        <p>Waktu : {{ $treatment->dari }} - {{ $treatment->sampai }}</p>
                                         <div class="border py-4 rounded">
 
                                             <div class="px-4" data-simplebar="init" style="max-height: 360px;">
