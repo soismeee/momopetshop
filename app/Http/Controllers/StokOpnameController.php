@@ -177,4 +177,36 @@ class StokOpnameController extends Controller
             ]);
         }
     }
+
+    public function show_sopp(Request $request, $id){
+        if ($request->tgl_awal == null || $request->tgl_akhir == null) {
+            $tgl_awal = date('Y-m-01'). " 00:00:00";
+            $tgl_akhir = date('Y-m-d'). " 23:59:59";
+        } else {
+            $tgl_awal = $request->tgl_awal. " 00:00:00";
+            $tgl_akhir = $request->tgl_akhir. " 23:59:59";
+        }
+        $bm = BarangMasuk::where('barang_id', $id)->whereBetween('created_at', [$tgl_awal, $tgl_akhir])->get();
+        return view('stok_opname.show_alat_dan_pakan', [
+            'title' => 'History stok',
+            'barang' => Barang::find($id),
+            'data' => $bm,
+        ]);
+    }
+
+    public function show_soh(Request $request, $id){
+        if ($request->tgl_awal == null || $request->tgl_akhir == null) {
+            $tgl_awal = date('Y-m-01'). " 00:00:00";
+            $tgl_akhir = date('Y-m-d'). " 23:59:59";
+        } else {
+            $tgl_awal = $request->tgl_awal. " 00:00:00";
+            $tgl_akhir = $request->tgl_akhir. " 23:59:59";
+        }
+        $bm = HewanMasuk::where('hewan_id', $id)->whereBetween('created_at', [$tgl_awal, $tgl_akhir])->get();
+        return view('stok_opname.show_hewan', [
+            'title' => 'History stok',
+            'hewan' => Hewan::find($id),
+            'data' => $bm,
+        ]);
+    }
 }

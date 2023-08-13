@@ -130,10 +130,12 @@ route::get('/json_sopp', [StokOpnameController::class, 'json_sopp'])->name('json
 route::get('/csopp', [StokOpnameController::class, 'cetak_sopp'])->name('csopp')->middleware('auth');
 route::post('/esb/{id}', [StokOpnameController::class, 'update_barang'])->name('esb')->middleware('auth');
 route::post('/esh/{id}', [StokOpnameController::class, 'update_hewan'])->name('esh')->middleware('auth');
+route::post('/sopp/{id}', [StokOpnameController::class, 'show_sopp'])->middleware('auth');
 
 route::get('/soh', [StokOpnameController::class, 'opname_hewan'])->name('soh')->middleware('auth');
 route::get('/json_soh', [StokOpnameController::class, 'json_soh'])->name('json_soh')->middleware('auth');
 route::get('/csoh', [StokOpnameController::class, 'cetak_soh'])->name('csoh')->middleware('auth');
+route::post('/soh/{id}', [StokOpnameController::class, 'show_soh'])->middleware('auth');
 
 // route persediaan
 route::get('pb', [PersediaanController::class, 'barang'])->name('pb')->middleware('auth');

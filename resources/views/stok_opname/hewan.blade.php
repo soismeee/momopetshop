@@ -38,8 +38,8 @@
                                         <th width="20%">Nama Hewan</th>
                                         <th width="15%">hewan Masuk</th>
                                         <th width="15%">hewan Keluar</th>
-                                        <th width="15%">Stok</th>
-                                        <th width="10%">Opsi</th>
+                                        <th width="10%">Stok</th>
+                                        <th width="15%">Opsi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -108,6 +108,12 @@
         $(document).on('change', '#awal', function(e){
             e.preventDefault();
             $('#akhir').removeAttr('readonly');
+            $('.tgl_awal').val(this.value);
+        });
+
+        $(document).on('change', '#akhir', function(e){
+            e.preventDefault();
+            $('.tgl_akhir').val(this.value);
         });
 
         function tabel(bulan) {
@@ -136,7 +142,19 @@
                                 <td>`+params.masuk+`</td>
                                 <td>`+params.keluar+`</td>
                                 <td>`+(parseInt(params.masuk)-parseInt(params.keluar))+`</td>
-                                <td><button class="btn btn-sm btn-primary" id="edit-stok" data-id="`+params.id+`">Edit Stok</button></td>
+                                <td>
+                                    <center>
+                                        <form action="{{ url('/soh') }}/`+params.id+`" method="POST">
+                                            @csrf
+                                            <div class="btn-group">
+                                                <a href="#" class="btn btn-sm btn-primary" id="edit-stok" data-id="`+params.id+`">Edit stok</a>
+                                                <input type="hidden" name="tgl_awal" class="tgl_awal">        
+                                                <input type="hidden" name="tgl_akhir" class="tgl_akhir">        
+                                                <button type="submit" class="btn btn-sm btn-info">History stok</button>
+                                            </div>
+                                        </form>
+                                    </center>    
+                                </td>
                             </tr>`
                             record += body
                         })
