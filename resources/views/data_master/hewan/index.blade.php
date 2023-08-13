@@ -23,27 +23,36 @@
                                     <input type="hidden" id="id" name="id">
                                     <input type="hidden" id="form" value="tambah">
                                     <div class="row">
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="mb-3">
                                                 <label for="formrow-firstname-input" class="form-label">Nama Hewan</label>
                                                 <input type="text" class="form-control input" placeholder="Masukan nama barang" name="nama_hewan" id="nama_hewan">
                                             </div>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-3">
                                             <div class="mb-3">
                                                 <label for="formrow-firstname-input" class="form-label">Kode Hewan </label>
                                                 <input type="text" class="form-control input" placeholder="Masukan kode hewan" name="kode_hewan" id="kode_hewan">
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-2">
                                             <div class="mb-3">
-                                                <label for="harga" class="form-label">Harga Hewan</label>
+                                                <label for="formrow-firstname-input" class="form-label">Jenis Hewan </label>
+                                                <select name="jenis_hewan" id="jenis_hewan" class="form-select">
+                                                    <option value="Kucing">Kucing</option>
+                                                    <option value="Anjing">Anjing</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="mb-3">
+                                                <label for="harga" class="form-label">Harga Jual</label>
                                                 <input type="text" class="form-control input" placeholder="harga hewan" id="harga_hewan" name="harga_hewan">
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-2">
                                             <div class="mb-3">
-                                                <label for="harga beli" class="form-label">Harga Harga beli</label>
+                                                <label for="harga beli" class="form-label">Harga beli</label>
                                                 <input type="text" class="form-control input" placeholder="harga beli hewan" id="harga_beli" name="harga_beli">
                                             </div>
                                         </div>
@@ -126,13 +135,15 @@
                                             <tr>
                                                 <th width="5%">No</th>
                                                 <th width="15%">Nama Hewan</th>
-                                                <th width="15%">Harga</th>
+                                                <th width="10%">Jenis</th>
+                                                <th width="10%">Harga jual</th>
+                                                <th width="10%">Harga beli</th>
                                                 <th width="10%">Jumlah</th>
                                                 <th width="10%">Umur</th>
                                                 <th width="15%">Ket</th>
                                                 <th width="10%">Gambar</th>
-                                                <th width="10%">Tambah</th>
-                                                <th width="10%">#</th>
+                                                {{-- <th width="10%">Tambah</th> --}}
+                                                <th width="5%">#</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
@@ -213,7 +224,21 @@
                     "targets": "_all",
                     "defaultContent": "-",
                     "render": function(data, type, row, meta){
-                    return "Rp. Harga beli  " +rupiah(row.harga_hewan)+ '<br /> Harga beli Rp. '+rupiah(row.harga_beli)
+                    return row.jenis_hewan
+                    }
+                },
+                {
+                    "targets": "_all",
+                    "defaultContent": "-",
+                    "render": function(data, type, row, meta){
+                    return "Rp. "+rupiah(row.harga_hewan)
+                    }
+                },
+                {
+                    "targets": "_all",
+                    "defaultContent": "-",
+                    "render": function(data, type, row, meta){
+                    return'Rp. '+rupiah(row.harga_beli)
                     }
                 },
                 {
@@ -255,15 +280,13 @@
                         return `<img src="/Gambar_upload/hewan/`+row.gambar_hewan+`" height="50px">`
                     }
                 },
-                {
-                    "targets": "_all",
-                    "defaultContent": "-",
-                    "render": function(data, type, row, meta){
-                    return `
-                    <a href="#" title="Tambah stok" id="add-stok" data-id="`+row.id+`" class="btn btn-sm btn-primary">+ Jumlah</a>
-                    `
-                    }
-                },
+                // {
+                //     "targets": "_all",
+                //     "defaultContent": "-",
+                //     "render": function(data, type, row, meta){
+                //     return `<a href="#" title="Tambah stok" id="add-stok" data-id="`+row.id+`" class="btn btn-sm btn-primary">+ Jumlah</a>`
+                //     }
+                // },
                 {
                     "targets": "_all",
                     "defaultContent": "-",
@@ -400,6 +423,7 @@
                         $('#kode_hewan').val(response.data.kode_hewan);
                         $('#kode_hewan').attr('readonly', true);
                         $('#nama_hewan').val(response.data.nama_hewan);
+                        $('#jenis_hewan').val(response.data.jenis_hewan);
                         $('#jkel').val(response.data.jkel);
                         $('#tgl_lahir').val(response.data.tgl_lahir);
                         $('#berat_hewan').val(response.data.berat_hewan);

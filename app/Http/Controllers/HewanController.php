@@ -51,6 +51,7 @@ class HewanController extends Controller
         $rules = Validator::make($request->all(), [
             'nama_hewan' => 'required',
             'kode_hewan' => 'required|unique:hewans',
+            'jenis_hewan' => 'required',
             'jkel' => 'required',
             'tgl_lahir' => 'required',
             'berat_hewan' => 'required',
@@ -70,6 +71,7 @@ class HewanController extends Controller
             $save_dh->id = Str::uuid()->toString();
             $save_dh->kode_hewan = $request->kode_hewan;
             $save_dh->nama_hewan = $request->nama_hewan;
+            $save_dh->jenis_hewan = $request->jenis_hewan;
             $save_dh->jkel = $request->jkel;
             $save_dh->tgl_lahir = $request->tgl_lahir;
             $save_dh->berat_hewan = $request->berat_hewan;
@@ -168,6 +170,7 @@ class HewanController extends Controller
                 }
 
                 $update_dh->nama_hewan = $request->nama_hewan;
+                $update_dh->jenis_hewan = $request->jenis_hewan;
                 $update_dh->jkel = $request->jkel;
                 $update_dh->tgl_lahir = $request->tgl_lahir;
                 $update_dh->berat_hewan = $request->berat_hewan;

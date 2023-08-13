@@ -12,6 +12,7 @@ class CreateHewansTable extends Migration
             $table->uuid('id')->primary();
             $table->string('kode_hewan')->unique();
             $table->string('nama_hewan');
+            $table->string('jenis_hewan');
             $table->string('jkel');
             $table->string('tgl_lahir');
             $table->string('berat_hewan');

@@ -90,13 +90,13 @@
                                         <thead class="table-light">
                                             <tr>
                                                 <th width="5%">No</th>
-                                                <th width="15%">Kode barang</th>
+                                                <th width="20%">Kode barang</th>
                                                 <th width="20%">Nama barang</th>
                                                 <th width="10%">Kategori</th>
                                                 <th width="10%">Jumlah</th>
                                                 <th width="15%">Nominal</th>
                                                 <th width="15%">Tgl Transaksi</th>
-                                                <th width="10%">#</th>
+                                                <th width="5%">#</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
@@ -212,7 +212,6 @@
                     return `
                     <div class="btn-group">
                         <a href="javascript:void(0);" title="Edit" id="edit-data" data-id="`+row.id+`" class="btn btn-sm btn-primary">Edit</a>
-                        <a href="javascript:void(0);" title="Delete" class="btn btn-sm btn-danger hapusdata" data-id="`+row.id+`">Hapus</a>
                     </div>
                     `
                     }

@@ -59,8 +59,8 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="mb-3">
-                                                <label for="formrow-email-input" class="form-label">Harga Barang</label>
-                                                <input type="text" class="form-control input" placeholder="harga barang" id="harga_barang" name="harga_barang">
+                                                <label for="formrow-email-input" class="form-label">Harga Jual</label>
+                                                <input type="text" class="form-control input" placeholder="Masukan harga jual" id="harga_barang" name="harga_barang">
                                             </div>
                                         </div>
                                         <div class="col-md-3">
@@ -108,10 +108,11 @@
                                             <tr>
                                                 <th width="5%">No</th>
                                                 <th width="20%">Nama</th>
-                                                <th width="20%">Harga</th>
+                                                <th width="10%">Harga beli</th>
+                                                <th width="10%">Harga jual</th>
                                                 <th width="10%">Stok</th>
                                                 <th width="30%">Ket</th>
-                                                <th width="10%">Tambah</th>
+                                                {{-- <th width="10%">Tambah</th> --}}
                                                 <th width="5%">#</th>
                                             </tr>
                                         </thead>
@@ -214,7 +215,14 @@
                     "targets": "_all",
                     "defaultContent": "-",
                     "render": function(data, type, row, meta){
-                        return "Rp. Harga beli  " +rupiah(row.harga_barang)+ '<br /> Harga beli Rp. '+rupiah(row.harga_beli)
+                        return "Rp. " +rupiah(row.harga_barang)
+                    }
+                },
+                {
+                    "targets": "_all",
+                    "defaultContent": "-",
+                    "render": function(data, type, row, meta){
+                        return 'Rp. '+rupiah(row.harga_beli)
                     }
                 },
                 {
@@ -231,15 +239,13 @@
                     return row.keterangan_barang
                     }
                 },
-                {
-                    "targets": "_all",
-                    "defaultContent": "-",
-                    "render": function(data, type, row, meta){
-                    return `
-                    <a href="#" title="Tambah stok" id="add-stok" data-id="`+row.id+`" class="btn btn-sm btn-primary">+ Stok</a>
-                    `
-                    }
-                },
+                // {
+                //     "targets": "_all",
+                //     "defaultContent": "-",
+                //     "render": function(data, type, row, meta){
+                //     return `<a href="#" title="Tambah stok" id="add-stok" data-id="`+row.id+`" class="btn btn-sm btn-primary">+ Stok</a>`
+                //     }
+                // },
                 {
                     "targets": "_all",
                     "defaultContent": "-",
