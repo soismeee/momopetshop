@@ -44,9 +44,9 @@
                                         <th width="20%">ID</th>
                                         <th width="10%">Customer</th>
                                         <th width="15%">Total barang</th>
-                                        <th width="15%">Total bayar</th>
                                         <th width="15%">Tanggal transaksi</th>
                                         <th width="10%">Status</th>
+                                        <th width="15%">Total bayar</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -112,13 +112,7 @@
                         return row.total_jumlah
                     }
                 },
-                {
-                    "targets": "_all",
-                    "defaultContent": "-",
-                    "render": function(data, type, row, meta) {
-                        return "Rp. " + rupiah(row.total_harga)
-                    }
-                },
+                
                 {
                     "targets": "_all",
                     "defaultContent": "-",
@@ -127,16 +121,23 @@
                     }
                 },
                 {
-                "targets": "_all",
-                "defaultContent": "-",
-                "render": function(data, type, row, meta){
-                    if (row.status == 1) {
-                        return '<span class="badge badge-pill badge-soft-success font-size-12">Selesai</span>';
-                    } else {
-                        return '<span class="badge badge-pill badge-soft-danger font-size-12">Proses</span>';
+                    "targets": "_all",
+                    "defaultContent": "-",
+                    "render": function(data, type, row, meta){
+                        if (row.status == 1) {
+                            return '<span class="badge badge-pill badge-soft-success font-size-12">Selesai</span>';
+                        } else {
+                            return '<span class="badge badge-pill badge-soft-danger font-size-12">Proses</span>';
+                        }
                     }
-                }
-            },
+                },
+                {
+                    "targets": "_all",
+                    "defaultContent": "-",
+                    "render": function(data, type, row, meta) {
+                        return "Rp. " + rupiah(row.total_harga)
+                    }
+                },
             ]
         });
 

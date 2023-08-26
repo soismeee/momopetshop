@@ -211,7 +211,8 @@ class PersediaanController extends Controller
         return view('persediaan.cetak.persediaan_barang', [
             'title' => 'Cetak Laporan',
             'bulan' => date('d-m-Y', strtotime($request->awal)). " s/d " . date('d-m-Y', strtotime($request->akhir)),
-            'data' => $data 
+            'data' => $data,
+            'total' => $data->sum('nominal_barang')
         ]);
     }
 
@@ -407,7 +408,8 @@ class PersediaanController extends Controller
         return view('persediaan.cetak.persediaan_hewan', [
             'title' => 'Cetak Laporan',
             'bulan' => date('d-m-Y', strtotime($request->awal)). " s/d " . date('d-m-Y', strtotime($request->akhir)),
-            'data' => $data 
+            'data' => $data,
+            'total' => $data->sum('nominal_hewan')
         ]);
     }
 }
