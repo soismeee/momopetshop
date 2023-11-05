@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HewanController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\KategoriHewanController;
 use App\Http\Controllers\KategoriPakanController;
 use App\Http\Controllers\KategoriPHController;
 use App\Http\Controllers\PakanController;
@@ -85,6 +86,10 @@ route::post('/json_dkph', [KategoriPHController::class, 'json'])->middleware('au
 //route kategori pakan
 route::resource('/dkp', KategoriPakanController::class)->middleware('auth');
 route::post('/json_dkp', [KategoriPakanController::class, 'json'])->middleware('auth');
+
+// route kategori hewan
+route::resource('/dkh', KategoriHewanController::class)->middleware('auth');
+route::post('json_dkh', [KategoriHewanController::class, 'json'])->middleware('auth');
 
 // ROUTE DATA MASTER //
 // data hewan

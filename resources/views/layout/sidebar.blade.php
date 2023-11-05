@@ -94,6 +94,7 @@
                         <span class="menu-item" data-key="t-tables">Data Kategori</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route('dkh.index') }}" data-key="t-basic-tables">Kategori Jenis Hewan</a></li>
                         <li><a href="{{ route('dkph.index') }}" data-key="t-basic-tables">Kategori Peralatan Hewan</a></li>
                         <li><a href="{{ route('dkp.index') }}" data-key="t-advanced-tables">Kategori Pakan</a></li>
                     </ul>

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Hewan extends Model
+class KategoriHewan extends Model
 {
     use HasFactory;
 
@@ -13,9 +13,4 @@ class Hewan extends Model
 
     protected $primaryKey = 'id';
     public $incrementing = false;
-
-    public function kategori_hewan()
-    {
-        return $this->belongsTo('App\Models\KategoriHewan', 'kh_id');
-    }
 }

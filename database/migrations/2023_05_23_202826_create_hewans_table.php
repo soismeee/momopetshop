@@ -11,8 +11,8 @@ class CreateHewansTable extends Migration
         Schema::create('hewans', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('kode_hewan')->unique();
+            $table->uuid('kh_id')->index();
             $table->string('nama_hewan');
-            $table->string('jenis_hewan');
             $table->string('jkel');
             $table->string('tgl_lahir');
             $table->string('berat_hewan');
@@ -23,6 +23,8 @@ class CreateHewansTable extends Migration
             $table->string('harga_beli');
             $table->string('keterangan_hewan');
             $table->timestamps();
+
+            $table->foreign('kh_id')->references('id')->on('kategori_hewans')->onDelete('cascade');
         });
     }
 

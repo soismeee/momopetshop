@@ -38,9 +38,10 @@
                                         <div class="col-md-2">
                                             <div class="mb-3">
                                                 <label for="formrow-firstname-input" class="form-label">Jenis Hewan </label>
-                                                <select name="jenis_hewan" id="jenis_hewan" class="form-select">
-                                                    <option value="Kucing">Kucing</option>
-                                                    <option value="Anjing">Anjing</option>
+                                                <select name="kh_id" id="kh_id" class="form-select">
+                                                    @foreach ($kategori as $item)
+                                                        <option value="{{ $item->id }}">{{ $item->nama_kategori }}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>
@@ -224,7 +225,7 @@
                     "targets": "_all",
                     "defaultContent": "-",
                     "render": function(data, type, row, meta){
-                    return row.jenis_hewan
+                    return row.kategori_hewan.nama_kategori
                     }
                 },
                 {
@@ -423,7 +424,7 @@
                         $('#kode_hewan').val(response.data.kode_hewan);
                         $('#kode_hewan').attr('readonly', true);
                         $('#nama_hewan').val(response.data.nama_hewan);
-                        $('#jenis_hewan').val(response.data.jenis_hewan);
+                        $('#kh_id').val(response.data.kh_id);
                         $('#jkel').val(response.data.jkel);
                         $('#tgl_lahir').val(response.data.tgl_lahir);
                         $('#berat_hewan').val(response.data.berat_hewan);

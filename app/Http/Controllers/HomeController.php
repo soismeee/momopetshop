@@ -16,6 +16,7 @@ use App\Models\Treatment;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
@@ -98,9 +99,15 @@ class HomeController extends Controller
     }
 
     public function detail_hewan($id){
+        $hewan = Hewan::find($id);
+
+        $dateOfBirth = $hewan->tgl_lahir;
+        $years = Carbon::parse($dateOfBirth)->age;
+
         return view('home.hewan.detail', [
             'title' => 'Detail hewan',
-            'hewan' => Hewan::find($id)
+            'hewan' => $hewan,
+            'umur' => $years,
         ]);
     }
 

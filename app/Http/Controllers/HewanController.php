@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Hewan;
 use App\Models\HewanMasuk;
+use App\Models\KategoriHewan;
 use App\Models\TransaksiHewanMasuk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -14,14 +15,15 @@ class HewanController extends Controller
     public function index()
     {
         return view('data_master.hewan.index', [
-            'title' => 'Data Hewan'
+            'title' => 'Data Hewan',
+            'kategori' => KategoriHewan::all()
         ]);
     }
 
     public function json(){
         $columns = ['id','nama_kategori','keterangan_kategori'];
         $orderBy = $columns[request()->input("order.0.column")];
-        $data = Hewan::select('*');
+        $data = Hewan::select('*')->with('kategori_hewan');
 
         if(request()->input("search.value")){
             $data = $data->where(function($query){
@@ -45,13 +47,14 @@ class HewanController extends Controller
             'data' => $data
         ]);
     }
+
     public function store(Request $request)
     {
         // dd($request);
         $rules = Validator::make($request->all(), [
             'nama_hewan' => 'required',
             'kode_hewan' => 'required|unique:hewans',
-            'jenis_hewan' => 'required',
+            'kh_id' => 'required',
             'jkel' => 'required',
             'tgl_lahir' => 'required',
             'berat_hewan' => 'required',
@@ -71,7 +74,7 @@ class HewanController extends Controller
             $save_dh->id = Str::uuid()->toString();
             $save_dh->kode_hewan = $request->kode_hewan;
             $save_dh->nama_hewan = $request->nama_hewan;
-            $save_dh->jenis_hewan = $request->jenis_hewan;
+            $save_dh->kh_id = $request->kh_id;
             $save_dh->jkel = $request->jkel;
             $save_dh->tgl_lahir = $request->tgl_lahir;
             $save_dh->berat_hewan = $request->berat_hewan;
@@ -170,7 +173,7 @@ class HewanController extends Controller
                 }
 
                 $update_dh->nama_hewan = $request->nama_hewan;
-                $update_dh->jenis_hewan = $request->jenis_hewan;
+                $update_dh->kh_id = $request->kh_id;
                 $update_dh->jkel = $request->jkel;
                 $update_dh->tgl_lahir = $request->tgl_lahir;
                 $update_dh->berat_hewan = $request->berat_hewan;

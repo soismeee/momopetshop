@@ -55,7 +55,11 @@
                                                 <div class="col-md-6">
                                                     <div class="mt-3">
                                                         <h5 class="font-size-14">Keterangan :</h5>
-                                                        <p>{{ $hewan->keterangan_hewan }}</p>
+                                                        <p>{{ $hewan->keterangan_hewan }} <br />
+                                                        Tanggal lahir : {{ date('d/m/Y', strtotime($hewan->tgl_lahir)) }} <br />
+                                                        Umur : {{ $umur }} <br />
+                                                        Berat Hewan : {{ $hewan->berat_hewan }}
+                                                    </p>
                                                     </div>
                                                 </div>
 
