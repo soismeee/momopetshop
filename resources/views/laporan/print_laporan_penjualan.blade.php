@@ -31,9 +31,9 @@
             <th align="left" width="20%">ID</th>
             <th align="left" width="10%">Customer</th>
             <th align="left" width="15%">Total barang</th>
-            <th align="left" width="15%">Total bayar</th>
             <th align="left" width="15%">Tanggal transaksi</th>
             <th align="left" width="10%">Status</th>
+            <th align="left" width="15%">Total bayar</th>
         </tr>
         @foreach ($orders as $item)
             <tr>
@@ -41,7 +41,6 @@
                 <td>{{ $item->id }}</td>
                 <td>{{ $item->user->name }}</td>
                 <td>{{ $item->total_jumlah }}</td>
-                <td>Rp. {{ number_format($item->total_harga, 0, ',', '.') }}</td>
                 <td>{{ date('d M Y', strtotime($item->tgl_transaksi)) }}</td>
                 <td>
                     @if ($item->status == 1)
@@ -50,6 +49,7 @@
                         Proses
                     @endif
                 </td>
+                <td>Rp. {{ number_format($item->total_harga, 0, ',', '.') }}</td>
             </tr>
         @endforeach
         <tr>

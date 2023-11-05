@@ -22,7 +22,7 @@
         }
     </style>
     <h2 class='tengah'>MOMOPETSHOP</h2>
-    <h3 class='tengah'>Laporan Persediaan stok hewan di momopetshop</h3>
+    <h3 class='tengah'>Laporan Pembelian stok hewan di momopetshop</h3>
     <p class='tengah'>Periode bulan : {{ $bulan }}</p>
     <br/>
     <table>
@@ -42,6 +42,10 @@
                 <td>Rp. {{ number_format($item->nominal_hewan, 0, ',', '.') }}</td>
             </tr>
         @endforeach
+        <tr>
+            <td colspan="4" style="text-align: right"><strong>Total</strong></td>
+            <td><strong>Rp. {{ number_format($total,0,',','.') }}</strong></td>
+        </tr>
     </table>
     <p style="margin-left: 68%">{{ auth()->user()->name }}</p>
     <br><br><br><br>

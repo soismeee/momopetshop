@@ -31,9 +31,9 @@
             <th align="left" width="20%">ID</th>
             <th align="left" width="10%">Customer</th>
             <th align="left" width="15%">Treatment</th>
-            <th align="left" width="15%">Harga Treatment</th>
             <th align="left" width="15%">Tanggal transaksi</th>
             <th align="left" width="10%">Status</th>
+            <th align="left" width="15%">Harga Treatment</th>
         </tr>
         @foreach ($treatment as $item)
             <tr>
@@ -41,7 +41,6 @@
                 <td>{{ $item->id }}</td>
                 <td>{{ $item->user->name }}</td>
                 <td>{{ $item->nama_treatment }}</td>
-                <td>Rp. {{ number_format($item->harga_treatment, 0, ',', '.') }}</td>
                 <td>{{ date('d M Y', strtotime($item->tgl_transaksi)) }}</td>
                 <td>
                     @if ($item->status == 1)
@@ -50,6 +49,7 @@
                         Proses
                     @endif
                 </td>
+                <td>Rp. {{ number_format($item->harga_treatment, 0, ',', '.') }}</td>
             </tr>
         @endforeach
         <tr>
